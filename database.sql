@@ -8,7 +8,8 @@ CREATE TABLE "user"
     "id" SERIAL PRIMARY KEY,
     "displayname" VARCHAR (80) NOT NULL,
     "steamid64" VARCHAR(64) UNIQUE NOT NULL,
-    "steamid3" VARCHAR(64) UNIQUE NOT NULL
+    "steamid3" VARCHAR(64) UNIQUE NOT NULL,
+    "avatar" TEXT NOT NULL
 );
 
 CREATE TABLE "teams"
