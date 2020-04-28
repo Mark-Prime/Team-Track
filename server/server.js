@@ -1,10 +1,8 @@
-
 const express = require('express');
 require('dotenv').config();
 
 const app = express();
 const bodyParser = require('body-parser');
-const sessionMiddleware = require('./modules/session-middleware');
 
 const passport = require('passport');
 
@@ -52,7 +50,7 @@ app.get('/account', ensureAuthenticated, function (req, res) {
 });
 
 app.get('/logout', function (req, res) {
-  req.logout();
+  req.session = null
   res.redirect('http://localhost:3000/#/');
 });
 
@@ -63,9 +61,6 @@ const userRouter = require('./routes/user.router');
 // Body parser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// Passport Session Configuration //
-app.use(sessionMiddleware);
 
 // start up passport sessions
 app.use(passport.initialize());

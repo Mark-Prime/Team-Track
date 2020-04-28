@@ -6,7 +6,9 @@ const router = express.Router();
  * GET route template
  */
 router.get('/', (req, res) => {
-    console.log('user:', req.user);
+    if (req.user) {
+        console.log('user:', req.user.displayName);
+    }
     
     res.send(req.user)
 });

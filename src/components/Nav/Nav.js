@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import LogOutButton from '../LogOutButton/LogOutButton';
 import './Nav.css';
 
 const Nav = (props) => (
@@ -12,12 +11,11 @@ const Nav = (props) => (
     <div className="nav-right">
       {props.user.id ? 
         <>
-          <Link className="nav-link" to="/info">
-            Info Page
-          </Link>
-          <LogOutButton className="nav-link" />
+          <a className="nav-link" href="http://localhost:5000/logout">
+            Log out of steam
+          </a>
         </> : 
-        <Link className="nav-link" to=""> </Link>
+        <a className="nav-link" href="http://localhost:5000/auth/steam">Log In with Steam</a>
       }
       {/* Show the link to the info page and the logout button if the user is logged in */}
       {props.user.id && (
@@ -25,7 +23,6 @@ const Nav = (props) => (
           <Link className="nav-link" to="/info">
             Info Page
           </Link>
-          <LogOutButton className="nav-link"/>
         </>
       )}
       {/* Always show this link since the about page is not protected */}
@@ -41,8 +38,6 @@ const Nav = (props) => (
 // if they are logged in, we show them a few more links 
 // if you wanted you could write this code like this:
 // const mapStateToProps = ({ user }) => ({ user });
-const mapStateToProps = state => ({
-  user: state.user,
-});
+const mapStateToProps = ({ user }) => ({ user });
 
 export default connect(mapStateToProps)(Nav);
