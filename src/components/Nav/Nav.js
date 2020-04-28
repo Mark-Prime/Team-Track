@@ -2,6 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './Nav.css';
+import 'antd/dist/antd.css';
+
+// Ant Design
+import { Menu, Dropdown, Avatar } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
+
 
 const Nav = (props) => (
   <div className="nav">
@@ -11,24 +17,31 @@ const Nav = (props) => (
     <div className="nav-right">
       {props.user.id ? 
         <>
-          <a className="nav-link" href="http://localhost:5000/logout">
-            Log out of steam
-          </a>
+          <Avatar className="nav-link" size={64} src={props.user._json.avatarfull} />
+          <Dropdown overlay={<Menu>
+            <Menu.Item>
+              <a href={`/#/player/${props.user.id}`}>
+                View Profile
+              </a>
+            </Menu.Item>
+            <Menu.Item>
+              <a href="/#/player/edit">
+                Edit Profile
+              </a>
+            </Menu.Item>
+            <Menu.Item>
+              <a href="http://localhost:5000/logout">
+                Log out
+              </a>
+            </Menu.Item>
+          </Menu>}>
+            <a className="nav-link" href="/user" onClick={e => e.preventDefault()}>
+              {props.user.displayName} <DownOutlined />
+            </a>
+          </Dropdown>
         </> : 
-        <a className="nav-link" href="http://localhost:5000/auth/steam">Log In with Steam</a>
+        <a className="nav-link" href="http://localhost:5000/auth/steam">Log In</a>
       }
-      {/* Show the link to the info page and the logout button if the user is logged in */}
-      {props.user.id && (
-        <>
-          <Link className="nav-link" to="/info">
-            Info Page
-          </Link>
-        </>
-      )}
-      {/* Always show this link since the about page is not protected */}
-      <Link className="nav-link" to="/about">
-        About
-      </Link>
     </div>
   </div>
 );
