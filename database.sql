@@ -17,13 +17,14 @@ CREATE TABLE "teams"
     "name" VARCHAR(255) NOT NULL,
     "gamemode" INTEGER NOT NULL,
     "active" BOOLEAN NOT NULL DEFAULT 'true',
-    "password" VARCHAR(255) NOT NULL
+    "password" VARCHAR(255) NOT NULL,
+    "tag" VARCHAR(6) NOT NULL
 );
 
 CREATE TABLE "gamemodes"
 (
     "id" SERIAL PRIMARY KEY,
-    "name" VARCHAR(255) NOT NULL
+    "title" VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE "team_members"
@@ -189,8 +190,8 @@ ALTER TABLE "blu" ADD CONSTRAINT "blu_fk0" FOREIGN KEY ("log_id") REFERENCES "lo
 
 ALTER TABLE "teams" ADD CONSTRAINT "teams_fk0" FOREIGN KEY ("gamemode") REFERENCES "gamemodes"("id");
 
-INSERT INTO "public"."gamemodes"
-    ("name")
+INSERT INTO "gamemodes"
+    ("title")
 VALUES('Highlander'),
     ('Prolander'),
     ('Sixes'),
@@ -198,3 +199,17 @@ VALUES('Highlander'),
     ('Fours'),
     ('Ultitrio'),
     ('Ultiduo');
+
+INSERT INTO "teams"
+    ("name", "gamemode", "active", "password", "tag")
+VALUES
+    ('lay civ5', 1, FALSE, 'lay likes civ5', 'LAY'),
+    ('BRB, HAVE TO GO TO A WEDDING', 3, TRUE, 'swordfish', 'BRB'),
+    ('RGL Staff', 2, TRUE, 'RGL.gg', 'RGL.gg'),
+    ('Rocko7927 x Minion', 4, FALSE, 'rocko', 'rocko');
+
+INSERT INTO "user"
+    ("id", "displayname", "steamid3", "avatar")
+VALUES
+    ('76561198073466450', 'Otter | RGL.gg', '[U:1:113200722]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/4b/4ba684b38b02638a9697a3e11dabf6517537cc17_full.jpg'),
+    ('76561198045517514', 'Ryuk', '[U:1:85251786]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/42/4271c38a896a0d55370e2cf2284fc97296b2c94b_full.jpg');

@@ -6,7 +6,9 @@ const router = express.Router();
  * GET route
  */
 router.get('/all', (req, res) => {
-    let queryText = 'SELECT * FROM "teams" ORDER BY active, id;';
+    let queryText = `SELECT "teams"."id", "gamemodes"."id", "name", "active", "title" FROM "teams" 
+                        JOIN "gamemodes" ON "gamemode" = "gamemodes"."id"
+                        ORDER BY "active" DESC, "gamemodes".id, "name";`;
     pool.query(queryText).then(result => {
         res.send(result.rows);
     })

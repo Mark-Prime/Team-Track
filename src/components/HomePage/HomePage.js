@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+// CSS
+import './HomePage.css'
+
+
 // Ant Design
 import { Row, Col, Table, Avatar } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
@@ -16,8 +20,8 @@ class HomePage extends Component {
     render() { 
         return ( 
             <Row>
-                <Col span={2}></Col>
-                <Col span={9}>
+                <Col span={1}></Col>
+                <Col span={10}>
                     <Table columns={[
                         {
                             title: 'Name',
@@ -27,20 +31,24 @@ class HomePage extends Component {
                         },
                         {
                             title: 'Gamemode',
-                            dataIndex: 'gamemode',
-                            key: 'gamemode',
-                            render: text => <p>{text}</p>
+                            dataIndex: 'title',
+                            key: 'title'
                         },
                         {
                             title: 'Active',
                             dataIndex: 'active',
                             key: 'active',
-                            render: text => <p>{text ? <CheckCircleOutlined /> : <CloseCircleOutlined />}</p>
+                            render: text => <>
+                                {text ? 
+                                    <CheckCircleOutlined className="active" /> : 
+                                    <CloseCircleOutlined className="inactive" />
+                                } 
+                            </>
                         }
                     ]} dataSource={this.props.team} />
                 </Col>
                 <Col span={2}></Col>
-                <Col span={9}>
+                <Col span={10}>
                     <Table columns={[
                         {
                             title: '',
@@ -57,18 +65,16 @@ class HomePage extends Component {
                         {
                             title: 'SteamID64',
                             dataIndex: 'id',
-                            key: 'id',
-                            render: text => <p>{text}</p>
+                            key: 'id'
                         },
                         {
                             title: 'SteamID3',
                             dataIndex: 'steamid3',
-                            key: 'steamid3',
-                            render: text => <p>{text}</p>
+                            key: 'steamid3'
                         }
                     ]} dataSource={this.props.player} />
                 </Col>
-                <Col span={2}></Col>
+                <Col span={1}></Col>
                 {/* <Avatar className="avatar" shape="square" size={16} src={user.avatar} /> */}
             </Row>
          );
