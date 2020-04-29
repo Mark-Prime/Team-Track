@@ -15,9 +15,9 @@ const Nav = (props) => (
       <h2 className="nav-title">eSports Manager</h2>
     </Link>
     <div className="nav-right">
-      {props.user.id ? 
+      {props.user[0] ? 
         <>
-          <Avatar className="nav-link" size={64} src={props.user._json.avatarfull} />
+          <Avatar className="nav-link" size={64} src={props.user[0].avatar} />
           <Dropdown overlay={<Menu>
             <Menu.Item>
               <a href={`/#/player/${props.user.id}`}>
@@ -36,7 +36,7 @@ const Nav = (props) => (
             </Menu.Item>
           </Menu>}>
             <a className="nav-link" href="/user" onClick={e => e.preventDefault()}>
-              {props.user.displayName} <DownOutlined />
+              {props.user[0].displayname} <DownOutlined />
             </a>
           </Dropdown>
         </> : 

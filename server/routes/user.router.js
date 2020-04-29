@@ -8,9 +8,18 @@ const router = express.Router();
 router.get('/', (req, res) => {
     if (req.user) {
         console.log('user:', req.user.displayName);
+        let queryText = 'SELECT * FROM "user" WHERE id = $1;';
+        pool.query(queryText, [req.user.id]).then(result => {
+            res.send(result.rows);
+        })
+        .catch(error => {
+            console.log('error selecting * from user', error);
+            res.send(req.user)
+        });
+    } else {
+        res.send(req.user)
     }
     
-    res.send(req.user)
 });
 
 /**
