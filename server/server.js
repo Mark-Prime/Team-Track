@@ -57,6 +57,7 @@ app.get('/logout', function (req, res) {
 // Route includes
 const authRouter = require('./routes/auth.router');
 const userRouter = require('./routes/user.router');
+const playerRouter = require('./routes/player.router');
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -69,6 +70,7 @@ app.use(passport.session());
 /* Routes */
 app.use('/auth/', authRouter);
 app.use('/user/', userRouter);
+app.use('/player/', playerRouter);
 
 // Serve static files
 app.use(express.static('build'));

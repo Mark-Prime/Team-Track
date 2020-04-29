@@ -20,12 +20,12 @@ const Nav = (props) => (
           <Avatar className="nav-link" size={64} src={props.user[0].avatar} />
           <Dropdown overlay={<Menu>
             <Menu.Item>
-              <a href={`/#/player/${props.user.id}`}>
+              <a href={`/#/player/${props.user[0].id}`}>
                 View Profile
               </a>
             </Menu.Item>
             <Menu.Item>
-              <a href="/#/player/edit">
+              <a href="/#/user">
                 Edit Profile
               </a>
             </Menu.Item>

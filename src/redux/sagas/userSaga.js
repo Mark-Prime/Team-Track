@@ -24,8 +24,32 @@ function* fetchUser() {
   }
 }
 
+// worker Saga: will be fired on "FETCH_PLAYER" actions
+function* fetchPlayer(action) {
+  try {
+    const response = yield axios.get(`/player/${action.payload.id}`);
+
+    yield put({ type: 'SET_PLAYERS', payload: response.data });
+  } catch (error) {
+    console.log('Players get request failed', error);
+  }
+}
+
+// worker Saga: will be fired on "FETCH_PLAYERS" actions
+function* fetchPlayers(action) {
+  try {
+    const response = yield axios.get(`/player`);
+
+    yield put({ type: 'SET_PLAYERS', payload: response.data });
+  } catch (error) {
+    console.log('Players get request failed', error);
+  }
+}
+
 function* userSaga() {
   yield takeLatest('FETCH_USER', fetchUser);
+  yield takeLatest('FETCH_PLAYER', fetchPlayer);
+  yield takeLatest('FETCH_PLAYERS', fetchPlayers);
 }
 
 export default userSaga;

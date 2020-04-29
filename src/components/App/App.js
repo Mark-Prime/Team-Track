@@ -13,6 +13,8 @@ import Footer from '../Footer/Footer';
 
 import AboutPage from '../AboutPage/AboutPage';
 import UserPage from '../UserPage/UserPage'
+import PlayerPage from '../PlayerPage/PlayerPage'
+
 
 
 import './App.css';
@@ -37,8 +39,12 @@ class App extends Component {
               component={AboutPage}
             />
             <Route
-              exact
               path="/player/:id"
+              component={PlayerPage}
+            />
+            <Route
+              exact
+              path="/user"
               component={UserPage}
             />
             {/* If none of the other routes matched, we will show a 404. */}

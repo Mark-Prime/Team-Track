@@ -3,7 +3,7 @@ const pool = require('../modules/pool');
 const router = express.Router();
 
 /**
- * GET route template
+ * GET route
  */
 router.get('/', (req, res) => {
     if (req.user) {
@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
 });
 
 /**
- * POST route template
+ * POST route
  */
 router.post('/', (req, res) => {
 

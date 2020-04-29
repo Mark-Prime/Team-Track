@@ -37,18 +37,22 @@ router.get('/steam/return',
                 let queryText = `INSERT INTO "user" (id, displayname, steamid3, avatar) 
                 VALUES($1, $2, $3, $4);`;
                 pool.query(queryText, [req.user.id, req.user.displayName, steamid3, req.user._json.avatarfull]).then(result => {
-                    
+                    res.redirect('http://localhost:3000/#/user');
                 })
                 .catch(error => {
                     console.log('error posting into "user"', error);
+                    res.redirect('http://localhost:3000/#/home');
                 });
+            } else {
+                res.redirect('http://localhost:3000/#/home');
+
             }
         })
         .catch(error => {
             console.log('error selecting * from user', error);
+            res.redirect('http://localhost:3000/#/home');
         });
 
-        res.redirect('http://localhost:3000/#/');
     });
 
 module.exports = router;

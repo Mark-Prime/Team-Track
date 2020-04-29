@@ -8,18 +8,17 @@ import { connect } from 'react-redux';
 
 class UserPage extends Component {
 
-  componentDidMount() {
-    console.log('ID:', this.props.match.params.id);
-    
-  }
-
   render() { 
     return ( 
       <div>
-        <h1 id="welcome">
-          Welcome, {this.props.user.displayName}!
-        </h1>
-        <p>Your ID is: {this.props.user.id}</p>
+        {this.props.user[0] &&
+          <>
+            <h1 id="welcome">
+              Welcome, {this.props.user[0].displayname}!
+                        </h1>
+            <p>Your ID is: {this.props.user[0].id}</p>
+          </>
+        }
       </div>
      );
   }
