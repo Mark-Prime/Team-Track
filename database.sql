@@ -188,3 +188,13 @@ ALTER TABLE "red" ADD CONSTRAINT "red_fk0" FOREIGN KEY ("log_id") REFERENCES "lo
 ALTER TABLE "blu" ADD CONSTRAINT "blu_fk0" FOREIGN KEY ("log_id") REFERENCES "log_base"("id");
 
 ALTER TABLE "teams" ADD CONSTRAINT "teams_fk0" FOREIGN KEY ("gamemode") REFERENCES "gamemodes"("id");
+
+INSERT INTO "public"."gamemodes"
+    ("name")
+VALUES('Highlander'),
+    ('Prolander'),
+    ('Sixes'),
+    ('No Restriction 6s'),
+    ('Fours'),
+    ('Ultitrio'),
+    ('Ultiduo');
