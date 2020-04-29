@@ -27,7 +27,7 @@ class HomePage extends Component {
                             title: 'Name',
                             dataIndex: 'name',
                             key: 'name',
-                            render: (text, record) => <a href={`/#/team/${record.id}`}>{text}</a>
+                            render: (text, record) => <a href={`/#/team/${record.trueid}`}>{text}</a>
                         },
                         {
                             title: 'Gamemode',

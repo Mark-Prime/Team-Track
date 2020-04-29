@@ -15,6 +15,8 @@ import AboutPage from '../AboutPage/AboutPage';
 import UserPage from '../UserPage/UserPage';
 import PlayerPage from '../PlayerPage/PlayerPage';
 import HomePage from '../HomePage/HomePage';
+import TeamPage from '../TeamPage/TeamPage'
+
 
 
 
@@ -48,6 +50,10 @@ class App extends Component {
             <Route
               path="/player/:id"
               component={PlayerPage}
+            />
+            <Route
+              path="/team/:id"
+              component={TeamPage}
             />
             <Route
               exact
