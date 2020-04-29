@@ -9,6 +9,8 @@
 .nav {
   overflow: hidden;
   background-color: #00acb0;
+  margin-bottom: 25px;
+  padding-top: 5px;
 }
 
 .nav-link {
@@ -33,4 +35,8 @@
 
 .nav-right {
   float: right;
+}
+
+.avatar {
+  padding-top: 5px;
 }

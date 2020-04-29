@@ -17,7 +17,7 @@ const Nav = (props) => (
     <div className="nav-right">
       {props.user[0] ? 
         <>
-          <Avatar className="nav-link" size={64} src={props.user[0].avatar} />
+          <Avatar className="avatar" size={64} src={props.user[0].avatar} />
           <Dropdown overlay={<Menu>
             <Menu.Item>
               <a href={`/#/player/${props.user[0].id}`}>
