@@ -8,7 +8,7 @@ CREATE TABLE "user"
     "id" BIGINT PRIMARY KEY,
     "displayname" VARCHAR (80) NOT NULL,
     "steamid3" VARCHAR(64) UNIQUE NOT NULL,
-    "avatar" TEXT NOT NULL
+    "avatar" TEXT NOT NULL DEFAULT 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/b5/b5bd56c1aa4644a474a2e4972be27ef9e82e517e_full.jpg'
 );
 
 CREATE TABLE "teams"
@@ -212,4 +212,6 @@ INSERT INTO "user"
     ("id", "displayname", "steamid3", "avatar")
 VALUES
     ('76561198073466450', 'Otter | RGL.gg', '[U:1:113200722]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/4b/4ba684b38b02638a9697a3e11dabf6517537cc17_full.jpg'),
-    ('76561198045517514', 'Ryuk', '[U:1:85251786]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/42/4271c38a896a0d55370e2cf2284fc97296b2c94b_full.jpg');
+    ('76561198045517514', 'Ryuk', '[U:1:85251786]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/42/4271c38a896a0d55370e2cf2284fc97296b2c94b_full.jpg'),
+    ('76561198834006733', 'Dev1sium', '[U:1:873741005]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/3f/3f69d88a6fb7e16ad38db7a15043a2d2a5b73420_full.jpg'),
+    ('76561198229432644', 'sebbers', '[U:1:269166916]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/dc/dc39cb4672dcdedd87a8158ae95eab6a2e61f047_full.jpg');

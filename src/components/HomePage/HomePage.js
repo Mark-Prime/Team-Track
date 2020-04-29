@@ -13,8 +13,8 @@ import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 class HomePage extends Component {
     
     componentDidMount() {
-        this.props.dispatch({ type: 'FETCH_PLAYERS' })
         this.props.dispatch({ type: 'FETCH_TEAMS' })
+        this.props.dispatch({ type: 'FETCH_PLAYERS' })
     }
 
     render() { 
