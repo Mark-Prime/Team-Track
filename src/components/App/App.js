@@ -12,8 +12,10 @@ import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
 
 import AboutPage from '../AboutPage/AboutPage';
-import UserPage from '../UserPage/UserPage'
-import PlayerPage from '../PlayerPage/PlayerPage'
+import UserPage from '../UserPage/UserPage';
+import PlayerPage from '../PlayerPage/PlayerPage';
+import HomePage from '../HomePage/HomePage';
+
 
 
 
@@ -33,6 +35,11 @@ class App extends Component {
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
             <Redirect exact from="/" to="/home" />
             {/*  */}
+            <Route
+              exact
+              path="/home"
+              component={HomePage}
+            />
             <Route
               exact
               path="/about"
