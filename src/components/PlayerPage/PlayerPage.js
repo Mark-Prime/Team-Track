@@ -10,25 +10,28 @@ class PlayerPage extends Component {
 
     componentDidMount() {
         console.log('ID:', this.props.match.params.id);
+        this.props.dispatch({ type: 'FETCH_PLAYER', payload: this.props.match.params.id })
 
     }
 
     render() {
         return (
             <div>
-                {this.props.user[0] &&
+                {this.props.player[0] ?
                     <>
                         <h1 id="welcome">
-                        Welcome, {this.props.user[0].displayname}!
+                        Welcome, {this.props.player[0].displayname}!
                         </h1>
-                        <p>Your ID is: {this.props.user[0].id}</p>
-                    </>
-                    }
+                        <p>Your ID is: {this.props.player[0].id}</p>
+                    </> :
+
+                    <p>User not found</p>
+                }
             </div>
         );
     }
 }
 
-const mapStateToProps = ({ user }) => ({ user });
+const mapStateToProps = ({ player }) => ({ player });
 
 export default connect(mapStateToProps)(PlayerPage);

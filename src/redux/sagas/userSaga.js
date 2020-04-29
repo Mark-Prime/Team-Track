@@ -27,7 +27,7 @@ function* fetchUser() {
 // worker Saga: will be fired on "FETCH_PLAYER" actions
 function* fetchPlayer(action) {
   try {
-    const response = yield axios.get(`/player/${action.payload.id}`);
+    const response = yield axios.get(`/player/${action.payload}`);
 
     yield put({ type: 'SET_PLAYERS', payload: response.data });
   } catch (error) {
@@ -38,7 +38,7 @@ function* fetchPlayer(action) {
 // worker Saga: will be fired on "FETCH_PLAYERS" actions
 function* fetchPlayers(action) {
   try {
-    const response = yield axios.get(`/player`);
+    const response = yield axios.get(`/player/all`);
 
     yield put({ type: 'SET_PLAYERS', payload: response.data });
   } catch (error) {
