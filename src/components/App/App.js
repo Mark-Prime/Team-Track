@@ -12,6 +12,8 @@ import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
 
 import AboutPage from '../AboutPage/AboutPage';
+import UserPage from '../UserPage/UserPage'
+
 
 import './App.css';
 
@@ -33,6 +35,11 @@ class App extends Component {
               exact
               path="/about"
               component={AboutPage}
+            />
+            <Route
+              exact
+              path="/player/:id"
+              component={UserPage}
             />
             {/* If none of the other routes matched, we will show a 404. */}
             <Route render={() => <h1>404</h1>} />

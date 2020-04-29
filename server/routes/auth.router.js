@@ -1,6 +1,8 @@
-var express = require('express')
-    , router = express.Router()
-    , passport = require('passport');
+const express = require('express')
+const router = express.Router()
+const passport = require('passport');
+const pool = require('../modules/pool');
+const SteamID = require('steamid');
 
 // GET /auth/steam
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -8,7 +10,7 @@ var express = require('express')
 //   the user to steamcommunity.com.  After authenticating, Steam will redirect the
 //   user back to this application at /auth/steam/return
 router.get('/steam',
-    passport.authenticate('steam', { failureRedirect: '/' }),
+    passport.authenticate('steam', { failureRedirect: 'http://localhost:3000/#/' }),
     function (req, res) {
         res.redirect('/');
     });
@@ -24,8 +26,28 @@ router.get('/steam/return',
         req.url = req.originalUrl;
         next();
     },
-    passport.authenticate('steam', { failureRedirect: '/' }),
+    passport.authenticate('steam', { failureRedirect: 'http://localhost:3000/#/' }),
     function (req, res) {
+
+        let queryText = 'SELECT * FROM "user" WHERE id = $1;';
+        pool.query(queryText, [req.user.id]).then(result => {
+            if (!result.rows[0]){
+                console.log(`New User: ${req.user.displayName}`)
+                let steamid3 = (new SteamID(req.user.id)).steam3();
+                let queryText = `INSERT INTO "user" (id, displayname, steamid3, avatar) 
+                VALUES($1, $2, $3, $4);`;
+                pool.query(queryText, [req.user.id, req.user.displayName, steamid3, req.user._json.avatarfull]).then(result => {
+                    
+                })
+                .catch(error => {
+                    console.log('error posting into "user"', error);
+                });
+            }
+        })
+        .catch(error => {
+            console.log('error selecting * from user', error);
+        });
+
         res.redirect('http://localhost:3000/#/');
     });
 

@@ -5,33 +5,32 @@
 -- Otherwise you will have errors!
 CREATE TABLE "user"
 (
-    "id" SERIAL PRIMARY KEY,
+    "id" BIGINT PRIMARY KEY,
     "displayname" VARCHAR (80) NOT NULL,
-    "steamid64" VARCHAR(64) UNIQUE NOT NULL,
     "steamid3" VARCHAR(64) UNIQUE NOT NULL,
     "avatar" TEXT NOT NULL
 );
 
 CREATE TABLE "teams"
 (
-    "id" serial PRIMARY KEY,
+    "id" SERIAL PRIMARY KEY,
     "name" VARCHAR(255) NOT NULL,
-    "gamemode" integer NOT NULL,
+    "gamemode" INTEGER NOT NULL,
     "active" BOOLEAN NOT NULL DEFAULT 'true',
     "password" VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE "gamemodes"
 (
-    "id" serial PRIMARY KEY,
+    "id" SERIAL PRIMARY KEY,
     "name" VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE "team_members"
 (
-    "id" serial NOT NULL,
-    "user_id" integer NOT NULL,
-    "team_id" integer NOT NULL,
+    "id" SERIAL NOT NULL,
+    "user_id" INTEGER NOT NULL,
+    "team_id" INTEGER NOT NULL,
     "is_leader" BOOLEAN NOT NULL DEFAULT 'false',
     "join_date" DATE NOT NULL,
     "leave_date" DATE NOT NULL,
@@ -44,9 +43,9 @@ CREATE TABLE "team_members"
 
 CREATE TABLE "log_base"
 (
-    "id" serial NOT NULL,
-    "blu_id" integer NOT NULL,
-    "red_id" integer NOT NULL,
+    "id" SERIAL NOT NULL,
+    "blu_id" INTEGER NOT NULL,
+    "red_id" INTEGER NOT NULL,
     "Match" BOOLEAN NOT NULL DEFAULT 'false',
     "date" DATE NOT NULL,
     CONSTRAINT "log_base_pk" PRIMARY KEY ("id")
@@ -56,21 +55,21 @@ CREATE TABLE "log_base"
 
 CREATE TABLE "log_stats"
 (
-    "id" serial NOT NULL,
-    "log_id" integer NOT NULL,
+    "id" SERIAL NOT NULL,
+    "log_id" INTEGER NOT NULL,
     "steamid3" VARCHAR(255) NOT NULL,
     "team" VARCHAR(255) NOT NULL,
-    "assists" integer NOT NULL,
-    "suicides" integer NOT NULL,
+    "assists" INTEGER NOT NULL,
+    "suicides" INTEGER NOT NULL,
     "kapd" VARCHAR(255) NOT NULL,
-    "kpd" integer NOT NULL,
-    "damage" integer NOT NULL,
-    "damage_taken" integer NOT NULL,
-    "dapm" integer NOT NULL,
-    "ubers" integer NOT NULL,
-    "drops" integer NOT NULL,
-    "backstabs" integer NOT NULL,
-    "headshots" integer NOT NULL,
+    "kpd" INTEGER NOT NULL,
+    "damage" INTEGER NOT NULL,
+    "damage_taken" INTEGER NOT NULL,
+    "dapm" INTEGER NOT NULL,
+    "ubers" INTEGER NOT NULL,
+    "drops" INTEGER NOT NULL,
+    "backstabs" INTEGER NOT NULL,
+    "headshots" INTEGER NOT NULL,
     CONSTRAINT "log_stats_pk" PRIMARY KEY ("id")
 );
 
@@ -78,17 +77,17 @@ CREATE TABLE "log_stats"
 
 CREATE TABLE "kills"
 (
-    "id" serial NOT NULL,
-    "log_stat_id" integer NOT NULL,
-    "Scout" integer NOT NULL DEFAULT '0',
-    "Soldier" integer NOT NULL DEFAULT '0',
-    "Pyro" integer NOT NULL DEFAULT '0',
-    "Demo" integer NOT NULL DEFAULT '0',
-    "Heavy" integer NOT NULL DEFAULT '0',
-    "Engineer" integer NOT NULL DEFAULT '0',
-    "Medic" integer NOT NULL DEFAULT '0',
-    "Sniper" integer NOT NULL DEFAULT '0',
-    "Spy" integer NOT NULL DEFAULT '0',
+    "id" SERIAL NOT NULL,
+    "log_stat_id" INTEGER NOT NULL,
+    "Scout" INTEGER NOT NULL DEFAULT '0',
+    "Soldier" INTEGER NOT NULL DEFAULT '0',
+    "Pyro" INTEGER NOT NULL DEFAULT '0',
+    "Demo" INTEGER NOT NULL DEFAULT '0',
+    "Heavy" INTEGER NOT NULL DEFAULT '0',
+    "Engineer" INTEGER NOT NULL DEFAULT '0',
+    "Medic" INTEGER NOT NULL DEFAULT '0',
+    "Sniper" INTEGER NOT NULL DEFAULT '0',
+    "Spy" INTEGER NOT NULL DEFAULT '0',
     CONSTRAINT "kills_pk" PRIMARY KEY ("id")
 );
 
@@ -96,17 +95,17 @@ CREATE TABLE "kills"
 
 CREATE TABLE "deaths"
 (
-    "id" serial NOT NULL,
-    "log_stat_id" integer NOT NULL,
-    "Scout" integer NOT NULL DEFAULT '0',
-    "Soldier" integer NOT NULL DEFAULT '0',
-    "Pyro" integer NOT NULL DEFAULT '0',
-    "Demo" integer NOT NULL DEFAULT '0',
-    "Heavy" integer NOT NULL DEFAULT '0',
-    "Engineer" integer NOT NULL DEFAULT '0',
-    "Medic" integer NOT NULL DEFAULT '0',
-    "Sniper" integer NOT NULL DEFAULT '0',
-    "Spy" integer NOT NULL DEFAULT '0',
+    "id" SERIAL NOT NULL,
+    "log_stat_id" INTEGER NOT NULL,
+    "Scout" INTEGER NOT NULL DEFAULT '0',
+    "Soldier" INTEGER NOT NULL DEFAULT '0',
+    "Pyro" INTEGER NOT NULL DEFAULT '0',
+    "Demo" INTEGER NOT NULL DEFAULT '0',
+    "Heavy" INTEGER NOT NULL DEFAULT '0',
+    "Engineer" INTEGER NOT NULL DEFAULT '0',
+    "Medic" INTEGER NOT NULL DEFAULT '0',
+    "Sniper" INTEGER NOT NULL DEFAULT '0',
+    "Spy" INTEGER NOT NULL DEFAULT '0',
     CONSTRAINT "deaths_pk" PRIMARY KEY ("id")
 );
 
@@ -114,13 +113,13 @@ CREATE TABLE "deaths"
 
 CREATE TABLE "weapon"
 (
-    "id" serial NOT NULL,
-    "class_stat_id" integer NOT NULL,
+    "id" SERIAL NOT NULL,
+    "class_stat_id" INTEGER NOT NULL,
     "name" VARCHAR(255) NOT NULL,
-    "kills" integer NOT NULL,
-    "damage" integer NOT NULL,
-    "shots" integer NOT NULL,
-    "hits" integer NOT NULL,
+    "kills" INTEGER NOT NULL,
+    "damage" INTEGER NOT NULL,
+    "shots" INTEGER NOT NULL,
+    "hits" INTEGER NOT NULL,
     CONSTRAINT "weapon_pk" PRIMARY KEY ("id")
 );
 
@@ -128,14 +127,14 @@ CREATE TABLE "weapon"
 
 CREATE TABLE "class_stats"
 (
-    "id" serial NOT NULL,
-    "log_stat_id" integer NOT NULL,
+    "id" SERIAL NOT NULL,
+    "log_stat_id" INTEGER NOT NULL,
     "class" VARCHAR(255) NOT NULL,
-    "kills" integer NOT NULL,
-    "assists" integer NOT NULL,
-    "deaths" integer NOT NULL,
-    "damage" integer NOT NULL,
-    "total_time" integer NOT NULL,
+    "kills" INTEGER NOT NULL,
+    "assists" INTEGER NOT NULL,
+    "deaths" INTEGER NOT NULL,
+    "damage" INTEGER NOT NULL,
+    "total_time" INTEGER NOT NULL,
     CONSTRAINT "class_stats_pk" PRIMARY KEY ("id")
 );
 
@@ -143,13 +142,13 @@ CREATE TABLE "class_stats"
 
 CREATE TABLE "red"
 (
-    "id" serial NOT NULL,
-    "log_id" integer NOT NULL,
-    "kills" serial NOT NULL,
-    "damage" integer NOT NULL,
-    "charges" integer NOT NULL,
-    "drops" integer NOT NULL,
-    "score" integer NOT NULL,
+    "id" SERIAL NOT NULL,
+    "log_id" INTEGER NOT NULL,
+    "kills" SERIAL NOT NULL,
+    "damage" INTEGER NOT NULL,
+    "charges" INTEGER NOT NULL,
+    "drops" INTEGER NOT NULL,
+    "score" INTEGER NOT NULL,
     CONSTRAINT "red_pk" PRIMARY KEY ("id")
 );
 
@@ -157,13 +156,13 @@ CREATE TABLE "red"
 
 CREATE TABLE "blu"
 (
-    "id" serial NOT NULL,
-    "log_id" integer NOT NULL,
-    "kills" serial NOT NULL,
-    "damage" integer NOT NULL,
-    "charges" integer NOT NULL,
-    "drops" integer NOT NULL,
-    "score" integer NOT NULL,
+    "id" SERIAL NOT NULL,
+    "log_id" INTEGER NOT NULL,
+    "kills" SERIAL NOT NULL,
+    "damage" INTEGER NOT NULL,
+    "charges" INTEGER NOT NULL,
+    "drops" INTEGER NOT NULL,
+    "score" INTEGER NOT NULL,
     CONSTRAINT "blu_pk" PRIMARY KEY ("id")
 );
 
