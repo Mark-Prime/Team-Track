@@ -21,6 +21,20 @@ class PlayerPage extends Component {
 
     }
 
+    componentDidUpdate(){
+        for (const index of this.props.member) {
+            if (this.props.user[0]){
+                if (index.user_id === this.props.user[0].id) {
+                    if (this.state.isLeader !== index.is_leader){
+                        this.setState({
+                            isLeader: index.is_leader
+                        })
+                    }
+                }
+            }
+        }
+    }
+
     render() {
         return (
             <div>
@@ -28,10 +42,10 @@ class PlayerPage extends Component {
                     <>
                         <Row>
                             <Col span={24}>
-                                {this.props.team.active ? 
-                                <h1 id="welcome" className="team-name">
-                                    {this.props.team[0].name}
-                                </h1> :
+                                {this.props.team[0].active ? 
+                                    <h1 id="welcome" className="team-name">
+                                        {this.props.team[0].name}
+                                    </h1> :
                                 <span className="strike">
                                     <h1 id="welcome" className="team-name">
                                         {this.props.team[0].name}
@@ -74,15 +88,15 @@ class PlayerPage extends Component {
                                                 render: (leader, record) => (
                                                     <span>
                                                         {leader &&
-                                                            <Tag color={"orange"} key={leader}>
+                                                            <Tag color={"orange"} key={`${record.user_id}_LEADER`}>
                                                                 LEADER
                                                             </Tag>
                                                         }
                                                         {record.main ?
-                                                            <Tag color={"blue"} key={record.main}>
+                                                            <Tag color={"blue"} key={`${record.user_id}_MAIN`}>
                                                                 MAIN
                                                             </Tag> :
-                                                            <Tag color={"cyan"} key={record.main}>
+                                                            <Tag color={"cyan"} key={`${record.user_id}_SUB`}>
                                                                 SUB
                                                             </Tag>
                                                         }
@@ -106,6 +120,11 @@ class PlayerPage extends Component {
                                     <TabPane tab="Stats" key="2">
                                         STATS
                                         {JSON.stringify(this.props.member)}
+
+
+                                        {JSON.stringify(this.props.team)}
+
+                                        {JSON.stringify(this.props.user)}
                                     </TabPane>
                                     {this.state.isLeader &&
                                         <TabPane tab="Manage" key="3">
