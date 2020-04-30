@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 // CSS
 import './TeamPage.css'
 
+// Components
+import TeamManager from '../TeamManager/TeamManager'
+
 // Ant Design
 import { Row, Col, Tabs, Table, Avatar, Tag } from 'antd';
 const { TabPane } = Tabs;
@@ -125,7 +128,7 @@ class PlayerPage extends Component {
                                     </TabPane>
                                     {this.state.isLeader &&
                                         <TabPane tab="Manage" key="3">
-                                            MANAGEMENT TOOLS
+                                            <TeamManager />
                                         </TabPane>
                                     }
                                     
