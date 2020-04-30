@@ -206,7 +206,8 @@ VALUES
     ('lay civ5', 1, FALSE, 'lay likes civ5', 'LAY'),
     ('BRB, HAVE TO GO TO A WEDDING', 3, TRUE, 'swordfish', 'BRB'),
     ('RGL Staff', 2, TRUE, 'RGL.gg', 'RGL.gg'),
-    ('Rocko7927 x Minion', 4, FALSE, 'rocko', 'rocko');
+    ('Rocko7927 x Minion', 4, FALSE, 'rocko', 'rocko'),
+    ('J4MM3RS F4NCLU8', 7, TRUE, 'wepeat', 'j4m');
 
 INSERT INTO "user"
     ("id", "displayname", "steamid3", "avatar")
@@ -214,4 +215,7 @@ VALUES
     ('76561198073466450', 'Otter | RGL.gg', '[U:1:113200722]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/4b/4ba684b38b02638a9697a3e11dabf6517537cc17_full.jpg'),
     ('76561198045517514', 'Ryuk', '[U:1:85251786]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/42/4271c38a896a0d55370e2cf2284fc97296b2c94b_full.jpg'),
     ('76561198834006733', 'Dev1sium', '[U:1:873741005]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/3f/3f69d88a6fb7e16ad38db7a15043a2d2a5b73420_full.jpg'),
-    ('76561198229432644', 'sebbers', '[U:1:269166916]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/dc/dc39cb4672dcdedd87a8158ae95eab6a2e61f047_full.jpg');
+    ('76561198229432644', 'sebbers', '[U:1:269166916]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/dc/dc39cb4672dcdedd87a8158ae95eab6a2e61f047_full.jpg'),
+    ('76561198040047972', 'JordaN', '[U:1:79782244]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/88/88920fe05fe37e9c0dcfae8ff84dabd04ad408bc_full.jpg'),
+    ('76561198085943550', 'R3P3AT', '[U:1:125677822]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/dc/dcac27d887abd3e8049a7416601cf7b5f0f26ede_full.jpg'),
+    ('6561198017684173', 'WiLLmaTiC', '[U:1:57418445]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fa/fa44cec79e8adb1f470423881e0607535c7423d0_full.jpg%27');

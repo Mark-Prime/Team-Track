@@ -40,8 +40,8 @@ class HomePage extends Component {
                             key: 'active',
                             render: text => <>
                                 {text ? 
-                                    <CheckCircleOutlined className="active" /> : 
-                                    <CloseCircleOutlined className="inactive" />
+                                    <CheckCircleOutlined className="active" style={{ fontSize: '30px' }} /> : 
+                                    <CloseCircleOutlined className="inactive" style={{ fontSize: '30px' }} />
                                 } 
                             </>
                         }
