@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // Ant Design
-import { Input, Row, Col, Table, Avatar, Button, Select, Popconfirm, message } from 'antd';
+import { Input, Row, Col, Table, Avatar, Button, Select, Popconfirm } from 'antd';
 
 const { Option } = Select;
 
@@ -15,13 +15,9 @@ class TeamManager extends Component {
         for (const index of this.props.member) {
             this.setState({
                 [index.user_id]: {
-                    displayname: index.displayname,
-                    steamid3: index.steamid3,
-                    steamid3: index.avatar,
                     is_leader: index.is_leader,
                     main: index.main,
                     class: index.class,
-                    class_name: index.class_name,
                 }
             })
         }
@@ -42,8 +38,16 @@ class TeamManager extends Component {
         })
     }
 
+    saveName= () => {
+        
+    }
+
     promoteMember = (id) => {
         
+    }
+
+    removeMember = (id) => {
+
     }
 
     render() { 
@@ -51,7 +55,7 @@ class TeamManager extends Component {
             <>
                 <Row>
                     <Col span={7}></Col>
-                    <Col span={10}><Input value={this.state.newName} onChange={this.changeState} /></Col><Button type="primary">SAVE</Button>
+                    <Col span={10}><Input value={this.state.newName} onChange={this.changeState} /></Col><Button type="primary" onClick={this.saveName}>SAVE</Button>
                     <Col span={7}></Col>
                 </Row>
                 <Row>

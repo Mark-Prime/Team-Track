@@ -15,7 +15,8 @@ class PlayerPage extends Component {
         console.log('ID:', this.props.match.params.id);
         this.props.dispatch({ type: 'FETCH_PLAYER', payload: this.props.match.params.id })
         this.props.dispatch({ type: 'FETCH_USER_TEAMS', payload: this.props.match.params.id })
-
+        console.log('componentDidMount');
+        
     }
 
     render() {
