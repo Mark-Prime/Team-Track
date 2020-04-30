@@ -14,6 +14,7 @@ class PlayerPage extends Component {
     componentDidMount() {
         console.log('ID:', this.props.match.params.id);
         this.props.dispatch({ type: 'FETCH_PLAYER', payload: this.props.match.params.id })
+        this.props.dispatch({ type: 'FETCH_USER_TEAMS', payload: this.props.match.params.id })
 
     }
 
@@ -77,7 +78,15 @@ class PlayerPage extends Component {
                                         title: 'Name',
                                         dataIndex: 'name',
                                         key: 'name',
-                                        render: (text, record) => <a href={`/#/team/${record.trueid}`}>{text}</a>
+                                        render: (text, record) => <>
+                                            {record.active ? 
+                                                <a href={`/#/team/${record.team_id}`}>{text}</a> :
+                                                <span className="strike">
+                                                    <a href={`/#/team/${record.team_id}`}>{text}</a>
+                                                </span>
+                                            }
+                                            
+                                        </>
                                     },
                                     {
                                         title: 'Gamemode',

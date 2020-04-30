@@ -5,3 +5,8 @@
 .player-info {
     text-align: center;
 }
+
+.strike {
+    color: #f5222d;
+    text-decoration: line-through;
+}

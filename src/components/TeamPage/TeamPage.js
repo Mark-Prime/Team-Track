@@ -28,9 +28,17 @@ class PlayerPage extends Component {
                     <>
                         <Row>
                             <Col span={24}>
+                                {this.props.team.active ? 
                                 <h1 id="welcome" className="team-name">
                                     {this.props.team[0].name}
-                                </h1>
+                                </h1> :
+                                <span className="strike">
+                                    <h1 id="welcome" className="team-name">
+                                        {this.props.team[0].name}
+                                    </h1>
+                                </span>
+                                }
+                                
                                 <h3 id="welcome" className="team-name">
                                     {this.props.team[0].tag}
                                 </h3>

@@ -12,8 +12,19 @@ function* fetchMembers(action) {
   }
 }
 
+function* fetchUserTeams(action) {
+  try {
+    const response = yield axios.get(`/member/user/${action.payload}`);
+
+    yield put({ type: 'SET_TEAMS', payload: response.data });
+  } catch (error) {
+    console.log('Players get request failed', error);
+  }
+}
+
 function* userSaga() {
   yield takeLatest('FETCH_MEMBERS', fetchMembers);
+  yield takeLatest('FETCH_USER_TEAMS', fetchUserTeams);
 }
 
 export default userSaga;
