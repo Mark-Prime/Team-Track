@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
             res.send(result.rows);
         })
         .catch(error => {
-            console.log('error selecting * from user', error);
+            console.log('error selecting * from user in user router', error);
             res.send(req.user)
         });
     } else {

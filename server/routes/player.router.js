@@ -22,7 +22,7 @@ router.get('/:id', (req, res) => {
         res.send(result.rows);
     })
         .catch(error => {
-            console.log('error selecting * from user', error);
+            console.log('error selecting * from user WHERE id = $1;', error);
             res.sendStatus(500);
         });
 });

@@ -30,13 +30,13 @@ CREATE TABLE "gamemodes"
 CREATE TABLE "team_members"
 (
     "id" SERIAL NOT NULL,
-    "user_id" INTEGER NOT NULL,
+    "user_id" BIGINT NOT NULL,
     "team_id" INTEGER NOT NULL,
     "is_leader" BOOLEAN NOT NULL DEFAULT 'false',
-    "join_date" DATE NOT NULL,
-    "leave_date" DATE NOT NULL,
+    "join_date" DATE NOT NULL DEFAULT CURRENT_DATE,
+    "leave_date" DATE,
     "main" BOOLEAN NOT NULL DEFAULT 'true',
-    "class" VARCHAR(255) NOT NULL,
+    "class" INTEGER NOT NULL,
     CONSTRAINT "team_members_pk" PRIMARY KEY ("id")
 );
 
@@ -169,6 +169,7 @@ CREATE TABLE "blu"
 
 ALTER TABLE "team_members" ADD CONSTRAINT "team_members_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("id");
 ALTER TABLE "team_members" ADD CONSTRAINT "team_members_fk1" FOREIGN KEY ("team_id") REFERENCES "teams"("id");
+ALTER TABLE "team_members" ADD CONSTRAINT "team_members_fk1" FOREIGN KEY ("class") REFERENCES "classes"("id");
 
 ALTER TABLE "log_base" ADD CONSTRAINT "log_base_fk0" FOREIGN KEY ("blu_id") REFERENCES "teams"("id");
 ALTER TABLE "log_base" ADD CONSTRAINT "log_base_fk1" FOREIGN KEY ("red_id") REFERENCES "teams"("id");
@@ -200,6 +201,19 @@ VALUES('Highlander'),
     ('Ultitrio'),
     ('Ultiduo');
 
+INSERT INTO "public"."classes"
+    ("class_name")
+VALUES
+    ('Scout'),
+    ('Soldier'),
+    ('Pyro'),
+    ('Demoman'),
+    ('Heavy'),
+    ('Engineer'),
+    ('Medic'),
+    ('Sniper'),
+    ('Spy');
+
 INSERT INTO "teams"
     ("name", "gamemode", "active", "password", "tag")
 VALUES
@@ -218,4 +232,13 @@ VALUES
     ('76561198229432644', 'sebbers', '[U:1:269166916]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/dc/dc39cb4672dcdedd87a8158ae95eab6a2e61f047_full.jpg'),
     ('76561198040047972', 'JordaN', '[U:1:79782244]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/88/88920fe05fe37e9c0dcfae8ff84dabd04ad408bc_full.jpg'),
     ('76561198085943550', 'R3P3AT', '[U:1:125677822]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/dc/dcac27d887abd3e8049a7416601cf7b5f0f26ede_full.jpg'),
+    ('76561198213561811', 'Fluffy', '[U:1:253296083]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/b1/b16e68d5b3e876195eaec5e086c8ff8b0889dc73_full.jpg'),
     ('6561198017684173', 'WiLLmaTiC', '[U:1:57418445]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fa/fa44cec79e8adb1f470423881e0607535c7423d0_full.jpg%27');
+
+INSERT INTO "team_members"
+    ("user_id", "team_id", "is_leader", "main", "class")
+VALUES
+    (76561198045517514, 7, TRUE, TRUE, 7),
+    (76561198085943550, 7, TRUE, TRUE, 2),
+    (76561198213561811, 7, FALSE, FALSE, 7),
+    (6561198017684173, 8, TRUE, TRUE, 8);

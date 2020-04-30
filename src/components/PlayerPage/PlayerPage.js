@@ -6,7 +6,7 @@ import './PlayerPage.css'
 
 
 // Ant Design
-import { Row, Col, Avatar, Menu, Dropdown } from 'antd';
+import { Row, Col, Avatar, Menu, Dropdown, Table } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
 class PlayerPage extends Component {
@@ -22,7 +22,7 @@ class PlayerPage extends Component {
             <div>
                 <Row>
                     <Col span={1}></Col>
-                    <Col span={3} className="player-info">
+                    <Col span={9} className="player-info">
                         {this.props.player[0] ?
                             <>
                                 <Avatar size={128} src={this.props.player[0].avatar} />
@@ -72,12 +72,26 @@ class PlayerPage extends Component {
                                         External Links <DownOutlined />
                                     </h4>
                                 </Dropdown>
+                                <Table columns={[
+                                    {
+                                        title: 'Name',
+                                        dataIndex: 'name',
+                                        key: 'name',
+                                        render: (text, record) => <a href={`/#/team/${record.trueid}`}>{text}</a>
+                                    },
+                                    {
+                                        title: 'Gamemode',
+                                        dataIndex: 'title',
+                                        key: 'title'
+                                    }
+                                ]} dataSource={this.props.team} />
                             </> :
 
                             <p>User not found</p>
                         }
                     </Col>
-                    <Col span={19}>
+                    <Col span={1}></Col>
+                    <Col span={12}>
                         {/* Soon to be graphs */}
                     </Col>
                     <Col span={1}></Col>
@@ -88,6 +102,6 @@ class PlayerPage extends Component {
     }
 }
 
-const mapStateToProps = ({ player }) => ({ player });
+const mapStateToProps = ({ player, team }) => ({ player, team });
 
 export default connect(mapStateToProps)(PlayerPage);
