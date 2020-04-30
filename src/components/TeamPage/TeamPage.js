@@ -11,28 +11,41 @@ const { TabPane } = Tabs;
 
 class PlayerPage extends Component {
     state = {
-        isLeader: false
+        isLeader: false,
+        ID: this.props.match.params.id,
+        member: this.props.member
     }
 
     componentDidMount() {
         console.log('ID:', this.props.match.params.id);
         this.props.dispatch({ type: 'FETCH_TEAM', payload: this.props.match.params.id })
         this.props.dispatch({ type: 'FETCH_MEMBERS', payload: this.props.match.params.id })
-
     }
 
-    componentDidUpdate(){
-        for (const index of this.props.member) {
-            if (this.props.user[0]){
-                if (index.user_id === this.props.user[0].id) {
-                    if (this.state.isLeader !== index.is_leader){
-                        this.setState({
-                            isLeader: index.is_leader
-                        })
+    componentDidUpdate() {
+        console.log('UPDATE');
+        if (this.state.ID !== this.props.match.params.id) {
+            if (this.state.isLeader) {
+                this.setState({ isLeader: false })
+            }
+            this.setState({ ID: this.props.match.params.id })
+            this.props.dispatch({ type: 'FETCH_TEAM', payload: this.props.match.params.id })
+            this.props.dispatch({ type: 'FETCH_MEMBERS', payload: this.props.match.params.id })
+        }
+        if (this.props.user[0]){
+            if (this.state.member !== this.props.member) {
+                for (const index of this.props.member) {
+                    console.log('index:', index.is_leader);
+
+                    if (index.is_leader && index.user_id === this.props.user[0].id) {
+                        console.log('LEADER');
+                        this.setState({ isLeader: true })
                     }
                 }
+                this.setState({ member: this.props.member })
             }
         }
+        
     }
 
     render() {
@@ -52,7 +65,9 @@ class PlayerPage extends Component {
                                     </h1>
                                 </span>
                                 }
-                                
+                                <h3 id="welcome" className="team-name">
+                                    {this.props.team[0].title}
+                                </h3>
                                 <h3 id="welcome" className="team-name">
                                     {this.props.team[0].tag}
                                 </h3>
@@ -121,10 +136,11 @@ class PlayerPage extends Component {
                                         STATS
                                         {JSON.stringify(this.props.member)}
 
-
                                         {JSON.stringify(this.props.team)}
 
                                         {JSON.stringify(this.props.user)}
+
+                                        {JSON.stringify(this.state)}
                                     </TabPane>
                                     {this.state.isLeader &&
                                         <TabPane tab="Manage" key="3">
@@ -137,10 +153,8 @@ class PlayerPage extends Component {
                             <Col span={2}></Col>
                         </Row>
                     </> :
-                    <p>User not found</p>
+                    <p>Team not found</p>
                 }
-                
-                
             </div>
         );
     }

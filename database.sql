@@ -24,7 +24,8 @@ CREATE TABLE "teams"
 CREATE TABLE "gamemodes"
 (
     "id" SERIAL PRIMARY KEY,
-    "title" VARCHAR(255) NOT NULL
+    "title" VARCHAR(255) NOT NULL,
+    "players" INTEGER NOT NULL,
 );
 
 CREATE TABLE "team_members"
@@ -33,7 +34,7 @@ CREATE TABLE "team_members"
     "user_id" BIGINT NOT NULL,
     "team_id" INTEGER NOT NULL,
     "is_leader" BOOLEAN NOT NULL DEFAULT 'false',
-    "join_date" DATE NOT NULL DEFAULT CURRENT_DATE,
+    "join_date" DATE NOT NULL DEFAULT 'CURRENT_DATE',
     "leave_date" DATE,
     "main" BOOLEAN NOT NULL DEFAULT 'true',
     "class" INTEGER NOT NULL,
@@ -192,14 +193,14 @@ ALTER TABLE "blu" ADD CONSTRAINT "blu_fk0" FOREIGN KEY ("log_id") REFERENCES "lo
 ALTER TABLE "teams" ADD CONSTRAINT "teams_fk0" FOREIGN KEY ("gamemode") REFERENCES "gamemodes"("id");
 
 INSERT INTO "gamemodes"
-    ("title")
-VALUES('Highlander'),
-    ('Prolander'),
-    ('Sixes'),
-    ('No Restriction 6s'),
-    ('Fours'),
-    ('Ultitrio'),
-    ('Ultiduo');
+    ("title", "players")
+VALUES('Highlander', 9),
+    ('Prolander', 7),
+    ('Sixes', 6),
+    ('No Restriction 6s', 6),
+    ('Fours', 4),
+    ('Ultitrio', 3),
+    ('Ultiduo', 2);
 
 INSERT INTO "public"."classes"
     ("class_name")
