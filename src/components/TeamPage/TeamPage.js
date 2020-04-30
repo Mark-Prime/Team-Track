@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 // CSS
 import './TeamPage.css'
 
-
 // Ant Design
 import { Row, Col, Tabs, Table, Avatar, Tag } from 'antd';
 const { TabPane } = Tabs;
@@ -80,16 +79,10 @@ class PlayerPage extends Component {
                                     <TabPane tab="Players" key="1">
                                         <Table columns={[
                                             {
-                                                title: '',
-                                                dataIndex: 'avatar',
-                                                key: 'avatar',
-                                                render: text => <Avatar className="avatar" shape="square" src={text} />
-                                            },
-                                            {
                                                 title: 'Name',
                                                 dataIndex: 'displayname',
                                                 key: 'displayname',
-                                                render: (text, record) => <a href={`/#/player/${record.user_id}`}>{text}</a>
+                                                render: (text, record) => <a href={`/#/player/${record.user_id}`}><Avatar className="avatar" shape="square" src={record.avatar} />   {text}</a>
                                             },
                                             {
                                                 title: 'Class',
@@ -117,18 +110,6 @@ class PlayerPage extends Component {
                                                         }
                                                     </span>
                                                 ),
-                                            },
-                                            {
-                                                title: 'Join Date',
-                                                dataIndex: 'join_date',
-                                                key: 'join_date',
-                                                render: text => <>{text && <>{text.split('T')[0]}</>}</>
-                                            },
-                                            {
-                                                title: 'Leave Date',
-                                                dataIndex: 'leave_date',
-                                                key: 'leave_date',
-                                                render: text => <>{text && <>{ text.split('T')[0]}</>}</>
                                             }
                                         ]} dataSource={this.props.member} />
                                     </TabPane>

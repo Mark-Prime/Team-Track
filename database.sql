@@ -34,8 +34,6 @@ CREATE TABLE "team_members"
     "user_id" BIGINT NOT NULL,
     "team_id" INTEGER NOT NULL,
     "is_leader" BOOLEAN NOT NULL DEFAULT 'false',
-    "join_date" DATE NOT NULL DEFAULT 'CURRENT_DATE',
-    "leave_date" DATE,
     "main" BOOLEAN NOT NULL DEFAULT 'true',
     "class" INTEGER NOT NULL,
     CONSTRAINT "team_members_pk" PRIMARY KEY ("id")
@@ -222,7 +220,8 @@ VALUES
     ('BRB, HAVE TO GO TO A WEDDING', 3, TRUE, 'swordfish', 'BRB'),
     ('RGL Staff', 2, TRUE, 'RGL.gg', 'RGL.gg'),
     ('Rocko7927 x Minion', 4, FALSE, 'rocko', 'rocko'),
-    ('J4MM3RS F4NCLU8', 7, TRUE, 'wepeat', 'j4m');
+    ('J4MM3RS F4NCLU8', 7, TRUE, 'wepeat', 'j4m'),
+    ('The Night Crew', 1, FALSE, 'suicidewatchhl', '3am');
 
 INSERT INTO "user"
     ("id", "displayname", "steamid3", "avatar")
@@ -234,7 +233,15 @@ VALUES
     ('76561198040047972', 'JordaN', '[U:1:79782244]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/88/88920fe05fe37e9c0dcfae8ff84dabd04ad408bc_full.jpg'),
     ('76561198085943550', 'R3P3AT', '[U:1:125677822]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/dc/dcac27d887abd3e8049a7416601cf7b5f0f26ede_full.jpg'),
     ('76561198213561811', 'Fluffy', '[U:1:253296083]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/b1/b16e68d5b3e876195eaec5e086c8ff8b0889dc73_full.jpg'),
-    ('6561198017684173', 'WiLLmaTiC', '[U:1:57418445]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fa/fa44cec79e8adb1f470423881e0607535c7423d0_full.jpg%27');
+    ('76561198017684173', 'WiLLmaTiC', '[U:1:57418445]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fa/fa44cec79e8adb1f470423881e0607535c7423d0_full.jpg%27'),
+    ('76561198043913557', 'Shim', '[U:1:83647829]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/dd/dd6593c60fb094df57d25c155b5bbc294b977a3e_full.jpg'),
+    ('76561198073158508', 'wxy', '[U:1:112892780]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/de/dedec21c91de6bf4d2158991ef615506ac8aee9c_full.jpg'),
+    ('76561198019252798', 'Bliztank', '[U:1:58987070]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/0e/0ed8a322fc8e0d538a1530756893c37055a3f4b3_full.jpg'),
+    ('76561198072250723', 'DZCreeper', '[U:1:111984995]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/ec/eccb11d8e0f3381033ef8c4835e75d4302cdf7b4_full.jpg'),
+    ('76561198044273783', 'Kamil', '[U:1:84008055]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/53/536b5ce051e52772fd128c22204806742470d8db_full.jpg'),
+    ('76561198079437901', 'Lasky', '[U:1:119172173]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/a0/a0930073efa671e3d9f0066aa23b5906add1b8c7_full.jpg'),
+    ('76561198118894124', 'Skorp', '[U:1:158628396]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/0c/0ca9687722ca2b719b27f6ecfe093836fcf960d1_full.jpg'),
+    ('76561197963673725', 'Sylon[DMS]', '[U:1:3407997]', 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/e7/e73826cbc882c1ac5780966efaac42cd0c1bbdad_full.jpg');
 
 INSERT INTO "team_members"
     ("user_id", "team_id", "is_leader", "main", "class")

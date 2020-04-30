@@ -51,16 +51,10 @@ class HomePage extends Component {
                 <Col span={10}>
                     <Table columns={[
                         {
-                            title: '',
-                            dataIndex: 'avatar',
-                            key: 'avatar',
-                            render: text => <Avatar className="avatar" shape="square" src={text} />
-                        },
-                        {
                             title: 'Name',
                             dataIndex: 'displayname',
                             key: 'displayname',
-                            render: (text, record) => <a href={`/#/player/${record.id}`}>{text}</a>
+                            render: (text, record) => <a href={`/#/player/${record.id}`}><Avatar className="avatar" shape="square" src={record.avatar} />   {text}</a>
                         },
                         {
                             title: 'SteamID64',

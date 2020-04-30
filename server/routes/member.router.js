@@ -7,7 +7,7 @@ const router = express.Router();
  */
 router.get('/:id', (req, res) => {
     if (req.user) {
-        let queryText = `SELECT "user_id", "displayname", "steamid3", "avatar", "is_leader", "join_date", "leave_date", "main", "class_name" FROM "team_members" 
+        let queryText = `SELECT "user_id", "displayname", "steamid3", "avatar", "is_leader", "main", "class_name" FROM "team_members" 
                             JOIN "user" ON "user_id" = "user"."id"
                             JOIN "classes" ON "class" = "classes"."id"
                             WHERE "team_id" = $1
