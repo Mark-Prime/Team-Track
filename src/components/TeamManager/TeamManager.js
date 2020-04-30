@@ -12,6 +12,10 @@ class TeamManager extends Component {
     }
 
     componentDidMount() {
+        this.setMemberInformation()
+    }
+
+    setMemberInformation = () => {
         for (const index of this.props.member) {
             this.setState({
                 [index.user_id]: {
@@ -38,8 +42,9 @@ class TeamManager extends Component {
         })
     }
 
-    saveName= () => {
-        
+    saveName = () => {
+        this.props.dispatch({ type: 'SAVE_TEAM_NAME', payload: { newName: this.state.newName, id: this.props.team[0].id } })
+        this.props.refreshInformation()
     }
 
     promoteMember = (id) => {

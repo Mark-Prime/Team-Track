@@ -36,4 +36,19 @@ router.post('/', (req, res) => {
 
 });
 
+/**
+ * PUT route
+ */
+router.put('/name', (req, res) => {
+    let queryText = 'UPDATE "teams" SET "name" = $1 WHERE "id" = $2';
+    pool.query(queryText,[req.body.newName, req.body.id]).then(result => {
+        res.sendStatus(200);
+    })
+    .catch(error => {
+        console.log('error updating "teams"', error);
+        res.sendStatus(500);
+    });
+
+});
+
 module.exports = router;

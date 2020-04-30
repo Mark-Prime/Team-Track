@@ -23,9 +23,21 @@ function* fetchTeams(action) {
   }
 }
 
-function* userSaga() {
-  yield takeLatest('FETCH_TEAM', fetchTeam);
-  yield takeLatest('FETCH_TEAMS', fetchTeams);
+// worker Saga: will be fired on "FETCH_PLAYERS" actions
+function* saveTeamName(action){
+  console.log('in saveTeamName');
+  try {
+    yield axios.put(`/team/name`, action.payload)
+    
+  } catch (error) {
+    console.log('Error in put from /team/name', error);
+  }
 }
 
-export default userSaga;
+function* teamSaga() {
+  yield takeLatest('FETCH_TEAM', fetchTeam);
+  yield takeLatest('FETCH_TEAMS', fetchTeams);
+  yield takeLatest('SAVE_TEAM_NAME', saveTeamName);
+}
+
+export default teamSaga;

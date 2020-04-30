@@ -20,6 +20,10 @@ class PlayerPage extends Component {
 
     componentDidMount() {
         console.log('ID:', this.props.match.params.id);
+        this.refreshInformation()
+    }
+
+    refreshInformation = () => {
         this.props.dispatch({ type: 'FETCH_TEAM', payload: this.props.match.params.id })
         this.props.dispatch({ type: 'FETCH_MEMBERS', payload: this.props.match.params.id })
     }
@@ -31,8 +35,7 @@ class PlayerPage extends Component {
                 this.setState({ isLeader: false })
             }
             this.setState({ ID: this.props.match.params.id })
-            this.props.dispatch({ type: 'FETCH_TEAM', payload: this.props.match.params.id })
-            this.props.dispatch({ type: 'FETCH_MEMBERS', payload: this.props.match.params.id })
+            this.refreshInformation()
         }
         if (this.props.user[0]){
             if (this.state.member !== this.props.member) {
@@ -128,7 +131,7 @@ class PlayerPage extends Component {
                                     </TabPane>
                                     {this.state.isLeader &&
                                         <TabPane tab="Manage" key="3">
-                                            <TeamManager />
+                                            <TeamManager refreshInformation={this.refreshInformation}/>
                                         </TabPane>
                                     }
                                     
