@@ -37,10 +37,26 @@ router.get('/user/:id', (req, res) => {
 });
 
 /**
+ * PUT route
+ */
+router.put('/class', (req, res) => {
+    let queryText = 'UPDATE "team_members" SET "class" = $1 WHERE "user_id" = $2 AND "team_id" = $3';
+    pool.query(queryText,[req.body.value, req.body.id, req.body.target]).then(result => {
+        res.sendStatus(200);
+    })
+    .catch(error => {
+        console.log('error updating "members"', error);
+        res.sendStatus(500);
+    });
+});
+
+/**
  * POST route
  */
 router.post('/', (req, res) => {
 
 });
+
+
 
 module.exports = router;

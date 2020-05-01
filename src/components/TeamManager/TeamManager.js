@@ -40,11 +40,13 @@ class TeamManager extends Component {
                 [target]: value
             }
         })
+        this.props.dispatch({ type: 'SET_MEMBER_CLASS', payload: { value, id, target: this.props.team[0].id } });
+        this.props.refreshInformation();
     }
 
     saveName = () => {
-        this.props.dispatch({ type: 'SAVE_TEAM_NAME', payload: { newName: this.state.newName, id: this.props.team[0].id } })
-        this.props.refreshInformation()
+        this.props.dispatch({ type: 'SAVE_TEAM_NAME', payload: { newName: this.state.newName, id: this.props.team[0].id } });
+        this.props.refreshInformation();
     }
 
     promoteMember = (id) => {
@@ -74,19 +76,32 @@ class TeamManager extends Component {
                             },
                             {
                                 title: 'Class',
-                                dataIndex: 'class_name',
-                                key: 'class_name'
+                                dataIndex: 'class',
+                                key: 'class',
+                                render: (text, record) => <>
+                                        <Select defaultValue={text} dropdownMatchSelectWidth={false} onChange={(value) => this.changeMemberState(value, 'class', record.user_id)}>
+                                            <Option value={1}>Scout</Option>
+                                            <Option value={2}>Soldier</Option>
+                                            <Option value={3}>Pyro</Option>
+                                            <Option value={4}>Demoman</Option>
+                                            <Option value={5}>Heavy</Option>
+                                            <Option value={6}>Engineer</Option>
+                                            <Option value={7}>Medic</Option>
+                                            <Option value={8}>Sniper</Option>
+                                            <Option value={9}>Spy</Option>
+                                        </Select>
+                                    </>
                             },
                             {
                                 title: 'Role',
                                 dataIndex: 'main',
                                 key: 'main',
                                 render: (text, record) => <>
-                                                    <Select defaultValue={text} onChange={(value) => this.changeMemberState(value, 'main', record.user_id)}>
-                                                        <Option value={true}>Main</Option>
-                                                        <Option value={false}>Sub</Option>
-                                                    </Select>
-                                                </>
+                                        <Select defaultValue={text} onChange={(value) => this.changeMemberState(value, 'main', record.user_id)}>
+                                            <Option value={true}>Main</Option>
+                                            <Option value={false}>Sub</Option>
+                                        </Select>
+                                    </>
                             },
                             {
                                 title: '',

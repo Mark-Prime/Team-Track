@@ -22,9 +22,21 @@ function* fetchUserTeams(action) {
   }
 }
 
+function* setMemberClass(action){
+  console.log('in setMemberClass');
+  try {
+    yield axios.put(`/member/class`, action.payload)
+    
+
+  } catch (error) {
+    console.log('Error in put from /member/class', error);
+  }
+}
+
 function* userSaga() {
   yield takeLatest('FETCH_MEMBERS', fetchMembers);
   yield takeLatest('FETCH_USER_TEAMS', fetchUserTeams);
+  yield takeLatest('SET_MEMBER_CLASS', setMemberClass);
 }
 
 export default userSaga;
