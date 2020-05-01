@@ -40,7 +40,11 @@ class TeamManager extends Component {
                 [target]: value
             }
         })
-        this.props.dispatch({ type: 'SET_MEMBER_CLASS', payload: { value, id, target: this.props.team[0].id } });
+        if (target === 'class') {
+            this.props.dispatch({ type: 'SET_MEMBER_CLASS', payload: { value, id, target: this.props.team[0].id } });
+        } else if (target === 'main') {
+            this.props.dispatch({ type: 'SET_MEMBER_MAIN', payload: { value, id, target: this.props.team[0].id } });
+        }
     }
 
     saveName = () => {
@@ -151,7 +155,6 @@ class TeamManager extends Component {
                         ]} dataSource={this.props.member} />
                     </Col>
                 </Row>
-                {JSON.stringify(this.state)}
             </>
          );
     }

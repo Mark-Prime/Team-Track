@@ -51,10 +51,19 @@ router.put('/class', (req, res) => {
 });
 
 router.put('/promote', (req, res) => {
-    console.log('req.body', req.body);
-    
     let queryText = 'UPDATE "team_members" SET "is_leader" = true WHERE "user_id" = $1 AND "team_id" = $2';
     pool.query(queryText, [req.body.id, req.body.team]).then(result => {
+        res.sendStatus(200);
+    })
+        .catch(error => {
+            console.log('error updating "members"', error);
+            res.sendStatus(500);
+        });
+});
+
+router.put('/main', (req, res) => {
+    let queryText = 'UPDATE "team_members" SET "main" = $1 WHERE "user_id" = $2 AND "team_id" = $3';
+    pool.query(queryText, [req.body.value, req.body.id, req.body.target]).then(result => {
         res.sendStatus(200);
     })
         .catch(error => {

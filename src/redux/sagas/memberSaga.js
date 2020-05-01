@@ -62,10 +62,23 @@ function* removeMember(action){
   }
 }
 
+function* setMemberMain(action){
+  console.log('in setMemberMain');
+  try {
+    yield axios.put(`/member/main`, action.payload)
+    
+    yield put({ type: 'FETCH_TEAM', payload: action.payload.target })
+    yield put({ type: 'FETCH_MEMBERS', payload: action.payload.target })
+  } catch (error) {
+    console.log('Error in put from /member/main', error);
+  }
+}
+
 function* userSaga() {
   yield takeLatest('FETCH_MEMBERS', fetchMembers);
   yield takeLatest('FETCH_USER_TEAMS', fetchUserTeams);
   yield takeLatest('SET_MEMBER_CLASS', setMemberClass);
+  yield takeLatest('SET_MEMBER_MAIN', setMemberMain);
   yield takeLatest('PROMOTE_TO_LEADER', promoteMember);
   yield takeLatest('REMOVE_MEMBER', removeMember);
 }
