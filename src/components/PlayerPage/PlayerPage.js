@@ -6,7 +6,7 @@ import './PlayerPage.css'
 
 
 // Ant Design
-import { Row, Col, Avatar, Menu, Dropdown, Table, Tabs } from 'antd';
+import { Row, Col, Avatar, Menu, Dropdown, Table, Tabs, Tag, Statistic } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 const { TabPane } = Tabs;
 
@@ -20,6 +20,7 @@ class PlayerPage extends Component {
             this.setState({ id: this.props.match.params.id })
             this.props.dispatch({ type: 'FETCH_PLAYER', payload: this.props.match.params.id })
             this.props.dispatch({ type: 'FETCH_USER_TEAMS', payload: this.props.match.params.id })
+            this.props.dispatch({ type: 'FETCH_PLAYER_STATS', payload: this.props.match.params.id })
         }
     }
 
@@ -27,6 +28,7 @@ class PlayerPage extends Component {
         console.log('ID:', this.props.match.params.id);
         this.props.dispatch({ type: 'FETCH_PLAYER', payload: this.props.match.params.id })
         this.props.dispatch({ type: 'FETCH_USER_TEAMS', payload: this.props.match.params.id })
+        this.props.dispatch({ type: 'FETCH_PLAYER_STATS', payload: this.props.match.params.id })
         console.log('componentDidMount');
         
     }
@@ -43,6 +45,16 @@ class PlayerPage extends Component {
                                 <h1 id="welcome">
                                     {this.props.player[0].displayname}
                                 </h1>
+                                {this.props.stats.leader_mode &&
+                                    <Tag color={"orange"} key={`LEADER`}>
+                                        TEAM LEADER
+                                    </Tag>
+                                }
+                                {this.props.stats.main_mode &&
+                                    <Tag color={"blue"} key={`LEADER`}>
+                                        MAIN PLAYER
+                                    </Tag>
+                                }
                                 <p>Player ID: {this.props.player[0].id}</p>
 
                                 <Dropdown overlay={<Menu>
@@ -115,13 +127,41 @@ class PlayerPage extends Component {
                                             title: 'Gamemode',
                                             dataIndex: 'title',
                                             key: 'title'
+                                        },
+                                        {
+                                            title: 'Class',
+                                            dataIndex: 'class_name',
+                                            key: 'class_name'
+                                        },
+                                        {
+                                            title: '',
+                                            key: 'is_leader',
+                                            dataIndex: 'is_leader',
+                                            render: (leader, record) => (
+                                                <span>
+                                                    {leader &&
+                                                        <Tag color={"orange"} key={`${record.user_id}_LEADER`}>
+                                                            LEADER
+                                                        </Tag>
+                                                    }
+                                                    {record.main ?
+                                                        <Tag color={"blue"} key={`${record.user_id}_MAIN`}>
+                                                            MAIN
+                                                        </Tag> :
+                                                        <Tag color={"cyan"} key={`${record.user_id}_SUB`}>
+                                                            SUB
+                                                        </Tag>
+                                                    }
+                                                </span>
+                                            ),
                                         }
                                     ]} dataSource={this.props.team} />
                                 }
                             </TabPane>
                             <TabPane tab="Stats" key="2">
-                                STATS
-                                {/* Soon to be graphs */}
+                                <Statistic title="Favorite Class" value={this.props.stats.favorite_class} />
+                                <Statistic title="Teams" value={this.props.stats.team_count} />
+                                {JSON.stringify(this.props.stats)}
                             </TabPane>
                         </Tabs>
                     </Col>
@@ -133,6 +173,6 @@ class PlayerPage extends Component {
     }
 }
 
-const mapStateToProps = ({ player, team }) => ({ player, team });
+const mapStateToProps = ({ player, team, stats }) => ({ player, team, stats });
 
 export default connect(mapStateToProps)(PlayerPage);

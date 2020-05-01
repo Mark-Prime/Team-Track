@@ -26,7 +26,7 @@ router.get('/user/:id', (req, res) => {
                         JOIN "classes" ON "class" = "classes"."id"
                         JOIN "gamemodes" ON "gamemode" = "gamemodes"."id"
                         WHERE "user_id" = $1
-                        ORDER BY "gamemode", "is_leader" DESC, "main" DESC, "class";`;
+                        ORDER BY "active" DESC, "is_leader" DESC, "gamemode", "main" DESC, "class";`;
     pool.query(queryText, [req.params.id]).then(result => {
         res.send(result.rows);
     })
