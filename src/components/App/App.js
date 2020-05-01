@@ -12,7 +12,6 @@ import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
 
 import AboutPage from '../AboutPage/AboutPage';
-import UserPage from '../UserPage/UserPage';
 import PlayerPage from '../PlayerPage/PlayerPage';
 import HomePage from '../HomePage/HomePage';
 import TeamPage from '../TeamPage/TeamPage'
@@ -54,11 +53,6 @@ class App extends Component {
             <Route
               path="/team/:id"
               component={TeamPage}
-            />
-            <Route
-              exact
-              path="/user"
-              component={UserPage}
             />
             {/* If none of the other routes matched, we will show a 404. */}
             <Route render={() => <h1>404</h1>} />

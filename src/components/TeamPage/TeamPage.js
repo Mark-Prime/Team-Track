@@ -8,12 +8,13 @@ import './TeamPage.css'
 import TeamManager from '../TeamManager/TeamManager'
 
 // Ant Design
-import { Row, Col, Tabs, Table, Avatar, Tag } from 'antd';
+import { Row, Col, Tabs, Table, Avatar, Tag, Button, Popconfirm } from 'antd';
 const { TabPane } = Tabs;
 
 class PlayerPage extends Component {
     state = {
         isLeader: false,
+        isMember: false,
         ID: this.props.match.params.id,
         member: this.props.member
     }
@@ -47,15 +48,29 @@ class PlayerPage extends Component {
             if (this.state.member !== this.props.member) {
                 for (const index of this.props.member) {
                     console.log('index:', index.is_leader);
-
-                    if (index.is_leader && index.user_id === this.props.user[0].id) {
-                        console.log('LEADER');
-                        this.setState({ isLeader: true })
+                    if (index.user_id === this.props.user[0].id) {
+                        if (index.is_leader) {
+                            console.log('LEADER');
+                            this.setState({ isLeader: true })
+                        }
+                        this.setState({ isMember: true })
                     }
                 }
                 this.setState({ member: this.props.member })
             }
         }
+    }
+
+    leaveTeam = () => {
+        this.props.dispatch({ type: 'REMOVE_MEMBER', payload: { id: this.props.user[0].id, team: this.props.team[0].trueid } });
+        this.setState({
+            isLeader: false,
+            isMember: false
+        })
+    }
+
+    joinTeam = () => {
+        this.props.dispatch({ type: 'PROMOTE_TO_LEADER', payload: { id: this.props.user[0].id, team: this.props.team[0].trueid } });
     }
 
     render() {
@@ -123,6 +138,26 @@ class PlayerPage extends Component {
                                                 ),
                                             }
                                         ]} dataSource={this.props.member} />
+                                        {this.state.isMember ? 
+                                            <Popconfirm
+                                                title={`Leave ${this.props.team[0].name}?`}
+                                                onConfirm={this.leaveTeam}
+                                                onCancel={console.log('nope')}
+                                                okText="Yes, Leave"
+                                                cancelText="No"
+                                            >
+                                                <Button type="primary" danger>Leave Team</Button>
+                                            </Popconfirm> :
+                                             <>{ this.props.team[0].active &&
+                                                <Popconfirm
+                                                    title={`This will replace any other ${this.props.team[0].title} teams you are on.`}
+                                                    onConfirm={this.joinTeam}
+                                                    onCancel={console.log('nope')}
+                                                    okText="Yes, Join"
+                                                    cancelText="No"
+                                                >
+                                                    <Button type="primary">Join Team</Button>
+                                                </Popconfirm>}</>}
                                     </TabPane>
                                     <TabPane tab="Stats" key="2">
                                         STATS

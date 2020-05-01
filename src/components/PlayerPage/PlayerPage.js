@@ -24,10 +24,10 @@ class PlayerPage extends Component {
             <div>
                 <Row>
                     <Col span={1}></Col>
-                    <Col span={9} className="player-info">
+                    <Col span={4} className="player-info">
                         {this.props.player[0] ?
                             <>
-                                <Avatar size={128} src={this.props.player[0].avatar} />
+                                <Avatar shape="square" size={128} src={this.props.player[0].avatar} />
                                 <h1 id="welcome">
                                     {this.props.player[0].displayname}
                                 </h1>
@@ -74,34 +74,36 @@ class PlayerPage extends Component {
                                         External Links <DownOutlined />
                                     </h4>
                                 </Dropdown>
-                                <Table columns={[
-                                    {
-                                        title: 'Name',
-                                        dataIndex: 'name',
-                                        key: 'name',
-                                        render: (text, record) => <>
-                                            {record.active ? 
-                                                <a href={`/#/team/${record.team_id}`}>{text}</a> :
-                                                <span className="strike">
-                                                    <a href={`/#/team/${record.team_id}`}>{text}</a>
-                                                </span>
-                                            }
-                                            
-                                        </>
-                                    },
-                                    {
-                                        title: 'Gamemode',
-                                        dataIndex: 'title',
-                                        key: 'title'
-                                    }
-                                ]} dataSource={this.props.team} />
                             </> :
 
                             <p>User not found</p>
                         }
                     </Col>
                     <Col span={1}></Col>
-                    <Col span={12}>
+                    <Col span={17}>
+                        {this.props.player[0] &&
+                            <Table columns={[
+                                {
+                                    title: 'Name',
+                                    dataIndex: 'name',
+                                    key: 'name',
+                                    render: (text, record) => <>
+                                        {record.active ?
+                                            <a href={`/#/team/${record.team_id}`}>{text}</a> :
+                                            <span className="strike">
+                                                <a href={`/#/team/${record.team_id}`}>{text}</a>
+                                            </span>
+                                        }
+
+                                    </>
+                                },
+                                {
+                                    title: 'Gamemode',
+                                    dataIndex: 'title',
+                                    key: 'title'
+                                }
+                            ]} dataSource={this.props.team} />
+                        }
                         {/* Soon to be graphs */}
                     </Col>
                     <Col span={1}></Col>

@@ -19,7 +19,7 @@ router.get('/all', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-    let queryText = 'SELECT * FROM "teams" JOIN "gamemodes" ON "gamemode" = "gamemodes"."id" WHERE "teams"."id" = $1;';
+    let queryText = 'SELECT "teams"."id" as "trueid", "gamemodes"."id", "name", "active", "title" FROM "teams" JOIN "gamemodes" ON "gamemode" = "gamemodes"."id" WHERE "teams"."id" = $1;';
     pool.query(queryText, [req.params.id]).then(result => {
         res.send(result.rows);
     })

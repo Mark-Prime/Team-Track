@@ -10,7 +10,7 @@ router.get('/:id', (req, res) => {
                         JOIN "user" ON "user_id" = "user"."id"
                         JOIN "classes" ON "class" = "classes"."id"
                         WHERE "team_id" = $1
-                        ORDER BY is_leader DESC, main DESC, "class";`;
+                        ORDER BY is_leader DESC, "team_members"."id";`;
     pool.query(queryText, [req.params.id]).then(result => {
         res.send(result.rows);
     })

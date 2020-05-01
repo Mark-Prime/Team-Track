@@ -46,8 +46,20 @@ function* fetchPlayers(action) {
   }
 }
 
+function* refreshUser(){
+  console.log('in refreshUser');
+  try {
+    yield axios.get(`/user/refresh`)
+    
+    yield put({ type: 'FETCH_USER' });
+  } catch (error) {
+    console.log('Error in get from /user/refresh', error);
+  }
+}
+
 function* userSaga() {
   yield takeLatest('FETCH_USER', fetchUser);
+  yield takeLatest('REFRESH_USER', refreshUser);
   yield takeLatest('FETCH_PLAYER', fetchPlayer);
   yield takeLatest('FETCH_PLAYERS', fetchPlayers);
 }

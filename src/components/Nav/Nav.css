@@ -35,3 +35,8 @@
 .nav-right {
   float: right;
 }
+
+.dropdown-option {
+  text-align: left;
+  color: #1890ff;
+}
