@@ -6,8 +6,9 @@ import './PlayerPage.css'
 
 
 // Ant Design
-import { Row, Col, Avatar, Menu, Dropdown, Table } from 'antd';
+import { Row, Col, Avatar, Menu, Dropdown, Table, Tabs } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
+const { TabPane } = Tabs;
 
 class PlayerPage extends Component {
     state = {
@@ -92,30 +93,37 @@ class PlayerPage extends Component {
                     </Col>
                     <Col span={1}></Col>
                     <Col span={17}>
-                        {this.props.player[0] &&
-                            <Table columns={[
-                                {
-                                    title: 'Name',
-                                    dataIndex: 'name',
-                                    key: 'name',
-                                    render: (text, record) => <>
-                                        {record.active ?
-                                            <a href={`/#/team/${record.team_id}`}>{text}</a> :
-                                            <span className="strike">
-                                                <a href={`/#/team/${record.team_id}`}>{text}</a>
-                                            </span>
-                                        }
+                        <Tabs defaultActiveKey="1" type="card" size="large">
+                            <TabPane tab="Teams" key="1">
+                                {this.props.player[0] &&
+                                    <Table columns={[
+                                        {
+                                            title: 'Name',
+                                            dataIndex: 'name',
+                                            key: 'name',
+                                            render: (text, record) => <>
+                                                {record.active ?
+                                                    <a href={`/#/team/${record.team_id}`}>{text}</a> :
+                                                    <span className="strike">
+                                                        <a href={`/#/team/${record.team_id}`}>{text}</a>
+                                                    </span>
+                                                }
 
-                                    </>
-                                },
-                                {
-                                    title: 'Gamemode',
-                                    dataIndex: 'title',
-                                    key: 'title'
+                                            </>
+                                        },
+                                        {
+                                            title: 'Gamemode',
+                                            dataIndex: 'title',
+                                            key: 'title'
+                                        }
+                                    ]} dataSource={this.props.team} />
                                 }
-                            ]} dataSource={this.props.team} />
-                        }
-                        {/* Soon to be graphs */}
+                            </TabPane>
+                            <TabPane tab="Stats" key="2">
+                                STATS
+                                {/* Soon to be graphs */}
+                            </TabPane>
+                        </Tabs>
                     </Col>
                     <Col span={1}></Col>
                 </Row>
