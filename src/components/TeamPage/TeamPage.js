@@ -23,6 +23,12 @@ class PlayerPage extends Component {
         this.refreshInformation()
     }
 
+    resetLeadership = () => {
+        this.setState({
+            isLeader: false
+        })
+    }
+
     refreshInformation = () => {
         this.props.dispatch({ type: 'FETCH_TEAM', payload: this.props.match.params.id })
         this.props.dispatch({ type: 'FETCH_MEMBERS', payload: this.props.match.params.id })
@@ -50,7 +56,6 @@ class PlayerPage extends Component {
                 this.setState({ member: this.props.member })
             }
         }
-        
     }
 
     render() {
@@ -131,7 +136,7 @@ class PlayerPage extends Component {
                                     </TabPane>
                                     {this.state.isLeader &&
                                         <TabPane tab="Manage" key="3">
-                                            <TeamManager refreshInformation={this.refreshInformation}/>
+                                            <TeamManager resetLeadership={this.resetLeadership}/>
                                         </TabPane>
                                     }
                                     

@@ -41,20 +41,21 @@ class TeamManager extends Component {
             }
         })
         this.props.dispatch({ type: 'SET_MEMBER_CLASS', payload: { value, id, target: this.props.team[0].id } });
-        this.props.refreshInformation();
     }
 
     saveName = () => {
         this.props.dispatch({ type: 'SAVE_TEAM_NAME', payload: { newName: this.state.newName, id: this.props.team[0].id } });
-        this.props.refreshInformation();
     }
 
-    promoteMember = (id) => {
-        
+    promoteMember = (id, is_user) => {
+        this.props.dispatch({ type: 'PROMOTE_TO_LEADER', payload: { id, team: this.props.team[0].id } });
+        if (is_user) {
+            this.props.resetLeadership()
+        }
     }
 
     removeMember = (id) => {
-
+        this.props.dispatch({ type: 'REMOVE_MEMBER', payload: { id, team: this.props.team[0].id } });
     }
 
     render() { 
@@ -127,7 +128,7 @@ class TeamManager extends Component {
                                     if (record.user_id === this.props.user[0].id){
                                         return (<Popconfirm
                                                 title={`Leave ${this.props.team[0].name}?`}
-                                                    onConfirm={() => this.removeMember(record.user_id)}
+                                                    onConfirm={() => this.removeMember(record.user_id, true)}
                                                     onCancel={console.log('nope')}
                                                     okText="Yes, Leave"
                                                     cancelText="No"
