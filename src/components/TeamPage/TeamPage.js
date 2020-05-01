@@ -141,26 +141,34 @@ class PlayerPage extends Component {
                                                 ),
                                             }
                                         ]} dataSource={this.props.member} />
-                                        {this.state.isMember ? 
-                                            <Popconfirm
-                                                title={`Leave ${this.props.team[0].name}?`}
-                                                onConfirm={this.leaveTeam}
-                                                onCancel={console.log('nope')}
-                                                okText="Yes, Leave"
-                                                cancelText="No"
-                                            >
-                                                <Button type="primary" danger>Leave Team</Button>
-                                            </Popconfirm> :
-                                             <>{ this.props.team[0].active &&
-                                                <Popconfirm
-                                                    title={`This will replace any other ${this.props.team[0].title} teams you are on.`}
-                                                    onConfirm={this.joinTeam}
-                                                    onCancel={console.log('nope')}
-                                                    okText="Yes, Join"
-                                                    cancelText="No"
-                                                >
-                                                    <Button type="primary">Join Team</Button>
-                                                </Popconfirm>}</>}
+                                        {this.props.user[0] && 
+                                            <>
+                                                {this.state.isMember ? 
+                                                    <Popconfirm
+                                                        title={`Leave ${this.props.team[0].name}?`}
+                                                        onConfirm={this.leaveTeam}
+                                                        onCancel={console.log('nope')}
+                                                        okText="Yes, Leave"
+                                                        cancelText="No"
+                                                    >
+                                                        <Button type="primary" danger>Leave Team</Button>
+                                                    </Popconfirm> :
+                                                    <>
+                                                        { this.props.team[0].active &&
+                                                            <Popconfirm
+                                                                title={`This will replace any other ${this.props.team[0].title} teams you are on.`}
+                                                                onConfirm={this.joinTeam}
+                                                                onCancel={console.log('nope')}
+                                                                okText="Yes, Join"
+                                                                cancelText="No"
+                                                            >
+                                                                <Button type="primary">Join Team</Button>
+                                                            </Popconfirm>
+                                                        }
+                                                    </>
+                                                }
+                                            </>
+                                        }
                                     </TabPane>
                                     <TabPane tab="Stats" key="2">
                                         STATS

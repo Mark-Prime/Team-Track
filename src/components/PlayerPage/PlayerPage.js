@@ -10,6 +10,17 @@ import { Row, Col, Avatar, Menu, Dropdown, Table } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
 class PlayerPage extends Component {
+    state = {
+        id: this.props.match.params.id
+    }
+
+    componentDidUpdate() {
+        if (this.props.match.params.id !== this.state.id){
+            this.setState({ id: this.props.match.params.id })
+            this.props.dispatch({ type: 'FETCH_PLAYER', payload: this.props.match.params.id })
+            this.props.dispatch({ type: 'FETCH_USER_TEAMS', payload: this.props.match.params.id })
+        }
+    }
 
     componentDidMount() {
         console.log('ID:', this.props.match.params.id);
