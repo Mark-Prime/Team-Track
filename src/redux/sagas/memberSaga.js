@@ -74,6 +74,19 @@ function* setMemberMain(action){
   }
 }
 
+function* joinTeam(action){
+  console.log('in joinTeam');
+  try {
+    yield axios.post(`/member`, action.payload)
+
+    yield put({ type: 'FETCH_TEAM', payload: action.payload.team })
+    yield put({ type: 'FETCH_MEMBERS', payload: action.payload.team })
+    
+  } catch (error) {
+    console.log('Error in post from /member/', error);
+  }
+}
+
 function* userSaga() {
   yield takeLatest('FETCH_MEMBERS', fetchMembers);
   yield takeLatest('FETCH_USER_TEAMS', fetchUserTeams);
@@ -81,6 +94,7 @@ function* userSaga() {
   yield takeLatest('SET_MEMBER_MAIN', setMemberMain);
   yield takeLatest('PROMOTE_TO_LEADER', promoteMember);
   yield takeLatest('REMOVE_MEMBER', removeMember);
+  yield takeLatest('JOIN_TEAM', joinTeam);
 }
 
 export default userSaga;

@@ -70,7 +70,10 @@ class PlayerPage extends Component {
     }
 
     joinTeam = () => {
-        this.props.dispatch({ type: 'PROMOTE_TO_LEADER', payload: { id: this.props.user[0].id, team: this.props.team[0].trueid } });
+        this.props.dispatch({ type: 'JOIN_TEAM', payload: { id: this.props.user[0].id, team: this.props.team[0].trueid } });
+        this.setState({
+            isMember: true
+        })
     }
 
     render() {

@@ -35,7 +35,7 @@ CREATE TABLE "team_members"
     "team_id" INTEGER NOT NULL,
     "is_leader" BOOLEAN NOT NULL DEFAULT 'false',
     "main" BOOLEAN NOT NULL DEFAULT 'true',
-    "class" INTEGER NOT NULL,
+    "class" INTEGER NOT NULL DEFAULT 1,
     CONSTRAINT "team_members_pk" PRIMARY KEY ("id")
 );
 

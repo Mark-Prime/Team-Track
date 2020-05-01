@@ -76,7 +76,15 @@ router.put('/main', (req, res) => {
  * POST route
  */
 router.post('/', (req, res) => {
-
+    let queryText = 'INSERT INTO "team_members" ("user_id", "team_id") VALUES($1, $2);';
+    pool.query(queryText,[req.body.id, req.body.team]).then(result => {
+        
+        res.sendStatus(200);
+    })
+    .catch(error => {
+        console.log('error posting into "team_members"', error);
+        res.sendStatus(500);
+    });
 });
 
 /**
