@@ -6,9 +6,11 @@ import './TeamPage.css'
 
 // Components
 import TeamManager from '../TeamManager/TeamManager'
+import TeamStats from '../TeamStats/TeamStats'
+
 
 // Ant Design
-import { Row, Col, Tabs, Table, Avatar, Tag, Button, Popconfirm } from 'antd';
+import { Row, Col, Tabs, Table, Avatar, Tag, Button, Popconfirm, Divider } from 'antd';
 const { TabPane } = Tabs;
 
 class PlayerPage extends Component {
@@ -171,13 +173,9 @@ class PlayerPage extends Component {
                                         }
                                     </TabPane>
                                     <TabPane tab="Stats" key="2">
-                                        STATS
-                                        {JSON.stringify(this.props.member)}
+                                        <TeamStats />
 
-                                        {JSON.stringify(this.props.team)}
-
-                                        {JSON.stringify(this.props.user)}
-
+                                        <Divider orientation="left">state</Divider>
                                         {JSON.stringify(this.state)}
                                     </TabPane>
                                     {this.state.isLeader &&

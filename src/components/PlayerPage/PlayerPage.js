@@ -4,9 +4,12 @@ import { connect } from 'react-redux';
 // CSS
 import './PlayerPage.css'
 
+// Components
+import PlayerStats from '../PlayerStats/PlayerStats'
+
 
 // Ant Design
-import { Row, Col, Avatar, Menu, Dropdown, Table, Tabs, Tag, Statistic } from 'antd';
+import { Row, Col, Avatar, Menu, Dropdown, Table, Tabs, Tag } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 const { TabPane } = Tabs;
 
@@ -159,15 +162,7 @@ class PlayerPage extends Component {
                                 }
                             </TabPane>
                             <TabPane tab="Stats" key="2">
-                                <Row>
-                                    <Col span={3}>
-                                        <Statistic title="Favorite Class" value={this.props.stats.favorite_class} />
-                                    </Col>
-                                    <Col span={3}>
-                                        <Statistic title="Teams" value={this.props.stats.team_count} />
-                                    </Col>
-                                </Row>
-                                {JSON.stringify(this.props.stats)}
+                                <PlayerStats />
                             </TabPane>
                         </Tabs>
                     </Col>
