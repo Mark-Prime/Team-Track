@@ -9,6 +9,7 @@ router.get('/:id', (req, res) => {
     let queryText = `SELECT mode() WITHIN GROUP (ORDER BY "is_leader") AS "leader_mode", 
                             mode() WITHIN GROUP (ORDER BY "main") AS "main_mode", 
                             mode() WITHIN GROUP (ORDER BY "class_name") AS "favorite_class", 
+                            mode() WITHIN GROUP (ORDER BY "class") AS "favorite_class_id", 
                             count(*) AS "team_count"
                         FROM "team_members" 
                         JOIN "classes" ON "class" = "classes"."id"

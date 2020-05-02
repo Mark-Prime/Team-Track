@@ -51,7 +51,7 @@ class PlayerPage extends Component {
                                     </Tag>
                                 }
                                 {this.props.stats.main_mode &&
-                                    <Tag color={"blue"} key={`LEADER`}>
+                                    <Tag color={"blue"} key={`MAIN`}>
                                         MAIN PLAYER
                                     </Tag>
                                 }
@@ -159,8 +159,14 @@ class PlayerPage extends Component {
                                 }
                             </TabPane>
                             <TabPane tab="Stats" key="2">
-                                <Statistic title="Favorite Class" value={this.props.stats.favorite_class} />
-                                <Statistic title="Teams" value={this.props.stats.team_count} />
+                                <Row>
+                                    <Col span={3}>
+                                        <Statistic title="Favorite Class" value={this.props.stats.favorite_class} />
+                                    </Col>
+                                    <Col span={3}>
+                                        <Statistic title="Teams" value={this.props.stats.team_count} />
+                                    </Col>
+                                </Row>
                                 {JSON.stringify(this.props.stats)}
                             </TabPane>
                         </Tabs>
