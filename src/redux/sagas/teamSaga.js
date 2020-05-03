@@ -33,10 +33,22 @@ function* saveTeamName(action){
   }
 }
 
+function* newTeam(action){
+  console.log('in newTeam');
+  try {
+    let response = yield axios.post(`/team/`, action.payload)
+
+    window.location = `#/team/${response.data.team_id}`;
+  } catch (error) {
+    console.log('Error in post from /team/new', error);
+  }
+}
+
 function* teamSaga() {
   yield takeLatest('FETCH_TEAM', fetchTeam);
   yield takeLatest('FETCH_TEAMS', fetchTeams);
   yield takeLatest('SAVE_TEAM_NAME', saveTeamName);
+  yield takeLatest('NEW_TEAM', newTeam);
 }
 
 export default teamSaga;

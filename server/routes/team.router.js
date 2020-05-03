@@ -34,6 +34,23 @@ router.get('/:id', (req, res) => {
  */
 router.post('/', (req, res) => {
 
+    let queryText = 'INSERT INTO "teams" ("name", "tag", "gamemode") VALUES($1, $2, $3) RETURNING "id";';
+    pool.query(queryText,[req.body.name, req.body.tag, req.body.gamemode]).then(result => {
+        let request = { id: req.body.userID, team_id: result.rows[0].id }
+        let queryText = `INSERT INTO "team_members" ("user_id", "team_id", "is_leader") VALUES($1, $2, $3);`;
+        pool.query(queryText, [request.id, request.team_id, true]).then(newResult => {
+
+            res.send(request);
+        })
+            .catch(error => {
+                console.log('error posting into "team_members"', error);
+                res.sendStatus(500);
+            });
+    })
+    .catch(error => {
+        console.log('error posting into "teams"', error);
+        res.sendStatus(500);
+    });
 });
 
 /**
