@@ -24,7 +24,6 @@ class Nav extends Component {
         <div className="nav-right">
           {this.props.user[0] ?
             <>
-              <Avatar className="avatar" shape="square" size={64} src={this.props.user[0].avatar} />
               <Dropdown overlay={<Menu>
                 <Menu.Item>
                   <a href={`/#/player/${this.props.user[0].id}`}>
@@ -46,6 +45,7 @@ class Nav extends Component {
                   {this.props.user[0].displayname} <DownOutlined />
                 </a>
               </Dropdown>
+              <Avatar className="" shape="square" size={64} src={this.props.user[0].avatar} />
             </> :
             <a className="nav-link" href="http://localhost:5000/auth/steam">Log In</a>
           }

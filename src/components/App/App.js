@@ -17,9 +17,6 @@ import HomePage from '../HomePage/HomePage';
 import TeamPage from '../TeamPage/TeamPage'
 
 
-
-
-
 import './App.css';
 
 class App extends Component {

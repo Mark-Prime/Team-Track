@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 // CSS
 import './HomePage.css'
 
+// Components
+import NewTeamButton from '../NewTeamButton/NewTeamButton'
+
 
 // Ant Design
 import { Row, Col, Table, Avatar } from 'antd';
@@ -46,6 +49,8 @@ class HomePage extends Component {
                             </>
                         }
                     ]} dataSource={this.props.team} />
+                    {this.props.user[0] &&
+                        <NewTeamButton />}
                 </Col>
                 <Col span={2}></Col>
                 <Col span={10}>
@@ -69,61 +74,11 @@ class HomePage extends Component {
                     ]} dataSource={this.props.player} />
                 </Col>
                 <Col span={1}></Col>
-                {/* <Avatar className="avatar" shape="square" size={16} src={user.avatar} /> */}
             </Row>
          );
     }
 }
  
-
-// [
-// {
-//     title: 'Name',
-//         dataIndex: 'name',
-//             key: 'name',
-//                 render: text => <a>{text}</a>,
-//   },
-// {
-//     title: 'Age',
-//         dataIndex: 'age',
-//             key: 'age',
-//   },
-// {
-//     title: 'Address',
-//         dataIndex: 'address',
-//             key: 'address',
-//   },
-// {
-//     title: 'Tags',
-//         key: 'tags',
-//             dataIndex: 'tags',
-//                 render: tags => (
-//                     <span>
-//                         {tags.map(tag => {
-//                             let color = tag.length > 5 ? 'geekblue' : 'green';
-//                             if (tag === 'loser') {
-//                                 color = 'volcano';
-//                             }
-//                             return (
-//                                 <Tag color={color} key={tag}>
-//                                     {tag.toUpperCase()}
-//                                 </Tag>
-//                             );
-//                         })}
-//                     </span>
-//                 ),
-//   },
-// {
-//     title: 'Action',
-//         key: 'action',
-//             render: (text, record) => (
-//                 <span>
-//                     <a style={{ marginRight: 16 }}>Invite {record.name}</a>
-//                     <a>Delete</a>
-//                 </span>
-//             ),
-//   },
-// ];
-const mapStateToProps = ({ player, team }) => ({ player, team });
+const mapStateToProps = ({ player, team, user }) => ({ player, team, user });
 
 export default connect(mapStateToProps)(HomePage);

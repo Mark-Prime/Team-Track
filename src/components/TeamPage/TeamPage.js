@@ -18,7 +18,8 @@ class PlayerPage extends Component {
         isLeader: false,
         isMember: false,
         ID: this.props.match.params.id,
-        member: this.props.member
+        member: this.props.member,
+        teamName: ''
     }
 
     componentDidMount() {
@@ -45,6 +46,13 @@ class PlayerPage extends Component {
             }
             this.setState({ ID: this.props.match.params.id })
             this.refreshInformation()
+        }
+        if (this.props.team[0]) {
+            if (this.props.team[0].name !== this.state.teamName) {
+                this.setState({
+                    teamName: this.props.team[0].name
+                })
+            }
         }
         if (this.props.user[0]){
             if (this.state.member !== this.props.member) {
@@ -78,6 +86,12 @@ class PlayerPage extends Component {
         })
     }
 
+    saveName = (value) => {
+        this.props.dispatch({ type: 'SAVE_TEAM_NAME', payload: { newName: value, id: this.props.team[0].id } });
+        this.setState({ teamName: value })
+        this.refreshInformation()
+    }
+
     render() {
         return (
             <div>
@@ -87,11 +101,11 @@ class PlayerPage extends Component {
                             <Col span={24}>
                                 {this.props.team[0].active ? 
                                     <h1 id="welcome" className="team-name">
-                                        {this.props.team[0].name}
+                                        {this.state.teamName}
                                     </h1> :
                                 <span className="strike">
                                     <h1 id="welcome" className="team-name">
-                                        {this.props.team[0].name}
+                                        {this.state.teamName}
                                     </h1>
                                 </span>
                                 }
@@ -180,7 +194,7 @@ class PlayerPage extends Component {
                                     </TabPane>
                                     {this.state.isLeader &&
                                         <TabPane tab="Manage" key="3">
-                                            <TeamManager resetLeadership={this.resetLeadership}/>
+                                            <TeamManager saveName={this.saveName} resetLeadership={this.resetLeadership}/>
                                         </TabPane>
                                     }
                                     

@@ -28,9 +28,6 @@ function* saveTeamName(action){
   console.log('in saveTeamName');
   try {
     yield axios.put(`/team/name`, action.payload)
-
-    yield put({ type: 'FETCH_TEAM', payload: action.payload });
-    yield put({ type: 'FETCH_MEMBERS', payload: action.payload });
   } catch (error) {
     console.log('Error in put from /team/name', error);
   }

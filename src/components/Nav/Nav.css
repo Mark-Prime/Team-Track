@@ -36,7 +36,16 @@
   float: right;
 }
 
+.avatar {
+  float: right;
+}
+
 .dropdown-option {
   text-align: left;
   color: #1890ff;
+}
+
+.new-team {
+  float: right;
+  padding-top: 20px;
 }

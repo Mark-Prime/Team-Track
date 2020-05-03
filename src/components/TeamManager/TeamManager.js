@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // Ant Design
-import { Input, Row, Col, Table, Avatar, Button, Select, Popconfirm } from 'antd';
+import { Input, Row, Col, Table, Avatar, Button, Select, Popconfirm, Divider } from 'antd';
+
+const { Search } = Input;
+
 
 const { Option } = Select;
 
@@ -47,9 +50,7 @@ class TeamManager extends Component {
         }
     }
 
-    saveName = () => {
-        this.props.dispatch({ type: 'SAVE_TEAM_NAME', payload: { newName: this.state.newName, id: this.props.team[0].id } });
-    }
+    
 
     promoteMember = (id, is_user) => {
         this.props.dispatch({ type: 'PROMOTE_TO_LEADER', payload: { id, team: this.props.team[0].id } });
@@ -66,10 +67,19 @@ class TeamManager extends Component {
         return ( 
             <>
                 <Row>
-                    <Col span={7}></Col>
-                    <Col span={10}><Input value={this.state.newName} onChange={this.changeState} /></Col><Button type="primary" onClick={this.saveName}>SAVE</Button>
-                    <Col span={7}></Col>
+                    <Col span={12}>
+                        <Search
+                            value={this.state.newName}
+                            placeholder={this.state.newName}
+                            enterButton="Save Name"
+                            size="large"
+                            onChange={event => this.changeState(event)}
+                            onSearch={value => this.props.saveName(value)}
+                        />
+                    </Col>
+                    <Col span={12}></Col>
                 </Row>
+                <Divider orientation="center">Members</Divider>
                 <Row>
                     <Col span={24}>
                         <Table columns={[
