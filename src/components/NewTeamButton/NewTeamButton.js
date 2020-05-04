@@ -102,7 +102,7 @@ class NewTeamButton extends Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Col span={6}><h4 className="label" style={{ marginTop: "5px" }} >Gamemode: </h4></Col>
+                        <Col span={6}><h4 className="label" style={{ marginTop: "5px" }} >Gamemode</h4></Col>
                         <Col span={1}><h4 style={{ marginTop: "5px", textAlign: "center" }} >:</h4></Col>
                         <Col span={17}>
                             <Select defaultValue={1} value={this.state.gamemode} style={{ width: "100%" }} onChange={this.handleGamemodeChange}>

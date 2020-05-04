@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
 
-
 // Ant Design
 import { Input, Row, Col, Table, Avatar, Button, Select, Popconfirm, Divider } from 'antd';
+
+// Components
+import UploadLogButton from '../UploadLogButton/UploadLogButton'
+
 
 const { Search } = Input;
 const { Option } = Select;
@@ -187,16 +190,20 @@ class TeamManager extends Component {
                 </Row>
                 <Row>
                     <Col span={24}>
-                        {this.props.team[0].active && 
-                            <Popconfirm
-                                title={`Deactivate ${this.props.team[0].name}? \n This can not be undone`}
-                                onConfirm={() => this.deactivateTeam()}
-                                onCancel={console.log('nope')}
-                                okText="Yes, Deactivate"
-                                cancelText="No"
-                            >
-                                <Button type="primary" danger>DEACTIVATE TEAM</Button>
-                            </Popconfirm>
+                        {this.props.team[0].active &&
+                            <>
+                                <UploadLogButton />
+                                <Popconfirm
+                                    title={`Deactivate ${this.props.team[0].name}? \n This can not be undone`}
+                                    onConfirm={() => this.deactivateTeam()}
+                                    onCancel={console.log('nope')}
+                                    okText="Yes, Deactivate"
+                                    cancelText="No"
+                                    placement="topLeft"
+                                >
+                                    <Button type="primary" danger style={{ float: "left" }}>DEACTIVATE TEAM</Button>
+                                </Popconfirm>
+                            </>
                         }
                         
                     </Col>
