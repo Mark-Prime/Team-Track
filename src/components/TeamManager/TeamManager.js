@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'
+
 
 // Ant Design
 import { Input, Row, Col, Table, Avatar, Button, Select, Popconfirm, Divider } from 'antd';
 
 const { Search } = Input;
-
-
 const { Option } = Select;
 
 class TeamManager extends Component {
@@ -66,6 +66,11 @@ class TeamManager extends Component {
 
     removeMember = (id) => {
         this.props.dispatch({ type: 'REMOVE_MEMBER', payload: { id, team: this.props.team[0].id } });
+    }
+
+
+    deactivateTeam = () => {
+        this.props.dispatch({ type: 'DEACTIVATE_TEAM', payload: this.props.team[0].id });
     }
 
     render() { 
@@ -180,6 +185,22 @@ class TeamManager extends Component {
                         ]} dataSource={this.props.member} />
                     </Col>
                 </Row>
+                <Row>
+                    <Col span={24}>
+                        {this.props.team[0].active && 
+                            <Popconfirm
+                                title={`Deactivate ${this.props.team[0].name}? \n This can not be undone`}
+                                onConfirm={() => this.deactivateTeam()}
+                                onCancel={console.log('nope')}
+                                okText="Yes, Deactivate"
+                                cancelText="No"
+                            >
+                                <Button type="primary" danger>DEACTIVATE TEAM</Button>
+                            </Popconfirm>
+                        }
+                        
+                    </Col>
+                </Row>
             </>
          );
     }
@@ -189,4 +210,4 @@ class TeamManager extends Component {
 const mapStateToProps = ({ team, member, user }) => ({ team, member, user });
 
 
-export default connect(mapStateToProps)(TeamManager);
+export default withRouter(connect(mapStateToProps)(TeamManager));

@@ -202,7 +202,12 @@ class PlayerPage extends Component {
                                     </TabPane>
                                     {this.state.isLeader &&
                                         <TabPane tab="Manage" key="3">
-                                            <TeamManager saveName={this.saveName} saveTag={this.saveTag} resetLeadership={this.resetLeadership}/>
+                                            <TeamManager 
+                                                saveName={this.saveName} 
+                                                saveTag={this.saveTag} 
+                                                resetLeadership={this.resetLeadership}
+                                                refreshInformation={this.refreshInformation}
+                                            />
                                         </TabPane>
                                     }
                                     

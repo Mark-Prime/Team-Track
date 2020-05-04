@@ -78,4 +78,15 @@ router.put('/tag', (req, res) => {
         });
 });
 
+router.put('/deactivate/:id', (req, res) => {
+    let queryText = 'UPDATE "teams" SET "active" = $1 WHERE "id" = $2';
+    pool.query(queryText, [false, req.params.id]).then(result => {
+        res.sendStatus(200);
+    })
+        .catch(error => {
+            console.log('error updating "teams"', error);
+            res.sendStatus(500);
+        });
+});
+
 module.exports = router;
