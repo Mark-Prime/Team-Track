@@ -53,11 +53,11 @@ router.post('/', (req, res) => {
                                     VALUES($1, $2, $3, $4);`;
                 pool.query(queryText, [log_id, req.body.teamID, req.body.match, log.info.date]).then(result => {
                     let queryText = `INSERT INTO "log_team" ("log_id", "kills", "damage", "charges", "drops", "color") 
-                                        VALUES($1, $2, $3, $4, $5, $6);`;
-                    pool.query(queryText, [log_id, log.teams[req.body.teamColor].kills, log.teams[req.body.teamColor].dmg, log.teams[req.body.teamColor].charges, log.teams[req.body.teamColor].drops, req.body.teamColor]).then(result => {
-                        let queryText = `INSERT INTO "log_team" ("log_id", "kills", "damage", "charges", "drops", "color") 
-                                        VALUES($1, $2, $3, $4, $5, $6);`;
-                        pool.query(queryText, [log_id, log.teams[otherColor].kills, log.teams[otherColor].dmg, log.teams[otherColor].charges, log.teams[otherColor].drops, otherColor]).then(result => {
+                                        VALUES($1, $2, $3, $4, $5, $6), ($1, $7, $8, $9, $10, $11);`;
+                    pool.query(queryText, [log_id, log.teams[req.body.teamColor].kills, log.teams[req.body.teamColor].dmg, 
+                            log.teams[req.body.teamColor].charges, log.teams[req.body.teamColor].drops, req.body.teamColor, 
+                            log.teams[otherColor].kills, log.teams[otherColor].dmg, log.teams[otherColor].charges, 
+                            log.teams[otherColor].drops, otherColor]).then(result => {
                         for (const key in log.players) {
                             if (log.players.hasOwnProperty(key)) {
                                 let player = log.players[key];
@@ -100,10 +100,6 @@ router.post('/', (req, res) => {
                                 
                             }
                         }
-                        })
-                        .catch(error => {
-                            console.log(`error posting into "log_team"`, error);
-                        });
                     })
                     .catch(error => {
                         console.log(`error posting into "log_team"`, error);

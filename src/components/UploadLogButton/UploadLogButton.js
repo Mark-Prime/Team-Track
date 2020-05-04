@@ -14,7 +14,8 @@ class UploadLogButton extends Component {
         warningVisible: false,
         teamColor: 'Red',
         match: true,
-        URL: ''
+        URL: '',
+        confirmLoading: false
      };
 
     showModal = () => {
@@ -26,17 +27,17 @@ class UploadLogButton extends Component {
 
     handleOk = () => {
         if (this.state.teamName !== '') {
+            this.setState({
+                confirmLoading: true
+            })
             this.props.dispatch({ type: 'UPLOAD_LOG', payload: { 
                     teamID: this.props.team[0].id,
                     teamColor: this.state.teamColor, 
                     match: this.state.match,
-                    URL: this.state.URL.replace('.tf/', '.tf/json/')
+                    URL: this.state.URL.replace('.tf/', '.tf/json/'),
+                    closeModal: this.handleCancel
                 } 
             })
-            this.setState({
-                visible: false,
-                URL: ''
-            });
         } else {
             this.setState({
                 warningVisible: true,
@@ -47,6 +48,8 @@ class UploadLogButton extends Component {
     handleCancel = () => {
         this.setState({
             visible: false,
+            URL: '',
+            confirmLoading: false
         });
     };
 
@@ -80,6 +83,7 @@ class UploadLogButton extends Component {
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                     okText='Upload'
+                    confirmLoading={this.state.confirmLoading}
                 >
                     {this.state.warningVisible && <Alert message="Logs.tf URL is required" type="error" style={{ marginBottom: "25px" }} />}
                     <Row style={{ marginBottom: "15px" }}>

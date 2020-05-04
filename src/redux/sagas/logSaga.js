@@ -6,7 +6,9 @@ function* uploadLog(action){
     try {
         let response = yield axios.post(`/log/`, action.payload)
 
-        console.log('response', response);        
+        if (response.status === 200) {
+            action.payload.closeModal()
+        }
     } catch (error) {
         console.log('Error in post from /logs/', error);
     }
