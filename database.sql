@@ -21,6 +21,13 @@ CREATE TABLE "teams"
     "tag" VARCHAR(6) NOT NULL
 );
 
+CREATE TABLE "classes"
+(
+    "id" SERIAL PRIMARY KEY,
+    "class_name" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+);
+
 CREATE TABLE "gamemodes"
 (
     "id" SERIAL PRIMARY KEY,
@@ -192,18 +199,18 @@ VALUES('Highlander', 9),
     ('Ultitrio', 3),
     ('Ultiduo', 2);
 
-INSERT INTO "public"."classes"
-    ("class_name")
+INSERT INTO "classes"
+    ("class_name", "type")
 VALUES
-    ('Scout'),
-    ('Soldier'),
-    ('Pyro'),
-    ('Demoman'),
-    ('Heavy'),
-    ('Engineer'),
-    ('Medic'),
-    ('Sniper'),
-    ('Spy');
+    ('Scout', 'scout'),
+    ('Soldier', 'soldier'),
+    ('Pyro', 'pyro'),
+    ('Demoman', 'demoman'),
+    ('Heavy', 'heavyweapons'),
+    ('Engineer', 'engineer'),
+    ('Medic', 'medic'),
+    ('Sniper', 'sniper'),
+    ('Spy', 'spy');
 
 INSERT INTO "teams"
     ("name", "gamemode", "active", "password", "tag")
