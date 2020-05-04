@@ -26,9 +26,15 @@ class UploadLogButton extends Component {
 
     handleOk = () => {
         if (this.state.teamName !== '') {
-            this.props.dispatch({ type: 'UPLOAD_LOG', payload: { teamColor: this.state.teamColor, match: this.state.match } })
+            this.props.dispatch({ type: 'UPLOAD_LOG', payload: { 
+                    teamColor: this.state.teamColor, 
+                    match: this.state.match,
+                    URL: this.state.URL.replace('.tf/', '.tf/json/')
+                } 
+            })
             this.setState({
                 visible: false,
+                URL: ''
             });
         } else {
             this.setState({
