@@ -39,18 +39,15 @@ CREATE TABLE "team_members"
     CONSTRAINT "team_members_pk" PRIMARY KEY ("id")
 );
 
-
-
 CREATE TABLE "log_base"
 (
-    "id" SERIAL NOT NULL,
-    "blu_id" INTEGER NOT NULL,
-    "red_id" INTEGER NOT NULL,
+    "id" BIGINT NOT NULL,
+    "blu_id" INTEGER,
+    "red_id" INTEGER,
     "Match" BOOLEAN NOT NULL DEFAULT 'false',
     "date" DATE NOT NULL,
     CONSTRAINT "log_base_pk" PRIMARY KEY ("id")
 );
-
 
 
 CREATE TABLE "log_stats"
@@ -62,7 +59,7 @@ CREATE TABLE "log_stats"
     "assists" INTEGER NOT NULL,
     "suicides" INTEGER NOT NULL,
     "kapd" VARCHAR(255) NOT NULL,
-    "kpd" INTEGER NOT NULL,
+    "kpd" VARCHAR(255) NOT NULL,
     "damage" INTEGER NOT NULL,
     "damage_taken" INTEGER NOT NULL,
     "dapm" INTEGER NOT NULL,
@@ -72,8 +69,6 @@ CREATE TABLE "log_stats"
     "headshots" INTEGER NOT NULL,
     CONSTRAINT "log_stats_pk" PRIMARY KEY ("id")
 );
-
-
 
 CREATE TABLE "kills"
 (
@@ -90,8 +85,6 @@ CREATE TABLE "kills"
     "Spy" INTEGER NOT NULL DEFAULT '0',
     CONSTRAINT "kills_pk" PRIMARY KEY ("id")
 );
-
-
 
 CREATE TABLE "deaths"
 (
@@ -174,7 +167,6 @@ ALTER TABLE "log_base" ADD CONSTRAINT "log_base_fk0" FOREIGN KEY ("blu_id") REFE
 ALTER TABLE "log_base" ADD CONSTRAINT "log_base_fk1" FOREIGN KEY ("red_id") REFERENCES "teams"("id");
 
 ALTER TABLE "log_stats" ADD CONSTRAINT "log_stats_fk0" FOREIGN KEY ("log_id") REFERENCES "log_base"("id");
-ALTER TABLE "log_stats" ADD CONSTRAINT "log_stats_fk1" FOREIGN KEY ("steamid3") REFERENCES "user"("steamid3");
 
 ALTER TABLE "kills" ADD CONSTRAINT "kills_fk0" FOREIGN KEY ("log_stat_id") REFERENCES "log_stats"("id");
 
