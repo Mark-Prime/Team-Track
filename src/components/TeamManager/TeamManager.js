@@ -11,7 +11,8 @@ const { Option } = Select;
 
 class TeamManager extends Component {
     state = { 
-        newName: this.props.team[0].name
+        newName: this.props.team[0].name,
+        newTag: this.props.team[0].tag
     }
 
     componentDidMount() {
@@ -36,6 +37,12 @@ class TeamManager extends Component {
         })
     }
 
+    changeTagState = (event) => {
+        this.setState({
+            newTag: event.target.value
+        })
+    }
+
     changeMemberState = (value, target, id) => {
         this.setState({
             [id]: {
@@ -49,8 +56,6 @@ class TeamManager extends Component {
             this.props.dispatch({ type: 'SET_MEMBER_MAIN', payload: { value, id, target: this.props.team[0].id } });
         }
     }
-
-    
 
     promoteMember = (id, is_user) => {
         this.props.dispatch({ type: 'PROMOTE_TO_LEADER', payload: { id, team: this.props.team[0].id } });
@@ -67,17 +72,27 @@ class TeamManager extends Component {
         return ( 
             <>
                 <Row>
-                    <Col span={12}>
+                    <Col span={1}></Col>
+                    <Col span={10}>
                         <Search
                             value={this.state.newName}
-                            placeholder={this.state.newName}
                             enterButton="Save Name"
                             size="large"
                             onChange={event => this.changeState(event)}
                             onSearch={value => this.props.saveName(value)}
                         />
                     </Col>
-                    <Col span={12}></Col>
+                    <Col span={2}></Col>
+                    <Col span={10}>
+                        <Search
+                            value={this.state.newTag}
+                            enterButton="Save Tag"
+                            size="large"
+                            onChange={event => this.changeTagState(event)}
+                            onSearch={value => this.props.saveTag(value)}
+                        />
+                    </Col>
+                    <Col span={1}></Col>
                 </Row>
                 <Divider orientation="center">Members</Divider>
                 <Row>

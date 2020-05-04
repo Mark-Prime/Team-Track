@@ -19,7 +19,8 @@ class PlayerPage extends Component {
         isMember: false,
         ID: this.props.match.params.id,
         member: this.props.member,
-        teamName: ''
+        teamName: '',
+        teamTag: ''
     }
 
     componentDidMount() {
@@ -50,7 +51,8 @@ class PlayerPage extends Component {
         if (this.props.team[0]) {
             if (this.props.team[0].name !== this.state.teamName) {
                 this.setState({
-                    teamName: this.props.team[0].name
+                    teamName: this.props.team[0].name,
+                    teamTag: this.props.team[0].tag
                 })
             }
         }
@@ -92,6 +94,12 @@ class PlayerPage extends Component {
         this.refreshInformation()
     }
 
+    saveTag = (value) => {
+        this.props.dispatch({ type: 'SAVE_TEAM_TAG', payload: { newTag: value, id: this.props.team[0].id } });
+        this.setState({ teamTag: value })
+        this.refreshInformation()
+    }
+
     render() {
         return (
             <div>
@@ -113,7 +121,7 @@ class PlayerPage extends Component {
                                     {this.props.team[0].title}
                                 </h3>
                                 <h3 id="welcome" className="team-name">
-                                    {this.props.team[0].tag}
+                                    {this.state.teamTag}
                                 </h3>
                             </Col>
                         </Row>
@@ -194,7 +202,7 @@ class PlayerPage extends Component {
                                     </TabPane>
                                     {this.state.isLeader &&
                                         <TabPane tab="Manage" key="3">
-                                            <TeamManager saveName={this.saveName} resetLeadership={this.resetLeadership}/>
+                                            <TeamManager saveName={this.saveName} saveTag={this.saveTag} resetLeadership={this.resetLeadership}/>
                                         </TabPane>
                                     }
                                     
