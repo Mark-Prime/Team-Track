@@ -12,7 +12,7 @@ class UploadLogButton extends Component {
     state = { 
         visible: false,
         warningVisible: false,
-        teamColor: 'red',
+        teamColor: 'Red',
         match: true,
         URL: ''
      };
@@ -103,9 +103,9 @@ class UploadLogButton extends Component {
                         <Col span={6}><h4 className="label" style={{ marginTop: "5px" }} >Team</h4></Col>
                         <Col span={1}><h4 style={{ marginTop: "5px", textAlign: "center" }} >:</h4></Col>
                         <Col span={17}>
-                            <Select defaultValue={'red'} value={this.state.teamColor} style={{ width: "100%" }} onChange={this.handleTeamChange}>
-                                <Option value={'red'}>Red</Option>
-                                <Option value={'blu'}>Blu</Option>
+                            <Select defaultValue={'Red'} value={this.state.teamColor} style={{ width: "100%" }} onChange={this.handleTeamChange}>
+                                <Option value={'Red'}>Red</Option>
+                                <Option value={'Blue'}>Blu</Option>
                             </Select>
                         </Col>
                     </Row>

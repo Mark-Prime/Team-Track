@@ -6,7 +6,20 @@ const axios = require('axios');
 /**
  * GET route
  */
+router.get('/team/:id', (req, res) => {
 
+})
+
+router.get('/player/:id', (req, res) => {
+    let queryText = 'SELECT "" FROM "" ORDER BY ;';
+    pool.query(queryText).then(result => {
+        res.send(result.rows);
+    })
+    .catch(error => {
+        console.log('error selecting "" from ', error);
+        res.sendStatus(500);
+    });
+})
 
 /**
  * POST route
@@ -20,11 +33,11 @@ router.post('/', (req, res) => {
         let log_id = (req.body.URL.split('json/')[1]).split('#')[0]
         console.log(log_id)
 
-        let color_id = "blu_id"
-        let teamColor = "Blue"
-        if (req.body.teamColor === 'red') {
-            color_id = "red_id"
-            teamColor = "Red"
+        let color_id = 'blu_id'
+        let otherColor = 'Red'
+        if (req.body.teamColor === 'Red') {
+            color_id = 'red_id'
+            otherColor = 'Blue'
         }
 
         let queryText = 'SELECT "id" FROM "log_base" WHERE id = $1;';
@@ -39,14 +52,17 @@ router.post('/', (req, res) => {
                 let queryText = `INSERT INTO "log_base" ("id", ${color_id}, "Match", "date")
                                     VALUES($1, $2, $3, $4);`;
                 pool.query(queryText, [log_id, req.body.teamID, req.body.match, log.info.date]).then(result => {
-                    let queryText = `INSERT INTO ${req.body.teamColor} ("log_id", "kills", "damage", "charges", "drops") 
-                                        VALUES($1, $2, $3, $4, $5);`;
-                    pool.query(queryText, [log_id, log.teams[teamColor].kills, log.teams[teamColor].dmg, log.teams[teamColor].charges, log.teams[teamColor].drops]).then(result => {
+                    let queryText = `INSERT INTO "log_team" ("log_id", "kills", "damage", "charges", "drops", "color") 
+                                        VALUES($1, $2, $3, $4, $5, $6);`;
+                    pool.query(queryText, [log_id, log.teams[req.body.teamColor].kills, log.teams[req.body.teamColor].dmg, log.teams[req.body.teamColor].charges, log.teams[req.body.teamColor].drops, req.body.teamColor]).then(result => {
+                        let queryText = `INSERT INTO "log_team" ("log_id", "kills", "damage", "charges", "drops", "color") 
+                                        VALUES($1, $2, $3, $4, $5, $6);`;
+                        pool.query(queryText, [log_id, log.teams[otherColor].kills, log.teams[otherColor].dmg, log.teams[otherColor].charges, log.teams[otherColor].drops, otherColor]).then(result => {
                         for (const key in log.players) {
                             if (log.players.hasOwnProperty(key)) {
-                                const player = log.players[key];
-                                const playerKills = log.classkills[key]
-                                const playerDeaths = log.classdeaths[key]
+                                let player = log.players[key];
+                                let playerKills = log.classkills[key] || {}
+                                let playerDeaths = log.classdeaths[key] || {}
                                 
                                 let queryText = `INSERT INTO "log_stats" 
                                                     ("log_id", "steamid3", "team", "assists", "suicides", "kapd", "kpd", 
@@ -84,9 +100,13 @@ router.post('/', (req, res) => {
                                 
                             }
                         }
+                        })
+                        .catch(error => {
+                            console.log(`error posting into "log_team"`, error);
+                        });
                     })
                     .catch(error => {
-                        console.log(`error posting into "${req.body.teamColor}"`, error);
+                        console.log(`error posting into "log_team"`, error);
                     });
 
                 })
