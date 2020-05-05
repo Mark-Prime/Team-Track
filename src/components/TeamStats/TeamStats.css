@@ -1,0 +1,11 @@
+.tooltip {
+    border: #1890ff;
+    border-width: 1px;
+    background-color: white;
+    padding: 5px 5px 5px 5px;
+    border-style: solid;
+}
+
+.graph-title{
+    text-align: center;
+}

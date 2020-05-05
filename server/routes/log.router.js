@@ -7,23 +7,35 @@ const axios = require('axios');
  * GET route
  */
 router.get('/team/:id', (req, res) => {
-    let queryText = `SELECT "log_base"."id", "Match", "date", "kills", "damage", "charges", "drops", "color" FROM "log_base" 
-            JOIN "log_team" ON "log_id" = "log_base"."id"
-            WHERE ("blu_id" = $1 AND "color" = 'Blue') OR ("red_id" = $1 AND "color" = 'Red') 
+    let queryText = `SELECT "log_base"."id", "Match", "date", "kills", "log_team"."damage", "charges", "log_team"."drops", "color", 
+            SUM("damage_taken") as damage_taken, SUM("Scout") as Scout, SUM("Soldier") as Soldier, SUM("Pyro") as Pyro, SUM("Demo") as Demo, SUM("Heavy") as Heavy,
+            SUM("Engineer") as Engineer, SUM("Medic") as Medic, SUM("Sniper") as Sniper, SUM("Spy") as Spy,
+            (SUM("Scout") + SUM("Soldier") + SUM("Pyro") + SUM("Demo") + SUM("Heavy") + SUM("Engineer") + SUM("Medic") + SUM("Sniper") + SUM("Spy")) AS deaths FROM "log_base" 
+            JOIN "log_team" ON "log_team"."log_id" = "log_base"."id"
+            JOIN "log_stats" ON "log_stats"."log_id" = "log_base"."id"
+            JOIN "deaths" ON "log_stat_id" = "log_stats"."id"
+            WHERE ("blu_id" = $1 AND "color" = 'Blue' AND "team" = 'Blue') OR ("red_id" = $1 AND "color" = 'Red' AND "team" = 'Red') 
+        GROUP BY "log_base"."id", "Match", "date", "kills", "log_team"."damage", "charges", "log_team"."drops", "color"
         ORDER BY "date";`;
     pool.query(queryText, [req.params.id]).then(result => {
         res.send(result.rows);
     })
     .catch(error => {
-        console.log('error selecting * from log_base', error);
+        console.log('error selecting from log_base', error);
         res.sendStatus(500);
     });
 })
 
 router.get('/team/matches/:id', (req, res) => {
-    let queryText = `SELECT "log_base"."id", "Match", "date", "kills", "damage", "charges", "drops", "color" FROM "log_base" 
-            JOIN "log_team" ON "log_id" = "log_base"."id"
-            WHERE "Match" = true AND (("blu_id" = $1 AND "color" = 'Blue') OR ("red_id" = $1 AND "color" = 'Red'))
+    let queryText = `SELECT "log_base"."id", "Match", "date", "kills", "log_team"."damage", "charges", "log_team"."drops", "color", 
+            SUM("damage_taken") as damage_taken, SUM("Scout") as Scout, SUM("Soldier") as Soldier, SUM("Pyro") as Pyro, SUM("Demo") as Demo, SUM("Heavy") as Heavy,
+            SUM("Engineer") as Engineer, SUM("Medic") as Medic, SUM("Sniper") as Sniper, SUM("Spy") as Spy,
+            (SUM("Scout") + SUM("Soldier") + SUM("Pyro") + SUM("Demo") + SUM("Heavy") + SUM("Engineer") + SUM("Medic") + SUM("Sniper") + SUM("Spy")) AS deaths FROM "log_base" 
+            JOIN "log_team" ON "log_team"."log_id" = "log_base"."id"
+            JOIN "log_stats" ON "log_stats"."log_id" = "log_base"."id"
+            JOIN "deaths" ON "log_stat_id" = "log_stats"."id"
+            WHERE Match = true AND (("blu_id" = $1 AND "color" = 'Blue' AND "team" = 'Blue') OR ("red_id" = $1 AND "color" = 'Red' AND "team" = 'Red')) 
+        GROUP BY "log_base"."id", "Match", "date", "kills", "log_team"."damage", "charges", "log_team"."drops", "color"
         ORDER BY "date";`;
     pool.query(queryText, [req.params.id]).then(result => {
         res.send(result.rows);
