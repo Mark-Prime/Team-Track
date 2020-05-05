@@ -37,6 +37,7 @@ class PlayerPage extends Component {
     refreshInformation = () => {
         this.props.dispatch({ type: 'FETCH_TEAM', payload: this.props.match.params.id })
         this.props.dispatch({ type: 'FETCH_MEMBERS', payload: this.props.match.params.id })
+        this.props.dispatch({ type: 'FETCH_TEAM_LOG', payload: this.props.match.params.id })
     }
 
     componentDidUpdate() {

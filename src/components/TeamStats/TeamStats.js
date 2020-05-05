@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import {  Divider } from 'antd';
 
 class TeamStats extends Component {
-    state = {  }
+    
     render() { 
         return ( 
             <>
@@ -17,11 +17,14 @@ class TeamStats extends Component {
 
                 <Divider orientation="left">user</Divider>
                 {JSON.stringify(this.props.user[0])}
+
+                <Divider orientation="left">log</Divider>
+                {JSON.stringify(this.props.log)}
             </>
          );
     }
 }
 
-const mapStateToProps = ({ team, user, member }) => ({ team, user, member });
+const mapStateToProps = ({ team, user, member, log }) => ({ team, user, member, log});
 
 export default connect(mapStateToProps)(TeamStats);

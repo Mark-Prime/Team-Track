@@ -7,18 +7,35 @@ const axios = require('axios');
  * GET route
  */
 router.get('/team/:id', (req, res) => {
-
-})
-
-router.get('/player/:id', (req, res) => {
-    let queryText = 'SELECT "" FROM "" ORDER BY ;';
-    pool.query(queryText).then(result => {
+    let queryText = `SELECT "log_base"."id", "Match", "date", "kills", "damage", "charges", "drops", "color" FROM "log_base" 
+            JOIN "log_team" ON "log_id" = "log_base"."id"
+            WHERE ("blu_id" = $1 AND "color" = 'Blue') OR ("red_id" = $1 AND "color" = 'Red') 
+        ORDER BY "date";`;
+    pool.query(queryText, [req.params.id]).then(result => {
         res.send(result.rows);
     })
     .catch(error => {
-        console.log('error selecting "" from ', error);
+        console.log('error selecting * from log_base', error);
         res.sendStatus(500);
     });
+})
+
+router.get('/team/matches/:id', (req, res) => {
+    let queryText = `SELECT "log_base"."id", "Match", "date", "kills", "damage", "charges", "drops", "color" FROM "log_base" 
+            JOIN "log_team" ON "log_id" = "log_base"."id"
+            WHERE "Match" = true AND (("blu_id" = $1 AND "color" = 'Blue') OR ("red_id" = $1 AND "color" = 'Red'))
+        ORDER BY "date";`;
+    pool.query(queryText, [req.params.id]).then(result => {
+        res.send(result.rows);
+    })
+        .catch(error => {
+            console.log('error selecting * from log_base', error);
+            res.sendStatus(500);
+        });
+})
+
+router.get('/player/:id', (req, res) => {
+    
 })
 
 /**

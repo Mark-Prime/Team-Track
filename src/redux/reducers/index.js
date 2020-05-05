@@ -4,6 +4,7 @@ import player from './playerReducer';
 import team from './teamReducer';
 import member from './memberReducer';
 import stats from './statsReducer';
+import log from './logReducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   team,
   member,
   stats,
+  log,
 });
 
 export default rootReducer;
