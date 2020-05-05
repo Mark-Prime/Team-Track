@@ -31,29 +31,6 @@ router.get('/team/:id', (req, res) => {
     });
 })
 
-router.get('/team/matches/:id', (req, res) => {
-    let queryText = `SELECT "log_base"."id", "length", "Match", "date", "log_team"."kills", "log_team"."damage", "charges", "log_team"."drops", "color", 
-            SUM("damage_taken") as damage_taken, SUM("kills"."Scout") as Scout, SUM("kills"."Soldier") as Soldier, SUM("kills"."Pyro") as Pyro, SUM("kills"."Demo") as Demoman, SUM("kills"."Heavy") as Heavy,
-            SUM("kills"."Engineer") as Engineer, SUM("kills"."Medic") as Medic, SUM("kills"."Sniper") as Sniper, SUM("kills"."Spy") as Spy,
-            SUM("deaths"."Scout") as Scout_deaths, SUM("deaths"."Soldier") as Soldier_deaths, SUM("deaths"."Pyro") as Pyro_deaths, SUM("deaths"."Demo") as Demoman_deaths, SUM("deaths"."Heavy") as Heavy_deaths,
-            SUM("deaths"."Engineer") as Engineer_deaths, SUM("deaths"."Medic") as Medic_deaths, SUM("deaths"."Sniper") as Sniper_deaths, SUM("deaths"."Spy") as Spy_deaths,
-            (SUM("deaths"."Scout") + SUM("deaths"."Soldier") + SUM("deaths"."Pyro") + SUM("deaths"."Demo") + SUM("deaths"."Heavy") + SUM("deaths"."Engineer") + SUM("deaths"."Medic") + SUM("deaths"."Sniper") + SUM("deaths"."Spy")) AS deaths FROM "log_base" 
-            JOIN "log_team" ON "log_team"."log_id" = "log_base"."id"
-            JOIN "log_stats" ON "log_stats"."log_id" = "log_base"."id"
-            JOIN "deaths" ON "deaths"."log_stat_id" = "log_stats"."id"
-            JOIN "kills" ON "kills"."log_stat_id" = "log_stats"."id"
-            WHERE Match = true AND (("blu_id" = $1 AND "color" = 'Blue' AND "team" = 'Blue') OR ("red_id" = $1 AND "color" = 'Red' AND "team" = 'Red')) 
-        GROUP BY "log_base"."id", "Match", "date", "kills", "log_team"."damage", "charges", "log_team"."drops", "color"
-        ORDER BY "date";`;
-    pool.query(queryText, [req.params.id]).then(result => {
-        res.send(result.rows);
-    })
-        .catch(error => {
-            console.log('error selecting * from log_base', error);
-            res.sendStatus(500);
-        });
-})
-
 router.get('/player/:id', (req, res) => {
     
 })
