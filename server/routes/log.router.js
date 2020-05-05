@@ -7,13 +7,16 @@ const axios = require('axios');
  * GET route
  */
 router.get('/team/:id', (req, res) => {
-    let queryText = `SELECT "log_base"."id", "Match", "date", "kills", "log_team"."damage", "charges", "log_team"."drops", "color", 
-            SUM("damage_taken") as damage_taken, SUM("Scout") as Scout, SUM("Soldier") as Soldier, SUM("Pyro") as Pyro, SUM("Demo") as Demo, SUM("Heavy") as Heavy,
-            SUM("Engineer") as Engineer, SUM("Medic") as Medic, SUM("Sniper") as Sniper, SUM("Spy") as Spy,
-            (SUM("Scout") + SUM("Soldier") + SUM("Pyro") + SUM("Demo") + SUM("Heavy") + SUM("Engineer") + SUM("Medic") + SUM("Sniper") + SUM("Spy")) AS deaths FROM "log_base" 
+    let queryText = `SELECT "log_base"."id", "Match", "date", "log_team"."kills", "log_team"."damage", "charges", "log_team"."drops", "color", 
+            SUM("damage_taken") as damage_taken, SUM("kills"."Scout") as Scout, SUM("kills"."Soldier") as Soldier, SUM("kills"."Pyro") as Pyro, SUM("kills"."Demo") as Demoman, SUM("kills"."Heavy") as Heavy,
+            SUM("kills"."Engineer") as Engineer, SUM("kills"."Medic") as Medic, SUM("kills"."Sniper") as Sniper, SUM("kills"."Spy") as Spy,
+            SUM("deaths"."Scout") as Scout_deaths, SUM("deaths"."Soldier") as Soldier_deaths, SUM("deaths"."Pyro") as Pyro_deaths, SUM("deaths"."Demo") as Demoman_deaths, SUM("deaths"."Heavy") as Heavy_deaths,
+            SUM("deaths"."Engineer") as Engineer_deaths, SUM("deaths"."Medic") as Medic_deaths, SUM("deaths"."Sniper") as Sniper_deaths, SUM("deaths"."Spy") as Spy_deaths,
+            (SUM("deaths"."Scout") + SUM("deaths"."Soldier") + SUM("deaths"."Pyro") + SUM("deaths"."Demo") + SUM("deaths"."Heavy") + SUM("deaths"."Engineer") + SUM("deaths"."Medic") + SUM("deaths"."Sniper") + SUM("deaths"."Spy")) AS deaths FROM "log_base" 
             JOIN "log_team" ON "log_team"."log_id" = "log_base"."id"
             JOIN "log_stats" ON "log_stats"."log_id" = "log_base"."id"
-            JOIN "deaths" ON "log_stat_id" = "log_stats"."id"
+            JOIN "deaths" ON "deaths"."log_stat_id" = "log_stats"."id"
+            JOIN "kills" ON "kills"."log_stat_id" = "log_stats"."id"
             WHERE ("blu_id" = $1 AND "color" = 'Blue' AND "team" = 'Blue') OR ("red_id" = $1 AND "color" = 'Red' AND "team" = 'Red') 
         GROUP BY "log_base"."id", "Match", "date", "kills", "log_team"."damage", "charges", "log_team"."drops", "color"
         ORDER BY "date";`;
@@ -27,13 +30,16 @@ router.get('/team/:id', (req, res) => {
 })
 
 router.get('/team/matches/:id', (req, res) => {
-    let queryText = `SELECT "log_base"."id", "Match", "date", "kills", "log_team"."damage", "charges", "log_team"."drops", "color", 
-            SUM("damage_taken") as damage_taken, SUM("Scout") as Scout, SUM("Soldier") as Soldier, SUM("Pyro") as Pyro, SUM("Demo") as Demo, SUM("Heavy") as Heavy,
-            SUM("Engineer") as Engineer, SUM("Medic") as Medic, SUM("Sniper") as Sniper, SUM("Spy") as Spy,
-            (SUM("Scout") + SUM("Soldier") + SUM("Pyro") + SUM("Demo") + SUM("Heavy") + SUM("Engineer") + SUM("Medic") + SUM("Sniper") + SUM("Spy")) AS deaths FROM "log_base" 
+    let queryText = `SELECT "log_base"."id", "Match", "date", "log_team"."kills", "log_team"."damage", "charges", "log_team"."drops", "color", 
+            SUM("damage_taken") as damage_taken, SUM("kills"."Scout") as Scout, SUM("kills"."Soldier") as Soldier, SUM("kills"."Pyro") as Pyro, SUM("kills"."Demo") as Demoman, SUM("kills"."Heavy") as Heavy,
+            SUM("kills"."Engineer") as Engineer, SUM("kills"."Medic") as Medic, SUM("kills"."Sniper") as Sniper, SUM("kills"."Spy") as Spy,
+            SUM("deaths"."Scout") as Scout_deaths, SUM("deaths"."Soldier") as Soldier_deaths, SUM("deaths"."Pyro") as Pyro_deaths, SUM("deaths"."Demo") as Demoman_deaths, SUM("deaths"."Heavy") as Heavy_deaths,
+            SUM("deaths"."Engineer") as Engineer_deaths, SUM("deaths"."Medic") as Medic_deaths, SUM("deaths"."Sniper") as Sniper_deaths, SUM("deaths"."Spy") as Spy_deaths,
+            (SUM("deaths"."Scout") + SUM("deaths"."Soldier") + SUM("deaths"."Pyro") + SUM("deaths"."Demo") + SUM("deaths"."Heavy") + SUM("deaths"."Engineer") + SUM("deaths"."Medic") + SUM("deaths"."Sniper") + SUM("deaths"."Spy")) AS deaths FROM "log_base" 
             JOIN "log_team" ON "log_team"."log_id" = "log_base"."id"
             JOIN "log_stats" ON "log_stats"."log_id" = "log_base"."id"
-            JOIN "deaths" ON "log_stat_id" = "log_stats"."id"
+            JOIN "deaths" ON "deaths"."log_stat_id" = "log_stats"."id"
+            JOIN "kills" ON "kills"."log_stat_id" = "log_stats"."id"
             WHERE Match = true AND (("blu_id" = $1 AND "color" = 'Blue' AND "team" = 'Blue') OR ("red_id" = $1 AND "color" = 'Red' AND "team" = 'Red')) 
         GROUP BY "log_base"."id", "Match", "date", "kills", "log_team"."damage", "charges", "log_team"."drops", "color"
         ORDER BY "date";`;

@@ -10,7 +10,7 @@ import TeamStats from '../TeamStats/TeamStats'
 
 
 // Ant Design
-import { Row, Col, Tabs, Table, Avatar, Tag, Button, Popconfirm, Divider } from 'antd';
+import { Row, Col, Tabs, Table, Avatar, Tag, Button, Popconfirm } from 'antd';
 const { TabPane } = Tabs;
 
 class PlayerPage extends Component {
@@ -196,10 +196,7 @@ class PlayerPage extends Component {
                                         }
                                     </TabPane>
                                     <TabPane tab="Stats" key="2">
-                                        <TeamStats />
-
-                                        <Divider orientation="left">state</Divider>
-                                        {JSON.stringify(this.state)}
+                                        {this.props.log[0] ? <TeamStats /> : <h1>This team has no play history</h1>}
                                     </TabPane>
                                     {this.state.isLeader &&
                                         <TabPane tab="Manage" key="3">
@@ -224,6 +221,6 @@ class PlayerPage extends Component {
     }
 }
 
-const mapStateToProps = ({ team, user, member }) => ({ team, user, member });
+const mapStateToProps = ({ team, user, member, log }) => ({ team, user, member, log });
 
 export default connect(mapStateToProps)(PlayerPage);
