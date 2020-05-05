@@ -154,8 +154,8 @@ ALTER TABLE "team_members" ADD CONSTRAINT "team_members_fk0" FOREIGN KEY ("user_
 ALTER TABLE "team_members" ADD CONSTRAINT "team_members_fk1" FOREIGN KEY ("team_id") REFERENCES "teams"("id");
 ALTER TABLE "team_members" ADD CONSTRAINT "team_members_fk1" FOREIGN KEY ("class") REFERENCES "classes"("id");
 
-ALTER TABLE "log_base" ADD CONSTRAINT "log_base_fk0" FOREIGN KEY ("log_team_pk") REFERENCES "teams"("id");
-ALTER TABLE "log_base" ADD CONSTRAINT "log_base_fk1" FOREIGN KEY ("log_team_pk") REFERENCES "teams"("id");
+ALTER TABLE "log_base" ADD CONSTRAINT "log_base_fk0" FOREIGN KEY ("blu_id") REFERENCES "teams"("id");
+ALTER TABLE "log_base" ADD CONSTRAINT "log_base_fk1" FOREIGN KEY ("red_id") REFERENCES "teams"("id");
 
 ALTER TABLE "log_stats" ADD CONSTRAINT "log_stats_fk0" FOREIGN KEY ("log_id") REFERENCES "log_base"("id");
 

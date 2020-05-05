@@ -9,3 +9,15 @@
 .graph-title{
     text-align: center;
 }
+
+.stats{
+    text-align: center;
+}
+
+.blue {
+    color: #1890ff;
+}
+
+.red {
+    color: #fa541c;
+}

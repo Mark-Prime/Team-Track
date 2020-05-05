@@ -8,7 +8,7 @@ import './TeamStats.css'
 import { Divider, Row, Col, Statistic } from 'antd';
 
 import {
-    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+    BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 
 function mode(arr) {
@@ -78,21 +78,10 @@ class TeamStats extends Component {
         let classKillsArray = [];
         for (const class_name in classKills) {
             if (classKills.hasOwnProperty(class_name)) {
-                const element = classKills[class_name];
                 classKillsArray.push({ 
                     class_name: class_name.charAt(0).toUpperCase() + class_name.slice(1), 
-                    kills: element
-                })
-            }
-        }
-
-        let classDeathsArray = [];
-        for (const class_name in classDeaths) {
-            if (classDeaths.hasOwnProperty(class_name)) {
-                const element = classDeaths[class_name];
-                classDeathsArray.push({
-                    class_name: class_name.charAt(0).toUpperCase() + class_name.slice(1),
-                    deaths: element
+                    kills: classKills[class_name],
+                    deaths: classDeaths[class_name],
                 })
             }
         }
@@ -100,26 +89,19 @@ class TeamStats extends Component {
         this.setState({
             kills, deaths, damage, damage_taken, charges, drops,
             favorite_team: mode(teams),
-            classKills: classKillsArray,
-            classDeaths: classDeathsArray
+            classKills: classKillsArray
         })
     }
     
     render() { 
         return ( 
             <>
-                <Row>
+                <Row className="stats">
                     <Col span={3}>
                         <Statistic title="Kills" value={this.state.kills} />
                     </Col>
                     <Col span={3}>
                         <Statistic title="Deaths" value={this.state.deaths} />
-                    </Col>
-                    <Col span={3}>
-                        <Statistic title="Damage" value={this.state.damage} />
-                    </Col>
-                    <Col span={3}>
-                        <Statistic title="Damage Taken" value={this.state.damage_taken} />
                     </Col>
                     <Col span={3}>
                         <Statistic title="Favorite Team" value={this.state.favorite_team} />
@@ -134,6 +116,12 @@ class TeamStats extends Component {
                     <Col span={3}>
                         <Statistic title="Drops" value={this.state.drops} />
                     </Col>
+                    <Col span={3}>
+                        <Statistic title="Damage" value={this.state.damage} />
+                    </Col>
+                    <Col span={3}>
+                        <Statistic title="Damage Taken" value={this.state.damage_taken} />
+                    </Col>
                 </Row>
                 <Row>
                     <Col span={24}>
@@ -143,21 +131,21 @@ class TeamStats extends Component {
                             <LineChart
                                 data={this.props.log}
                                 margin={{
-                                    top: 5, right: 30, left: 20, bottom: 5,
+                                    top: 5, right: 30, left: 20, bottom: 60,
                                 }}
                             >
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="date" hide={true} label="Time"/>
-                                <YAxis scale='linear' domain={[dataMin => (Math.floor(dataMin * 0.9)), dataMax => (Math.floor(dataMax * 1.1))]}/>
+                                <YAxis scale='linear' domain={[0, dataMax => (Math.floor(dataMax + 2))]}/>
                                 <Tooltip content={({ active, payload, label }) => 
                                     <div className="tooltip">
                                         <p className="label">{new Date(label * 1000).toDateString()}</p>
-                                        <p className="intro">Kills: {active && payload[0].payload.kills}</p>
-                                        <p className="intro">Deaths: {active && payload[0].payload.deaths}</p>
+                                        <p className="intro blue">Kills: {active && payload[0].payload.kills} ({active && Math.round((payload[0].payload.kills / (payload[0].payload.length / 60)) * 100) / 100}/min)</p>
+                                        <p className="intro red">Deaths: {active && payload[0].payload.deaths} ({active && Math.round((payload[0].payload.deaths / (payload[0].payload.length / 60)) * 100) / 100}/min)</p>
                                     </div>}/>
                                 <Legend />
-                                <Line type="monotone" dataKey="kills" stroke="#1890ff" />
-                                <Line type="monotone" dataKey="deaths" stroke="#fa541c" />
+                                <Line type="monotone" dataKey="kpm" stroke="#1890ff" />
+                                <Line type="monotone" dataKey="depm" stroke="#fa541c" />
                             </LineChart>  
                         </ResponsiveContainer>
                         <h2 className="graph-title">Damage/Damage Taken</h2>
@@ -165,7 +153,7 @@ class TeamStats extends Component {
                             <LineChart
                                 data={this.props.log}
                                 margin={{
-                                    top: 5, right: 30, left: 20, bottom: 5,
+                                    top: 5, right: 30, left: 20, bottom: 60,
                                 }}
                             >
                                 <CartesianGrid strokeDasharray="3 3" />
@@ -174,22 +162,33 @@ class TeamStats extends Component {
                                 <Tooltip content={({ active, payload, label }) =>
                                     <div className="tooltip">
                                         <p className="label">{new Date(label * 1000).toDateString()}</p>
-                                        <p className="intro">Damage: {active && payload[0].payload.damage}</p>
-                                        <p className="intro">Damage Taken: {active && payload[0].payload.damage_taken}</p>
+                                        <p className="intro blue">Damage: {active && payload[0].payload.damage} ({active && Math.round((payload[0].payload.damage / (payload[0].payload.length/60))*100)/100}/min)</p>
+                                        <p className="intro red">Damage Taken: {active && payload[0].payload.damage_taken} ({active && Math.round((payload[0].payload.damage_taken / (payload[0].payload.length / 60)) * 100) / 100}/min)</p>
                                     </div>} />
                                 <Legend />
-                                <Line type="monotone" dataKey="damage" stroke="#1890ff" />
-                                <Line type="monotone" dataKey="damage_taken" stroke="#fa541c" />
+                                <Line type="monotone" dataKey="dpm" stroke="#1890ff" />
+                                <Line type="monotone" dataKey="dtpm" stroke="#fa541c" />
                             </LineChart>
+                        </ResponsiveContainer>
+                        <h2 className="graph-title">Killed/Killed by Spread</h2>
+                        <ResponsiveContainer height={300} width='100%'>
+                            <BarChart
+                                data={this.state.classKills}
+                                margin={{
+                                    top: 5, right: 30, left: 20, bottom: 5,
+                                }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="class_name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Bar dataKey="kills" fill="#1890ff" />
+                                <Bar dataKey="deaths" fill="#fa541c" />
+                            </BarChart>
                         </ResponsiveContainer>
                     </Col>
                 </Row>
-
-                <Divider orientation="left">log</Divider>
-                {JSON.stringify(this.props.log)}
-
-                <Divider orientation="left">State</Divider>
-                {JSON.stringify(this.state)}
             </>
          );
     }

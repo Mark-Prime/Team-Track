@@ -7,12 +7,14 @@ const axios = require('axios');
  * GET route
  */
 router.get('/team/:id', (req, res) => {
-    let queryText = `SELECT "log_base"."id", "Match", "date", "log_team"."kills", "log_team"."damage", "charges", "log_team"."drops", "color", 
+    let queryText = `SELECT "log_base"."id", "length", "Match", "date", "log_team"."kills", "log_team"."damage", "charges", "log_team"."drops", "color", 
             SUM("damage_taken") as damage_taken, SUM("kills"."Scout") as Scout, SUM("kills"."Soldier") as Soldier, SUM("kills"."Pyro") as Pyro, SUM("kills"."Demo") as Demoman, SUM("kills"."Heavy") as Heavy,
             SUM("kills"."Engineer") as Engineer, SUM("kills"."Medic") as Medic, SUM("kills"."Sniper") as Sniper, SUM("kills"."Spy") as Spy,
             SUM("deaths"."Scout") as Scout_deaths, SUM("deaths"."Soldier") as Soldier_deaths, SUM("deaths"."Pyro") as Pyro_deaths, SUM("deaths"."Demo") as Demoman_deaths, SUM("deaths"."Heavy") as Heavy_deaths,
             SUM("deaths"."Engineer") as Engineer_deaths, SUM("deaths"."Medic") as Medic_deaths, SUM("deaths"."Sniper") as Sniper_deaths, SUM("deaths"."Spy") as Spy_deaths,
-            (SUM("deaths"."Scout") + SUM("deaths"."Soldier") + SUM("deaths"."Pyro") + SUM("deaths"."Demo") + SUM("deaths"."Heavy") + SUM("deaths"."Engineer") + SUM("deaths"."Medic") + SUM("deaths"."Sniper") + SUM("deaths"."Spy")) AS deaths FROM "log_base" 
+            (SUM("deaths"."Scout") + SUM("deaths"."Soldier") + SUM("deaths"."Pyro") + SUM("deaths"."Demo") + SUM("deaths"."Heavy") + SUM("deaths"."Engineer") + SUM("deaths"."Medic") + SUM("deaths"."Sniper") + SUM("deaths"."Spy")) AS deaths,
+            (SUM("damage_taken")/("length"/60)) as dtpm, ("log_team"."damage"/("length"/60)) as dpm, ("log_team"."kills"/("length"/60)) as kpm, 
+            (((SUM("deaths"."Scout") + SUM("deaths"."Soldier") + SUM("deaths"."Pyro") + SUM("deaths"."Demo") + SUM("deaths"."Heavy") + SUM("deaths"."Engineer") + SUM("deaths"."Medic") + SUM("deaths"."Sniper") + SUM("deaths"."Spy")) / ("log_base"."length"/60))) as depm FROM "log_base" 
             JOIN "log_team" ON "log_team"."log_id" = "log_base"."id"
             JOIN "log_stats" ON "log_stats"."log_id" = "log_base"."id"
             JOIN "deaths" ON "deaths"."log_stat_id" = "log_stats"."id"
@@ -30,7 +32,7 @@ router.get('/team/:id', (req, res) => {
 })
 
 router.get('/team/matches/:id', (req, res) => {
-    let queryText = `SELECT "log_base"."id", "Match", "date", "log_team"."kills", "log_team"."damage", "charges", "log_team"."drops", "color", 
+    let queryText = `SELECT "log_base"."id", "length", "Match", "date", "log_team"."kills", "log_team"."damage", "charges", "log_team"."drops", "color", 
             SUM("damage_taken") as damage_taken, SUM("kills"."Scout") as Scout, SUM("kills"."Soldier") as Soldier, SUM("kills"."Pyro") as Pyro, SUM("kills"."Demo") as Demoman, SUM("kills"."Heavy") as Heavy,
             SUM("kills"."Engineer") as Engineer, SUM("kills"."Medic") as Medic, SUM("kills"."Sniper") as Sniper, SUM("kills"."Spy") as Spy,
             SUM("deaths"."Scout") as Scout_deaths, SUM("deaths"."Soldier") as Soldier_deaths, SUM("deaths"."Pyro") as Pyro_deaths, SUM("deaths"."Demo") as Demoman_deaths, SUM("deaths"."Heavy") as Heavy_deaths,
@@ -84,9 +86,9 @@ router.post('/', (req, res) => {
                     console.log('error updating "log_base"', error);
                 });
             } else {
-                let queryText = `INSERT INTO "log_base" ("id", ${color_id}, "Match", "date")
-                                    VALUES($1, $2, $3, $4);`;
-                pool.query(queryText, [log_id, req.body.teamID, req.body.match, log.info.date]).then(result => {
+                let queryText = `INSERT INTO "log_base" ("id", ${color_id}, "Match", "date", "length")
+                                    VALUES($1, $2, $3, $4, $5);`;
+                pool.query(queryText, [log_id, req.body.teamID, req.body.match, log.info.date, log.length]).then(result => {
                     let queryText = `INSERT INTO "log_team" ("log_id", "kills", "damage", "charges", "drops", "color") 
                                         VALUES($1, $2, $3, $4, $5, $6), ($1, $7, $8, $9, $10, $11);`;
                     pool.query(queryText, [log_id, log.teams[req.body.teamColor].kills, log.teams[req.body.teamColor].dmg, 
