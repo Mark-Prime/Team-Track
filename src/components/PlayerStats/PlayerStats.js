@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // Ant Design
-import { Row, Col, Statistic } from 'antd';
+import { Row, Col, Statistic, Divider } from 'antd';
+
+import {
+    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+} from 'recharts';
+
 
 function mode(arr) {
     return arr.sort((a, b) =>
@@ -141,8 +146,55 @@ class PlayerStats extends Component {
                         <Statistic title="Medic Kills" value={this.state.med_kills} />
                     </Col>
                 </Row>
-                {JSON.stringify(this.props.stats)}
-                {JSON.stringify(this.props.log)}
+                <Divider orientation="center">Details</Divider>
+                <Row>
+                    <Col span={24}>
+                        <h2 className="graph-title">Kills/Deaths Spread</h2>
+                        <ResponsiveContainer height={350} width='100%'>
+                            <BarChart
+                                data={this.state.playerClassKills}
+                                margin={{
+                                    top: 5, right: 30, left: 20, bottom: 50,
+                                }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="class_name" />
+                                <YAxis />
+                                <Tooltip content={({ active, payload, label }) =>
+                                    <div className="tooltip">
+                                        <p className="label">{label}</p>
+                                        <p className="intro blue">Kills: {active && payload[0].payload.kills}</p>
+                                        <p className="intro red">Deaths: {active && payload[0].payload.deaths}</p>
+                                    </div>} />
+                                <Legend />
+                                <Bar dataKey="kills" fill="#1890ff" name="Kills" />
+                                <Bar dataKey="deaths" fill="#fa541c" name="Deaths" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                        <h2 className="graph-title">Killed/Killed by Spread</h2>
+                        <ResponsiveContainer height={350} width='100%'>
+                            <BarChart
+                                data={this.state.classKills}
+                                margin={{
+                                    top: 5, right: 30, left: 20, bottom: 50,
+                                }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="class_name" />
+                                <YAxis />
+                                <Tooltip content={({ active, payload, label }) =>
+                                    <div className="tooltip">
+                                        <p className="label">{label}</p>
+                                        <p className="intro blue">Killed: {active && payload[0].payload.killed}</p>
+                                        <p className="intro red">Killed by: {active && payload[0].payload.killed_by}</p>
+                                    </div>} />
+                                <Legend />
+                                <Bar dataKey="killed" fill="#1890ff" name="Killed" />
+                                <Bar dataKey="killed_by" fill="#fa541c" name="Killed By" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </Col>
+                </Row>
             </>
          );
     }

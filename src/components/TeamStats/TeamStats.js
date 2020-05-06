@@ -48,7 +48,6 @@ class TeamStats extends Component {
             teamClassDeaths = {}
 
         for (const index of this.props.log) {
-            console.log(index)
             kills = kills + Number(index.kills)
             deaths = deaths + Number(index.deaths)
             damage = damage + Number(index.damage)
