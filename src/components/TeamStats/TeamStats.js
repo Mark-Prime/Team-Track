@@ -18,6 +18,20 @@ function mode(arr) {
     ).pop();
 }
 
+const renderLegend = (props) => {
+    const { payload } = props;
+
+    return (
+        <ul>
+            {
+                payload.map((entry, index) => (
+                    <p key={`item-${index}`}>{JSON.stringify(entry)}</p>
+                ))
+            }
+        </ul>
+    );
+}
+
 class TeamStats extends Component {
 
     state = {
@@ -27,6 +41,7 @@ class TeamStats extends Component {
         damage_taken: 0,
         charges: 0,
         drops: 0,
+        med_kills: 0,
         favorite_team: '',
         classKills: [],
         classDeaths: []
@@ -39,6 +54,7 @@ class TeamStats extends Component {
             damage_taken = 0,
             charges = 0,
             drops = 0,
+            med_kills: 0,
             teams = [],
             classKills = {},
             classDeaths = {}
@@ -63,7 +79,6 @@ class TeamStats extends Component {
             classKills.sniper = classKills.sniper + Number(index.sniper) || Number(index.sniper)
             classKills.spy = classKills.spy + Number(index.spy)|| Number(index.spy)
 
-
             classDeaths.scout = classDeaths.scout_deaths + Number(index.scout_deaths) || Number(index.scout_deaths)
             classDeaths.soldier = classDeaths.soldier + Number(index.soldier_deaths) || Number(index.soldier_deaths)
             classDeaths.pyro = classDeaths.pyro + Number(index.pyro_deaths) || Number(index.pyro_deaths)
@@ -75,19 +90,21 @@ class TeamStats extends Component {
             classDeaths.spy = classDeaths.spy + Number(index.spy_deaths) || Number(index.spy_deaths)
         }
 
+        med_kills = classKills.medic;
+
         let classKillsArray = [];
         for (const class_name in classKills) {
             if (classKills.hasOwnProperty(class_name)) {
                 classKillsArray.push({ 
                     class_name: class_name.charAt(0).toUpperCase() + class_name.slice(1), 
-                    kills: classKills[class_name],
-                    deaths: classDeaths[class_name],
+                    killed: classKills[class_name],
+                    killed_by: classDeaths[class_name],
                 })
             }
         }
 
         this.setState({
-            kills, deaths, damage, damage_taken, charges, drops,
+            kills, deaths, damage, damage_taken, charges, drops, med_kills,
             favorite_team: mode(teams),
             classKills: classKillsArray
         })
@@ -107,8 +124,7 @@ class TeamStats extends Component {
                         <Statistic title="Favorite Team" value={this.state.favorite_team} />
                     </Col>
                     <Col span={3}>
-                        {this.state.classKills[6] &&
-                            <Statistic title="Medic Kills" value={this.state.classKills[6].kills} />}
+                        <Statistic title="Medic Kills" value={this.state.med_kills} />
                     </Col>
                     <Col span={3}>
                         <Statistic title="Charges" value={this.state.charges} />
@@ -144,8 +160,8 @@ class TeamStats extends Component {
                                         <p className="intro red">Deaths: {active && payload[0].payload.deaths} ({active && Math.round((payload[0].payload.deaths / (payload[0].payload.length / 60)) * 100) / 100}/min)</p>
                                     </div>}/>
                                 <Legend />
-                                <Line type="monotone" dataKey="kpm" stroke="#1890ff" />
-                                <Line type="monotone" dataKey="depm" stroke="#fa541c" />
+                                <Line type="monotone" dataKey="kpm" stroke="#1890ff" name="Kills/Min"/>
+                                <Line type="monotone" dataKey="depm" stroke="#fa541c" name="Deaths/Min"/>
                             </LineChart>  
                         </ResponsiveContainer>
                         <h2 className="graph-title">Damage/Damage Taken</h2>
@@ -166,8 +182,8 @@ class TeamStats extends Component {
                                         <p className="intro red">Damage Taken: {active && payload[0].payload.damage_taken} ({active && Math.round((payload[0].payload.damage_taken / (payload[0].payload.length / 60)) * 100) / 100}/min)</p>
                                     </div>} />
                                 <Legend />
-                                <Line type="monotone" dataKey="dpm" stroke="#1890ff" />
-                                <Line type="monotone" dataKey="dtpm" stroke="#fa541c" />
+                                <Line type="monotone" dataKey="dpm" stroke="#1890ff" name="Damage/Min"/>
+                                <Line type="monotone" dataKey="dtpm" stroke="#fa541c" name="Damage Taken/Min"/>
                             </LineChart>
                         </ResponsiveContainer>
                         <h2 className="graph-title">Killed/Killed by Spread</h2>
@@ -181,10 +197,15 @@ class TeamStats extends Component {
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="class_name" />
                                 <YAxis />
-                                <Tooltip />
+                                <Tooltip content={({ active, payload, label }) =>
+                                    <div className="tooltip">
+                                        <p className="label">{label}</p>
+                                        <p className="intro blue">Killed: {active && payload[0].payload.killed}</p>
+                                        <p className="intro red">Killed by: {active && payload[0].payload.killed_by}</p>
+                                    </div>} />
                                 <Legend />
-                                <Bar dataKey="kills" fill="#1890ff" />
-                                <Bar dataKey="deaths" fill="#fa541c" />
+                                <Bar dataKey="killed" fill="#1890ff" name="Killed"/>
+                                <Bar dataKey="killed_by" fill="#fa541c" name="Killed By"/>
                             </BarChart>
                         </ResponsiveContainer>
                     </Col>
