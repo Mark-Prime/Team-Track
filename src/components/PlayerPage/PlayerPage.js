@@ -55,7 +55,7 @@ class PlayerPage extends Component {
                                 }
                                 {this.props.stats.main_mode &&
                                     <Tag color={"blue"} key={`MAIN`}>
-                                        MAIN PLAYER
+                                        OFTEN MAINS
                                     </Tag>
                                 }
                                 <p>Player ID: {this.props.player[0].id}</p>

@@ -14,13 +14,34 @@ router.get('/team/:id', (req, res) => {
             SUM("deaths"."Engineer") as Engineer_deaths, SUM("deaths"."Medic") as Medic_deaths, SUM("deaths"."Sniper") as Sniper_deaths, SUM("deaths"."Spy") as Spy_deaths,
             (SUM("deaths"."Scout") + SUM("deaths"."Soldier") + SUM("deaths"."Pyro") + SUM("deaths"."Demo") + SUM("deaths"."Heavy") + SUM("deaths"."Engineer") + SUM("deaths"."Medic") + SUM("deaths"."Sniper") + SUM("deaths"."Spy")) AS deaths,
             (SUM("damage_taken")/("length"/60)) as dtpm, ("log_team"."damage"/("length"/60)) as dpm, ("log_team"."kills"/("length"/60)) as kpm, 
-            (((SUM("deaths"."Scout") + SUM("deaths"."Soldier") + SUM("deaths"."Pyro") + SUM("deaths"."Demo") + SUM("deaths"."Heavy") + SUM("deaths"."Engineer") + SUM("deaths"."Medic") + SUM("deaths"."Sniper") + SUM("deaths"."Spy")) / ("log_base"."length"/60))) as depm FROM "log_base" 
+            (((SUM("deaths"."Scout") + SUM("deaths"."Soldier") + SUM("deaths"."Pyro") + SUM("deaths"."Demo") + SUM("deaths"."Heavy") + SUM("deaths"."Engineer") + SUM("deaths"."Medic") + SUM("deaths"."Sniper") + SUM("deaths"."Spy")) / ("log_base"."length"/60))) as depm,
+            SUM(CASE WHEN "class" = 'scout' THEN "class_stats"."kills" ELSE 0 END) as team_scout_kills,
+            SUM(CASE WHEN "class" = 'soldier' THEN "class_stats"."kills" ELSE 0 END) as team_soldier_kills,
+            SUM(CASE WHEN "class" = 'pyro' THEN "class_stats"."kills" ELSE 0 END) as team_pyro_kills,
+            SUM(CASE WHEN "class" = 'demoman' THEN "class_stats"."kills" ELSE 0 END) as team_demoman_kills,
+            SUM(CASE WHEN "class" = 'heavyweapons' THEN "class_stats"."kills" ELSE 0 END) as team_heavy_kills,
+            SUM(CASE WHEN "class" = 'engineer' THEN "class_stats"."kills" ELSE 0 END) as team_engineer_kills,
+            SUM(CASE WHEN "class" = 'medic' THEN "class_stats"."kills" ELSE 0 END) as team_medic_kills,
+            SUM(CASE WHEN "class" = 'sniper' THEN "class_stats"."kills" ELSE 0 END) as team_sniper_kills,
+            SUM(CASE WHEN "class" = 'spy' THEN "class_stats"."kills" ELSE 0 END) as team_spy_kills,
+            
+            SUM(CASE WHEN "class" = 'scout' THEN "class_stats"."deaths" ELSE 0 END) as team_scout_deaths,
+            SUM(CASE WHEN "class" = 'soldier' THEN "class_stats"."deaths" ELSE 0 END) as team_soldier_deaths,
+            SUM(CASE WHEN "class" = 'pyro' THEN "class_stats"."deaths" ELSE 0 END) as team_pyro_deaths,
+            SUM(CASE WHEN "class" = 'demoman' THEN "class_stats"."deaths" ELSE 0 END) as team_demoman_deaths,
+            SUM(CASE WHEN "class" = 'heavyweapons' THEN "class_stats"."deaths" ELSE 0 END) as team_heavy_deaths,
+            SUM(CASE WHEN "class" = 'engineer' THEN "class_stats"."deaths" ELSE 0 END) as team_engineer_deaths,
+            SUM(CASE WHEN "class" = 'medic' THEN "class_stats"."deaths" ELSE 0 END) as team_medic_deaths,
+            SUM(CASE WHEN "class" = 'sniper' THEN "class_stats"."deaths" ELSE 0 END) as team_sniper_deaths,
+            SUM(CASE WHEN "class" = 'spy' THEN "class_stats"."deaths" ELSE 0 END) as team_spy_deaths FROM "log_base" 
+            
             JOIN "log_team" ON "log_team"."log_id" = "log_base"."id"
             JOIN "log_stats" ON "log_stats"."log_id" = "log_base"."id"
             JOIN "deaths" ON "deaths"."log_stat_id" = "log_stats"."id"
             JOIN "kills" ON "kills"."log_stat_id" = "log_stats"."id"
+            JOIN "class_stats" ON "class_stats"."log_stat_id" = "log_stats"."id"
             WHERE ("blu_id" = $1 AND "color" = 'Blue' AND "team" = 'Blue') OR ("red_id" = $1 AND "color" = 'Red' AND "team" = 'Red') 
-        GROUP BY "log_base"."id", "Match", "date", "kills", "log_team"."damage", "charges", "log_team"."drops", "color"
+        GROUP BY "log_base"."id", "Match", "date", "log_team"."kills", "log_team"."damage", "charges", "log_team"."drops", "color"
         ORDER BY "date";`;
     pool.query(queryText, [req.params.id]).then(result => {
         res.send(result.rows);
@@ -98,7 +119,16 @@ router.post('/', (req, res) => {
                                             pool.query(queryText, [log_stat_id, playerDeaths.scout || 0, playerDeaths.soldier || 0,
                                                 playerDeaths.pyro || 0, playerDeaths.demoman || 0, playerDeaths.heavyweapons || 0,
                                                 playerDeaths.engineer || 0, playerDeaths.medic || 0, playerDeaths.sniper || 0, playerDeaths.spy || 0,]).then(result => {
+                                                    for (let player_class of player.class_stats) {
+                                                        let queryText = `INSERT INTO "class_stats" ("log_stat_id", "class", "kills", "assists", "deaths", "damage", "total_time") 
+                                                        VALUES($1, $2, $3, $4, $5, $6, $7);`;
+                                                        pool.query(queryText, [log_stat_id, player_class.type, player_class.kills, player_class.assists, player_class.deaths, player_class.dmg, player_class.total_time]).then(result => {
 
+                                                            })
+                                                            .catch(error => {
+                                                                console.log('error posting into "class_stats"', error);
+                                                        });
+                                                    }
                                                 })
                                                 .catch(error => {
                                                     console.log('error posting into "deaths"', error);
