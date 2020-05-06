@@ -53,7 +53,71 @@ router.get('/team/:id', (req, res) => {
 })
 
 router.get('/player/:id', (req, res) => {
-    
+    let queryText = `SELECT "class_stats"."log_stat_id", "team",
+        SUM("class_stats"."kills") AS "total_kills", 
+        "log_stats"."damage", 
+        "date",
+        SUM("damage_taken") as damage_taken,
+        SUM("class_stats"."deaths") AS "total_deaths",
+        mode() WITHIN GROUP (ORDER BY "class_stats"."class") AS "main_class",
+        SUM("class_stats"."damage") AS "total_damage",
+
+        SUM("kills"."Scout") as Scout, 
+        SUM("kills"."Soldier") as Soldier, 
+        SUM("kills"."Pyro") as Pyro, 
+        SUM("kills"."Demo") as Demoman, 
+        SUM("kills"."Heavy") as Heavy,
+        SUM("kills"."Engineer") as Engineer, 
+        SUM("kills"."Medic") as Medic, 
+        SUM("kills"."Sniper") as Sniper, 
+        SUM("kills"."Spy") as Spy,
+
+        SUM("deaths"."Scout") as Scout_deaths, 
+        SUM("deaths"."Soldier") as Soldier_deaths, 
+        SUM("deaths"."Pyro") as Pyro_deaths, 
+        SUM("deaths"."Demo") as Demoman_deaths, 
+        SUM("deaths"."Heavy") as Heavy_deaths,
+        SUM("deaths"."Engineer") as Engineer_deaths, 
+        SUM("deaths"."Medic") as Medic_deaths, 
+        SUM("deaths"."Sniper") as Sniper_deaths, 
+        SUM("deaths"."Spy") as Spy_deaths,
+
+        SUM(CASE WHEN "class" = 'scout' THEN "class_stats"."kills" ELSE 0 END) as kills_as_scout,
+        SUM(CASE WHEN "class" = 'soldier' THEN "class_stats"."kills" ELSE 0 END) as kills_as_soldier,
+        SUM(CASE WHEN "class" = 'pyro' THEN "class_stats"."kills" ELSE 0 END) as kills_as_pyro,
+        SUM(CASE WHEN "class" = 'demoman' THEN "class_stats"."kills" ELSE 0 END) as kills_as_demoman,
+        SUM(CASE WHEN "class" = 'heavy' THEN "class_stats"."kills" ELSE 0 END) as kills_as_heavy,
+        SUM(CASE WHEN "class" = 'engineer' THEN "class_stats"."kills" ELSE 0 END) as kills_as_engineer,
+        SUM(CASE WHEN "class" = 'medic' THEN "class_stats"."kills" ELSE 0 END) as kills_as_medic,
+        SUM(CASE WHEN "class" = 'sniper' THEN "class_stats"."kills" ELSE 0 END) as kills_as_sniper,
+        SUM(CASE WHEN "class" = 'spy' THEN "class_stats"."kills" ELSE 0 END) as kills_as_spy,
+
+
+        SUM(CASE WHEN "class" = 'scout' THEN "class_stats"."deaths" ELSE 0 END) as deaths_as_scout,
+        SUM(CASE WHEN "class" = 'soldier' THEN "class_stats"."deaths" ELSE 0 END) as deaths_as_soldier,
+        SUM(CASE WHEN "class" = 'pyro' THEN "class_stats"."deaths" ELSE 0 END) as deaths_as_pyro,
+        SUM(CASE WHEN "class" = 'demoman' THEN "class_stats"."deaths" ELSE 0 END) as deaths_as_demoman,
+        SUM(CASE WHEN "class" = 'heavy' THEN "class_stats"."deaths" ELSE 0 END) as deaths_as_heavy,
+        SUM(CASE WHEN "class" = 'engineer' THEN "class_stats"."deaths" ELSE 0 END) as deaths_as_engineer,
+        SUM(CASE WHEN "class" = 'medic' THEN "class_stats"."deaths" ELSE 0 END) as deaths_as_medic,
+        SUM(CASE WHEN "class" = 'sniper' THEN "class_stats"."deaths" ELSE 0 END) as deaths_as_sniper,
+        SUM(CASE WHEN "class" = 'spy' THEN "class_stats"."deaths" ELSE 0 END) as deaths_as_spy
+        FROM "log_stats"
+
+        JOIN "deaths" ON "deaths"."log_stat_id" = "log_stats"."id"
+        JOIN "kills" ON "kills"."log_stat_id" = "log_stats"."id"
+        JOIN "class_stats" ON "class_stats"."log_stat_id" = "log_stats"."id"
+        JOIN "user" ON "log_stats"."steamid3" = "user"."steamid3"
+        JOIN "log_base" ON "log_stats"."log_id" = "log_base"."id"
+        WHERE "user"."id" = $1
+        GROUP BY "class_stats"."log_stat_id", "team", "date", "log_stats"."damage", "total_time"`;
+    pool.query(queryText, [req.params.id]).then(result => {
+        res.send(result.rows);
+    })
+        .catch(error => {
+            console.log('error selecting player logs', error);
+            res.sendStatus(500);
+        });
 })
 
 /**

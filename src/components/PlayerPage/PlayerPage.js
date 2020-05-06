@@ -24,6 +24,7 @@ class PlayerPage extends Component {
             this.props.dispatch({ type: 'FETCH_PLAYER', payload: this.props.match.params.id })
             this.props.dispatch({ type: 'FETCH_USER_TEAMS', payload: this.props.match.params.id })
             this.props.dispatch({ type: 'FETCH_PLAYER_STATS', payload: this.props.match.params.id })
+            this.props.dispatch({ type: 'FETCH_PLAYER_LOGS', payload: this.props.match.params.id })
         }
     }
 
@@ -32,6 +33,7 @@ class PlayerPage extends Component {
         this.props.dispatch({ type: 'FETCH_PLAYER', payload: this.props.match.params.id })
         this.props.dispatch({ type: 'FETCH_USER_TEAMS', payload: this.props.match.params.id })
         this.props.dispatch({ type: 'FETCH_PLAYER_STATS', payload: this.props.match.params.id })
+        this.props.dispatch({ type: 'FETCH_PLAYER_LOGS', payload: this.props.match.params.id })
         console.log('componentDidMount');
         
     }

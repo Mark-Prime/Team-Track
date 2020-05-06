@@ -18,11 +18,12 @@ class PlayerStats extends Component {
                     </Col>
                 </Row>
                 {JSON.stringify(this.props.stats)}
+                {JSON.stringify(this.props.log)}
             </>
          );
     }
 }
 
-const mapStateToProps = ({ player, team, stats }) => ({ player, team, stats });
+const mapStateToProps = ({ player, team, stats, log }) => ({ player, team, stats, log });
  
 export default connect(mapStateToProps)(PlayerStats);

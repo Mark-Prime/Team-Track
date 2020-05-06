@@ -25,22 +25,23 @@ function* fetchAllTeamLogs(action){
     }
 }
 
-function* fetchTeamMatchLogs(action) {
-    console.log('in fetchTeamLogs');
+function* fetchPlayerLogs(action){
+    console.log('in fetchPlayerLogs');
     try {
-        let response = yield axios.get(`/log/team/matches/${action.payload}`)
-
+        let response = yield axios.get(`/log/player/${action.payload}`)
+        
         yield put({ type: 'SET_LOGS', payload: response.data });
     } catch (error) {
-        console.log(`Error in get from /log/${action.payload}`, error);
+        console.log(`Error in get from /player/${action.payload}`, error);
     }
 }
+
 
 
 function* statsSaga() {
     yield takeLatest('UPLOAD_LOG', uploadLog);
     yield takeLatest('FETCH_TEAM_LOGS', fetchAllTeamLogs);
-    yield takeLatest('FETCH_MATCH_LOGS', fetchTeamMatchLogs);
+    yield takeLatest('FETCH_PLAYER_LOGS', fetchPlayerLogs);
 }
 
 export default statsSaga;
