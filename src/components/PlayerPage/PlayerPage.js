@@ -24,6 +24,7 @@ class PlayerPage extends Component {
             this.props.dispatch({ type: 'FETCH_PLAYER', payload: this.props.match.params.id })
             this.props.dispatch({ type: 'FETCH_USER_TEAMS', payload: this.props.match.params.id })
             this.props.dispatch({ type: 'FETCH_PLAYER_STATS', payload: this.props.match.params.id })
+            this.props.dispatch({ type: 'UNSET_LOGS' })
             this.props.dispatch({ type: 'FETCH_PLAYER_LOGS', payload: this.props.match.params.id })
         }
     }
@@ -33,6 +34,7 @@ class PlayerPage extends Component {
         this.props.dispatch({ type: 'FETCH_PLAYER', payload: this.props.match.params.id })
         this.props.dispatch({ type: 'FETCH_USER_TEAMS', payload: this.props.match.params.id })
         this.props.dispatch({ type: 'FETCH_PLAYER_STATS', payload: this.props.match.params.id })
+        this.props.dispatch({ type: 'UNSET_LOGS' })
         this.props.dispatch({ type: 'FETCH_PLAYER_LOGS', payload: this.props.match.params.id })
         console.log('componentDidMount');
         
@@ -164,7 +166,9 @@ class PlayerPage extends Component {
                                 }
                             </TabPane>
                             <TabPane tab="Stats" key="2">
-                                <PlayerStats />
+                                {this.props.log[0] ? 
+                                <PlayerStats /> :
+                                <h2>This Player has no Game Data</h2>}
                             </TabPane>
                         </Tabs>
                     </Col>
@@ -176,6 +180,6 @@ class PlayerPage extends Component {
     }
 }
 
-const mapStateToProps = ({ player, team, stats }) => ({ player, team, stats });
+const mapStateToProps = ({ player, team, stats, log }) => ({ player, team, stats, log });
 
 export default connect(mapStateToProps)(PlayerPage);
