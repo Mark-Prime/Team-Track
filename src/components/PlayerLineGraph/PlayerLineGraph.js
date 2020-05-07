@@ -18,13 +18,17 @@ class PlayerLineGraph extends Component {
                         }}
                     >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="date" hide={true} label="Time" />
+                        <XAxis dataKey="date" tickFormatter={(tickItem) => new Date(tickItem * 1000).toDateString()} />
                         <YAxis scale='linear' domain={[0, dataMax => (Math.ceil(dataMax * 1.2))]} />
                         <Tooltip content={({ active, payload, label }) =>
                             <div className="tooltip">
                                 <p className="label">{new Date(label * 1000).toDateString()}</p>
-                                <p className="intro blue">{this.props.title1}: {active && payload[0].payload[this.props.displaykey1]} ({active && Math.round((payload[0].payload[this.props.displaykey1] / (payload[0].payload.length / 60)) * 100) / 100}/min)</p>
-                                <p className="intro red">{this.props.title2}: {active && payload[0].payload[this.props.displaykey2]} ({active && Math.round((payload[0].payload[this.props.displaykey2] / (payload[0].payload.length / 60)) * 100) / 100}/min)</p>
+                                <p className="intro blue">{this.props.title1}: {payload[0] && <>{this.props.displaykey1 ? 
+                                    <>{payload[0] && payload[0].payload[this.props.displaykey1]} ({Math.round((payload[0].payload[this.props.displaykey1] / (payload[0].payload.length / 60)) * 100) / 100}/min)</> : 
+                                    <>{payload[0] && Math.round(payload[0].payload[this.props.datakey1] * 100) / 100}</>}</>}</p> 
+                                <p className="intro red">{this.props.title2}: {payload[0] && <>{this.props.displaykey2 ? 
+                                    <>{payload[0] && payload[0].payload[this.props.displaykey2]} ({Math.round((payload[0].payload[this.props.displaykey2] / (payload[0].payload.length / 60)) * 100) / 100}/min)</> :
+                                    <>{payload[0] && Math.round(payload[0].payload[this.props.datakey2] * 100) / 100}</>}</>}</p>
                             </div>} />
                         <Legend />
                         <Line type="monotone" dataKey={this.props.datakey1} stroke="#1890ff" name={this.props.lineName1 || this.props.title1} />

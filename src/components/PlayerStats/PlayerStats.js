@@ -30,6 +30,14 @@ class PlayerStats extends Component {
         allRows: []
     }
 
+    arrAvg = arr => {
+        let total = 0;
+        for (let index of arr) {
+            total += Number(index)
+        }
+        return total/arr.length
+    }
+
     parseClasses = (obj, index, stat_start, stat_end) => {
         obj.scout = obj.scout + Number(index[stat_start + 'scout' + stat_end]) || Number(index[stat_start + 'scout' + stat_end])
         obj.soldier = obj.soldier + Number(index[stat_start + 'soldier' + stat_end]) || Number(index[stat_start + 'soldier' + stat_end])
@@ -55,11 +63,17 @@ class PlayerStats extends Component {
             playerClassKills = {},
             playerClassDeaths = {},
             gamemode_stats = {},
-            allRows = []
+            allRows = [],
+            dpmArray = [],
+            dtpmArray = [],
+            dpmArrays = {},
+            dtpmArrays = {}
 
-        for (const index of this.props.log) {
+        for (let index of this.props.log) {
             gamemode_stats[index.title] = gamemode_stats[index.title] || {};
-            gamemode_stats[index.title].rows = gamemode_stats[index.title].rows || []
+            gamemode_stats[index.title].rows = gamemode_stats[index.title].rows || [];
+            dpmArrays[index.title] = dpmArrays[index.title] || [];
+            dtpmArrays[index.title] = dtpmArrays[index.title] || [];
 
             damage = damage + Number(index.damage)
             damage_taken = damage_taken + Number(index.damage_taken)
@@ -67,20 +81,34 @@ class PlayerStats extends Component {
             let rows = gamemode_stats[index.title].rows
             classes.push(index.main_class)
 
+            playerClassKills = this.parseClasses(playerClassKills, index, 'kills_as_', '');
+            playerClassDeaths = this.parseClasses(playerClassDeaths, index, 'deaths_as_', '');
+
+            gamemode_stats[index.title].playerClassKills = this.parseClasses(gamemode_stats[index.title].playerClassKills || {}, index, 'kills_as_', '');
+            gamemode_stats[index.title].playerClassDeaths = this.parseClasses(gamemode_stats[index.title].playerClassDeaths || {}, index, 'deaths_as_', '');
+
             if (!rows[rows.length-1] || rows[rows.length-1].date !== index.date){
                 kills = kills + Number(index.total_kills)
                 deaths = deaths + Number(index.total_deaths)
 
+                dpmArray.push(index.dpm)
+                dtpmArray.push(index.dtpm)
+
+                index.averageDPM = this.arrAvg(dpmArray)
+                index.averageDTPM = this.arrAvg(dtpmArray)
+
+                dpmArrays[index.title].push(index.dpm)
+                dtpmArrays[index.title].push(index.dtpm)
+
+                index.gamemodeDPM = this.arrAvg(dpmArrays[index.title])
+                index.gamemodeDTPM = this.arrAvg(dtpmArrays[index.title])
+
                 classKills = this.parseClasses(classKills, index, '', '');
                 classDeaths = this.parseClasses(classDeaths, index, '', '_deaths');
-                playerClassKills = this.parseClasses(playerClassKills, index, 'kills_as_', '');
-                playerClassDeaths = this.parseClasses(playerClassDeaths, index, 'deaths_as_', '');
 
                 gamemode_stats[index.title].id = index.gamemode
                 gamemode_stats[index.title].classKills = this.parseClasses(gamemode_stats[index.title].classKills || {}, index, '', '');
                 gamemode_stats[index.title].classDeaths = this.parseClasses(gamemode_stats[index.title].classDeaths || {}, index, '', '_deaths');
-                gamemode_stats[index.title].playerClassKills = this.parseClasses(gamemode_stats[index.title].playerClassKills || {}, index, 'kills_as_', '');
-                gamemode_stats[index.title].playerClassDeaths = this.parseClasses(gamemode_stats[index.title].playerClassDeaths || {}, index, 'deaths_as_', '');
             
                 gamemode_stats[index.title].rows.push(index)
                 allRows.push(index)
@@ -176,6 +204,16 @@ class PlayerStats extends Component {
                                     data={this.state.allRows}
                                 />
 
+                                <PlayerLineGraph
+                                    title1="Avg Damage"
+                                    title2="Avg Damage Taken"
+                                    datakey1="averageDPM"
+                                    datakey2="averageDTPM"
+                                    lineName1="Avg Damage/Min"
+                                    lineName2="Avg Damage Taken/Min"
+                                    data={this.state.allRows}
+                                />
+
                                 <PlayerBarGraph
                                     title1="Kills"
                                     title2="Deaths"
@@ -204,6 +242,16 @@ class PlayerStats extends Component {
                                             displaykey2="damage_taken"
                                             lineName1="Damage/Min"
                                             lineName2="Damage Taken/Min"
+                                            data={this.state.gamemode_stats[gamemode].rows}
+                                        />
+
+                                        <PlayerLineGraph
+                                            title1="Avg Damage"
+                                            title2="Avg Damage Taken"
+                                            datakey1="gamemodeDPM"
+                                            datakey2="gamemodeDTPM"
+                                            lineName1="Avg Damage/Min"
+                                            lineName2="Avg Damage Taken/Min"
                                             data={this.state.gamemode_stats[gamemode].rows}
                                         />
 

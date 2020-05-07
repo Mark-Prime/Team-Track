@@ -19,7 +19,7 @@ class Nav extends Component {
     return ( 
       <div className="nav">
         <Link to="/home">
-          <h2 className="nav-title">eSports Manager</h2>
+          <h2 className="nav-title">Team Track</h2>
         </Link>
         <div className="nav-right">
           {this.props.user[0] ?
