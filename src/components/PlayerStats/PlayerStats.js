@@ -26,7 +26,8 @@ class PlayerStats extends Component {
         damage_taken: 0,
         gamecount: this.props.log.length,
         med_kills: 0,
-        gamemode_stats: {}
+        gamemode_stats: {},
+        allRows: []
     }
 
     parseClasses = (obj, index, stat_start, stat_end) => {
@@ -53,29 +54,37 @@ class PlayerStats extends Component {
             classDeaths = {},
             playerClassKills = {},
             playerClassDeaths = {},
-            gamemode_stats = {}
+            gamemode_stats = {},
+            allRows = []
 
         for (const index of this.props.log) {
             gamemode_stats[index.title] = gamemode_stats[index.title] || {};
-            kills = kills + Number(index.total_kills)
-            deaths = deaths + Number(index.total_deaths)
+            gamemode_stats[index.title].rows = gamemode_stats[index.title].rows || []
+
             damage = damage + Number(index.damage)
             damage_taken = damage_taken + Number(index.damage_taken)
+
+            let rows = gamemode_stats[index.title].rows
             classes.push(index.main_class)
 
-            classKills = this.parseClasses(classKills, index, '', '');
-            classDeaths = this.parseClasses(classDeaths, index, '', '_deaths');
-            playerClassKills = this.parseClasses(playerClassKills, index, 'kills_as_', '');
-            playerClassDeaths = this.parseClasses(playerClassDeaths, index, 'deaths_as_', '');
+            if (!rows[rows.length-1] || rows[rows.length-1].date !== index.date){
+                kills = kills + Number(index.total_kills)
+                deaths = deaths + Number(index.total_deaths)
 
-            gamemode_stats[index.title].rows = gamemode_stats[index.title].rows || []
-            gamemode_stats[index.title].id = index.gamemode
-            gamemode_stats[index.title].classKills = this.parseClasses(gamemode_stats[index.title].classKills || {}, index, '', '');
-            gamemode_stats[index.title].classDeaths = this.parseClasses(gamemode_stats[index.title].classDeaths || {}, index, '', '_deaths');
-            gamemode_stats[index.title].playerClassKills = this.parseClasses(gamemode_stats[index.title].playerClassKills || {}, index, 'kills_as_', '');
-            gamemode_stats[index.title].playerClassDeaths = this.parseClasses(gamemode_stats[index.title].playerClassDeaths || {}, index, 'deaths_as_', '');
-            gamemode_stats[index.title].rows.push(index)
+                classKills = this.parseClasses(classKills, index, '', '');
+                classDeaths = this.parseClasses(classDeaths, index, '', '_deaths');
+                playerClassKills = this.parseClasses(playerClassKills, index, 'kills_as_', '');
+                playerClassDeaths = this.parseClasses(playerClassDeaths, index, 'deaths_as_', '');
 
+                gamemode_stats[index.title].id = index.gamemode
+                gamemode_stats[index.title].classKills = this.parseClasses(gamemode_stats[index.title].classKills || {}, index, '', '');
+                gamemode_stats[index.title].classDeaths = this.parseClasses(gamemode_stats[index.title].classDeaths || {}, index, '', '_deaths');
+                gamemode_stats[index.title].playerClassKills = this.parseClasses(gamemode_stats[index.title].playerClassKills || {}, index, 'kills_as_', '');
+                gamemode_stats[index.title].playerClassDeaths = this.parseClasses(gamemode_stats[index.title].playerClassDeaths || {}, index, 'deaths_as_', '');
+            
+                gamemode_stats[index.title].rows.push(index)
+                allRows.push(index)
+            }
         }
 
         med_kills = classKills.medic;
@@ -126,7 +135,7 @@ class PlayerStats extends Component {
 
         this.setState({
             kills, deaths, damage, damage_taken, med_kills,
-            gamemode_stats,
+            gamemode_stats, allRows,
             favorite_class: mode(classes),
             classKills: classKillsArray,
             playerClassKills: playerClassKillsArray,
@@ -164,7 +173,7 @@ class PlayerStats extends Component {
                                     displaykey2="damage_taken"
                                     lineName1="Damage/Min"
                                     lineName2="Damage Taken/Min"
-                                    data={this.props.log}
+                                    data={this.state.allRows}
                                 />
 
                                 <PlayerBarGraph

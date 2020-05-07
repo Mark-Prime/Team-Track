@@ -115,7 +115,8 @@ router.get('/player/:id', (req, res) => {
         JOIN "log_base" ON "log_stats"."log_id" = "log_base"."id"
         JOIN "gamemodes" ON "log_base"."gamemode" = "gamemodes"."id"
         WHERE "user"."id" = $1
-        GROUP BY "class_stats"."log_stat_id", "gamemodes"."title", "log_base"."gamemode", "team", "date", "log_stats"."damage", "total_time", "log_base"."length";`;
+        GROUP BY "date", "class_stats"."log_stat_id", "gamemodes"."title", "log_base"."gamemode", "team", "date", "log_stats"."damage", "total_time", "log_base"."length"
+        ORDER BY "date";`;
     pool.query(queryText, [req.params.id]).then(result => {
         res.send(result.rows);
     })

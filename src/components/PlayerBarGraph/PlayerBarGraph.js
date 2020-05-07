@@ -18,7 +18,7 @@ class PlayerBarGraph extends Component {
                         }}
                     >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="class_name" />
+                        <XAxis dataKey="class_name" domain={[0, dataMax => (Math.ceil(dataMax * 1.1))]}/>
                         <YAxis />
                         <Tooltip content={({ active, payload, label }) =>
                             <div className="tooltip">
