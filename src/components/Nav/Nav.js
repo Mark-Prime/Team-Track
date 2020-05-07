@@ -36,7 +36,7 @@ class Nav extends Component {
                   </div>
                 </Menu.Item>
                 <Menu.Item>
-                  <a href="http://localhost:5000/logout">
+                  <a href="https://teamtrack.azurewebsites.net/logout">
                     Log out
                   </a>
                 </Menu.Item>
@@ -47,7 +47,7 @@ class Nav extends Component {
               </Dropdown>
               <Avatar className="" shape="square" size={64} src={this.props.user[0].avatar} />
             </> :
-            <a className="nav-link" href="http://localhost:5000/auth/steam">Log In</a>
+            <a className="nav-link" href="https://teamtrack.azurewebsites.net/auth/steam">Log In</a>
           }
         </div>
       </div>

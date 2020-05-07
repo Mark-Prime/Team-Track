@@ -19,8 +19,8 @@ passport.deserializeUser(function (obj, done) {
 });
 
 passport.use(new SteamStrategy({
-  returnURL: 'http://localhost:5000/auth/steam/return',
-  realm: 'http://localhost:5000/',
+  returnURL: 'https://teamtrack.azurewebsites.net/auth/steam/return',
+  realm: 'https://teamtrack.azurewebsites.net/',
   apiKey: `${process.env.STEAM_API_KEY}`
 },
   function (identifier, profile, done) {
@@ -51,7 +51,7 @@ app.get('/account', ensureAuthenticated, function (req, res) {
 
 app.get('/logout', function (req, res) {
   req.session = null
-  res.redirect('http://localhost:3000/#/');
+  res.redirect('https://teamtrack.azurewebsites.net/#/');
 });
 
 // Route includes
