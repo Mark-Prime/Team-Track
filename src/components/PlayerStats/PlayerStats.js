@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+// Components
+import PlayerBarGraph from '../PlayerBarGraph/PlayerBarGraph';
+import PlayerLineGraph from '../PlayerLineGraph/PlayerLineGraph';
+
 // Ant Design
-import { Row, Col, Statistic, Divider } from 'antd';
+import { Row, Col, Statistic, Divider, Collapse } from 'antd';
 
-import {
-    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
-} from 'recharts';
-
+const { Panel } = Collapse;
 
 function mode(arr) {
     return arr.sort((a, b) =>
@@ -25,9 +26,23 @@ class PlayerStats extends Component {
         damage_taken: 0,
         gamecount: this.props.log.length,
         med_kills: 0,
+        gamemode_stats: {}
     }
 
-    componentDidMount() {
+    parseClasses = (obj, index, stat_start, stat_end) => {
+        obj.scout = obj.scout + Number(index[stat_start + 'scout' + stat_end]) || Number(index[stat_start + 'scout' + stat_end])
+        obj.soldier = obj.soldier + Number(index[stat_start + 'soldier' + stat_end]) || Number(index[stat_start + 'soldier' + stat_end])
+        obj.pyro = obj.pyro + Number(index[stat_start + 'pyro' + stat_end]) || Number(index[stat_start + 'pyro' + stat_end])
+        obj.demoman = obj.demoman + Number(index[stat_start + 'demoman' + stat_end]) || Number(index[stat_start + 'demoman' + stat_end])
+        obj.heavy = obj.heavy + Number(index[stat_start + 'heavy' + stat_end]) || Number(index[stat_start + 'heavy' + stat_end])
+        obj.engineer = obj.engineer + Number(index[stat_start + 'engineer' + stat_end]) || Number(index[stat_start + 'engineer' + stat_end])
+        obj.medic = obj.medic + Number(index[stat_start + 'medic' + stat_end]) || Number(index[stat_start + 'medic' + stat_end])
+        obj.sniper = obj.sniper + Number(index[stat_start + 'sniper' + stat_end]) || Number(index[stat_start + 'sniper' + stat_end])
+        obj.spy = obj.spy + Number(index[stat_start + 'spy' + stat_end]) || Number(index[stat_start + 'spy' + stat_end])
+        return obj;
+    }
+
+    parseResponse = () => {
         let kills = 0,
             deaths = 0,
             damage = 0,
@@ -37,55 +52,30 @@ class PlayerStats extends Component {
             classKills = {},
             classDeaths = {},
             playerClassKills = {},
-            playerClassDeaths = {}
+            playerClassDeaths = {},
+            gamemode_stats = {}
 
         for (const index of this.props.log) {
-            console.log(index)
+            gamemode_stats[index.title] = gamemode_stats[index.title] || {};
             kills = kills + Number(index.total_kills)
             deaths = deaths + Number(index.total_deaths)
             damage = damage + Number(index.damage)
             damage_taken = damage_taken + Number(index.damage_taken)
             classes.push(index.main_class)
 
-            classKills.scout = classKills.scout + Number(index.scout) || Number(index.scout)
-            classKills.soldier = classKills.soldier + Number(index.soldier) || Number(index.soldier)
-            classKills.pyro = classKills.pyro + Number(index.pyro) || Number(index.pyro)
-            classKills.demoman = classKills.demoman + Number(index.demoman) || Number(index.demoman)
-            classKills.heavy = classKills.heavy + Number(index.heavy) || Number(index.heavy)
-            classKills.engineer = classKills.engineer + Number(index.engineer) || Number(index.engineer)
-            classKills.medic = classKills.medic + Number(index.medic) || Number(index.medic)
-            classKills.sniper = classKills.sniper + Number(index.sniper) || Number(index.sniper)
-            classKills.spy = classKills.spy + Number(index.spy) || Number(index.spy)
+            classKills = this.parseClasses(classKills, index, '', '');
+            classDeaths = this.parseClasses(classDeaths, index, '', '_deaths');
+            playerClassKills = this.parseClasses(playerClassKills, index, 'kills_as_', '');
+            playerClassDeaths = this.parseClasses(playerClassDeaths, index, 'deaths_as_', '');
 
-            classDeaths.scout = classDeaths.scout_deaths + Number(index.scout_deaths) || Number(index.scout_deaths)
-            classDeaths.soldier = classDeaths.soldier + Number(index.soldier_deaths) || Number(index.soldier_deaths)
-            classDeaths.pyro = classDeaths.pyro + Number(index.pyro_deaths) || Number(index.pyro_deaths)
-            classDeaths.demoman = classDeaths.demoman + Number(index.demoman_deaths) || Number(index.demoman_deaths)
-            classDeaths.heavy = classDeaths.heavy + Number(index.heavy_deaths) || Number(index.heavy_deaths)
-            classDeaths.engineer = classDeaths.engineer + Number(index.engineer_deaths) || Number(index.engineer_deaths)
-            classDeaths.medic = classDeaths.medic + Number(index.medic_deaths) || Number(index.medic_deaths)
-            classDeaths.sniper = classDeaths.sniper + Number(index.sniper_deaths) || Number(index.sniper_deaths)
-            classDeaths.spy = classDeaths.spy + Number(index.spy_deaths) || Number(index.spy_deaths)
+            gamemode_stats[index.title].rows = gamemode_stats[index.title].rows || []
+            gamemode_stats[index.title].id = index.gamemode
+            gamemode_stats[index.title].classKills = this.parseClasses(gamemode_stats[index.title].classKills || {}, index, '', '');
+            gamemode_stats[index.title].classDeaths = this.parseClasses(gamemode_stats[index.title].classDeaths || {}, index, '', '_deaths');
+            gamemode_stats[index.title].playerClassKills = this.parseClasses(gamemode_stats[index.title].playerClassKills || {}, index, 'kills_as_', '');
+            gamemode_stats[index.title].playerClassDeaths = this.parseClasses(gamemode_stats[index.title].playerClassDeaths || {}, index, 'deaths_as_', '');
+            gamemode_stats[index.title].rows.push(index)
 
-            playerClassKills.scout = playerClassKills.scout + Number(index.kills_as_scout) || Number(index.kills_as_scout)
-            playerClassKills.soldier = playerClassKills.soldier + Number(index.kills_as_soldier) || Number(index.kills_as_soldier)
-            playerClassKills.pyro = playerClassKills.pyro + Number(index.kills_as_pyro) || Number(index.kills_as_pyro)
-            playerClassKills.demoman = playerClassKills.demoman + Number(index.kills_as_demoman) || Number(index.kills_as_demoman)
-            playerClassKills.heavy = playerClassKills.heavy + Number(index.kills_as_heavy) || Number(index.kills_as_heavy)
-            playerClassKills.engineer = playerClassKills.engineer + Number(index.kills_as_engineer) || Number(index.kills_as_engineer)
-            playerClassKills.medic = playerClassKills.medic + Number(index.kills_as_medic) || Number(index.kills_as_medic)
-            playerClassKills.sniper = playerClassKills.sniper + Number(index.kills_as_sniper) || Number(index.kills_as_sniper)
-            playerClassKills.spy = playerClassKills.spy + Number(index.kills_as_spy) || Number(index.kills_as_spy)
-
-            playerClassDeaths.scout = playerClassDeaths.scout_deaths + Number(index.deaths_as_scout) || Number(index.deaths_as_scout)
-            playerClassDeaths.soldier = playerClassDeaths.soldier + Number(index.deaths_as_soldier) || Number(index.deaths_as_soldier)
-            playerClassDeaths.pyro = playerClassDeaths.pyro + Number(index.deaths_as_pyro) || Number(index.deaths_as_pyro)
-            playerClassDeaths.demoman = playerClassDeaths.demoman + Number(index.deaths_as_demoman) || Number(index.deaths_as_demoman)
-            playerClassDeaths.heavy = playerClassDeaths.heavy + Number(index.deaths_as_heavy) || Number(index.deaths_as_heavy)
-            playerClassDeaths.engineer = playerClassDeaths.engineer + Number(index.deaths_as_engineer) || Number(index.deaths_as_engineer)
-            playerClassDeaths.medic = playerClassDeaths.medic + Number(index.deaths_as_medic) || Number(index.deaths_as_medic)
-            playerClassDeaths.sniper = playerClassDeaths.sniper + Number(index.deaths_as_sniper) || Number(index.deaths_as_sniper)
-            playerClassDeaths.spy = playerClassDeaths.spy + Number(index.deaths_as_spy) || Number(index.deaths_as_spy)
         }
 
         med_kills = classKills.medic;
@@ -105,94 +95,128 @@ class PlayerStats extends Component {
                     kills: playerClassKills[class_name],
                     deaths: playerClassDeaths[class_name],
                 })
+            }
+        }
+
+        for (const gamemode in gamemode_stats) {
+            if (gamemode_stats.hasOwnProperty(gamemode)) {
+
+                gamemode_stats[gamemode].classKillsArray = [];
+                gamemode_stats[gamemode].playerClassKillsArray = [];
+
+                for (const class_name in gamemode_stats[gamemode].classKills) {
+                    if (gamemode_stats[gamemode].classKills.hasOwnProperty(class_name)) {
+
+                        gamemode_stats[gamemode].classKillsArray.push({
+                            class_name: class_name.charAt(0).toUpperCase() + class_name.slice(1),
+                            killed: gamemode_stats[gamemode].classKills[class_name],
+                            killed_by: gamemode_stats[gamemode].classDeaths[class_name],
+                        })
+
+                        gamemode_stats[gamemode].playerClassKillsArray.push({
+                            class_name: class_name.charAt(0).toUpperCase() + class_name.slice(1),
+                            kills: gamemode_stats[gamemode].playerClassKills[class_name],
+                            deaths: gamemode_stats[gamemode].playerClassDeaths[class_name],
+                        })
+                    }
+                }
 
             }
         }
 
         this.setState({
             kills, deaths, damage, damage_taken, med_kills,
+            gamemode_stats,
             favorite_class: mode(classes),
             classKills: classKillsArray,
-            playerClassKills: playerClassKillsArray
+            playerClassKills: playerClassKillsArray,
         })
+    }
+
+    componentDidMount() {
+        this.parseResponse()
     }
 
     render() { 
         return ( 
             <>
                 <Row style={{textAlign: 'center'}}>
-                    <Col span={3}>
-                        <Statistic title="Kills" value={this.state.kills} />
-                    </Col>
-                    <Col span={3}>
-                        <Statistic title="Deaths" value={this.state.deaths} />
-                    </Col>
-                    <Col span={3}>
-                        <Statistic title="Damage" value={this.state.damage} />
-                    </Col>
-                    <Col span={3}>
-                        <Statistic title="Damage Taken" value={this.state.damage_taken} />
-                    </Col>
-                    <Col span={3}>
-                        <Statistic title="Teams" value={this.props.stats.team_count} />
-                    </Col>
-                    <Col span={3}>
-                        <Statistic title="Total Logs" value={this.state.gamecount} />
-                    </Col>
-                    <Col span={3}>
-                        <Statistic title="Most Played" value={this.state.favorite_class === 'heavyweapons' ? 'Heavy' : this.state.favorite_class.charAt(0).toUpperCase() + this.state.favorite_class.slice(1)} />
-                    </Col>
-                    <Col span={3}>
-                        <Statistic title="Medic Kills" value={this.state.med_kills} />
-                    </Col>
+                    <Col span={3}><Statistic title="Kills" value={this.state.kills} /></Col>
+                    <Col span={3}><Statistic title="Deaths" value={this.state.deaths} /></Col>
+                    <Col span={3}><Statistic title="Damage" value={this.state.damage} /></Col>
+                    <Col span={3}><Statistic title="Damage Taken" value={this.state.damage_taken} /></Col>
+                    <Col span={3}><Statistic title="Teams" value={this.props.stats.team_count} /></Col>
+                    <Col span={3}><Statistic title="Total Logs" value={this.state.gamecount} /></Col>
+                    <Col span={3}><Statistic title="Most Played" value={this.state.favorite_class === 'heavyweapons' ? 'Heavy' : this.state.favorite_class.charAt(0).toUpperCase() + this.state.favorite_class.slice(1)} /></Col>
+                    <Col span={3}><Statistic title="Medic Kills" value={this.state.med_kills} /></Col>
                 </Row>
                 <Divider orientation="center">Details</Divider>
                 <Row>
                     <Col span={24}>
-                        <h2 className="graph-title">Kills/Deaths Spread</h2>
-                        <ResponsiveContainer height={350} width='100%'>
-                            <BarChart
-                                data={this.state.playerClassKills}
-                                margin={{
-                                    top: 5, right: 30, left: 20, bottom: 50,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="class_name" />
-                                <YAxis />
-                                <Tooltip content={({ active, payload, label }) =>
-                                    <div className="tooltip">
-                                        <p className="label">{label}</p>
-                                        <p className="intro blue">Kills: {active && payload[0].payload.kills}</p>
-                                        <p className="intro red">Deaths: {active && payload[0].payload.deaths}</p>
-                                    </div>} />
-                                <Legend />
-                                <Bar dataKey="kills" fill="#1890ff" name="Kills" />
-                                <Bar dataKey="deaths" fill="#fa541c" name="Deaths" />
-                            </BarChart>
-                        </ResponsiveContainer>
-                        <h2 className="graph-title">Killed/Killed by Spread</h2>
-                        <ResponsiveContainer height={350} width='100%'>
-                            <BarChart
-                                data={this.state.classKills}
-                                margin={{
-                                    top: 5, right: 30, left: 20, bottom: 50,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="class_name" />
-                                <YAxis />
-                                <Tooltip content={({ active, payload, label }) =>
-                                    <div className="tooltip">
-                                        <p className="label">{label}</p>
-                                        <p className="intro blue">Killed: {active && payload[0].payload.killed}</p>
-                                        <p className="intro red">Killed by: {active && payload[0].payload.killed_by}</p>
-                                    </div>} />
-                                <Legend />
-                                <Bar dataKey="killed" fill="#1890ff" name="Killed" />
-                                <Bar dataKey="killed_by" fill="#fa541c" name="Killed By" />
-                            </BarChart>
-                        </ResponsiveContainer>
+                        <Collapse defaultActiveKey={['0']}>
+                            <Panel header="All Gamemodes" key="0">
+                                <PlayerLineGraph
+                                    title1="Damage"
+                                    title2="Damage Taken"
+                                    datakey1="dpm"
+                                    datakey2="dtpm"
+                                    displaykey1="damage"
+                                    displaykey2="damage_taken"
+                                    lineName1="Damage/Min"
+                                    lineName2="Damage Taken/Min"
+                                    data={this.props.log}
+                                />
+
+                                <PlayerBarGraph
+                                    title1="Kills"
+                                    title2="Deaths"
+                                    datakey1="kills"
+                                    datakey2="deaths"
+                                    data={this.state.playerClassKills}
+                                />
+
+                                <PlayerBarGraph 
+                                    title1="Killed" 
+                                    title2="Killed By" 
+                                    datakey1="killed" 
+                                    datakey2="killed_by"
+                                    data={this.state.classKills}
+                                />
+                            </Panel>
+                            {Object.keys(this.state.gamemode_stats).map(gamemode => {
+                                return (
+                                    <Panel header={gamemode} key={this.state.gamemode_stats[gamemode].id}>
+                                        <PlayerLineGraph
+                                            title1="Damage"
+                                            title2="Damage Taken"
+                                            datakey1="dpm"
+                                            datakey2="dtpm"
+                                            displaykey1="damage"
+                                            displaykey2="damage_taken"
+                                            lineName1="Damage/Min"
+                                            lineName2="Damage Taken/Min"
+                                            data={this.state.gamemode_stats[gamemode].rows}
+                                        />
+
+                                        <PlayerBarGraph
+                                            title1="Kills"
+                                            title2="Deaths"
+                                            datakey1="kills"
+                                            datakey2="deaths"
+                                            data={this.state.gamemode_stats[gamemode].playerClassKillsArray}
+                                        />
+
+                                        <PlayerBarGraph
+                                            title1="Killed"
+                                            title2="Killed By"
+                                            datakey1="killed"
+                                            datakey2="killed_by"
+                                            data={this.state.gamemode_stats[gamemode].classKillsArray}
+                                        />
+                                    </Panel> 
+                                    )
+                            })}
+                        </Collapse>
                     </Col>
                 </Row>
             </>

@@ -53,6 +53,7 @@ CREATE TABLE "log_base"
     "red_id" INTEGER,
     "Match" BOOLEAN NOT NULL DEFAULT 'false',
     "date" DATE NOT NULL,
+    "gamemode" INTEGER NOT NULL,
     CONSTRAINT "log_base_pk" PRIMARY KEY ("id")
 );
 

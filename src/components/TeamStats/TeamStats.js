@@ -3,13 +3,12 @@ import { connect } from 'react-redux';
 
 import './TeamStats.css'
 
+import PlayerBarGraph from '../PlayerBarGraph/PlayerBarGraph';
+import PlayerLineGraph from '../PlayerLineGraph/PlayerLineGraph';
 
 // Ant Design
 import { Divider, Row, Col, Statistic } from 'antd';
 
-import {
-    BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
-} from 'recharts';
 
 function mode(arr) {
     return arr.sort((a, b) =>
@@ -33,7 +32,20 @@ class TeamStats extends Component {
         teamClassKills: []
     }
 
-    componentDidMount() {
+    parseClasses = (obj, index, stat_start, stat_end) => {
+        obj.scout = obj.scout + Number(index[stat_start + 'scout' + stat_end]) || Number(index[stat_start + 'scout' + stat_end])
+        obj.soldier = obj.soldier + Number(index[stat_start + 'soldier' + stat_end]) || Number(index[stat_start + 'soldier' + stat_end])
+        obj.pyro = obj.pyro + Number(index[stat_start + 'pyro' + stat_end]) || Number(index[stat_start + 'pyro' + stat_end])
+        obj.demoman = obj.demoman + Number(index[stat_start + 'demoman' + stat_end]) || Number(index[stat_start + 'demoman' + stat_end])
+        obj.heavy = obj.heavy + Number(index[stat_start + 'heavy' + stat_end]) || Number(index[stat_start + 'heavy' + stat_end])
+        obj.engineer = obj.engineer + Number(index[stat_start + 'engineer' + stat_end]) || Number(index[stat_start + 'engineer' + stat_end])
+        obj.medic = obj.medic + Number(index[stat_start + 'medic' + stat_end]) || Number(index[stat_start + 'medic' + stat_end])
+        obj.sniper = obj.sniper + Number(index[stat_start + 'sniper' + stat_end]) || Number(index[stat_start + 'sniper' + stat_end])
+        obj.spy = obj.spy + Number(index[stat_start + 'spy' + stat_end]) || Number(index[stat_start + 'spy' + stat_end])
+        return obj;
+    }
+
+    parseResponse = () => {
         let kills = 0,
             deaths = 0,
             damage = 0,
@@ -48,7 +60,9 @@ class TeamStats extends Component {
             teamClassDeaths = {}
 
         for (const index of this.props.log) {
+            console.log(index)
             kills = kills + Number(index.kills)
+            console.log(index.kills)
             deaths = deaths + Number(index.deaths)
             damage = damage + Number(index.damage)
             damage_taken = damage_taken + Number(index.damage_taken)
@@ -56,45 +70,10 @@ class TeamStats extends Component {
             drops = drops + Number(index.drops)
             teams.push(index.color)
 
-            classKills.scout = classKills.scout + Number(index.scout) || Number(index.scout)
-            classKills.soldier = classKills.soldier + Number(index.soldier) || Number(index.soldier)
-            classKills.pyro = classKills.pyro + Number(index.pyro) || Number(index.pyro)
-            classKills.demoman = classKills.demoman + Number(index.demoman) || Number(index.demoman)
-            classKills.heavy = classKills.heavy + Number(index.heavy) || Number(index.heavy)
-            classKills.engineer = classKills.engineer + Number(index.engineer) || Number(index.engineer)
-            classKills.medic = classKills.medic + Number(index.medic) || Number(index.medic)
-            classKills.sniper = classKills.sniper + Number(index.sniper) || Number(index.sniper)
-            classKills.spy = classKills.spy + Number(index.spy)|| Number(index.spy)
-
-            classDeaths.scout = classDeaths.scout_deaths + Number(index.scout_deaths) || Number(index.scout_deaths)
-            classDeaths.soldier = classDeaths.soldier + Number(index.soldier_deaths) || Number(index.soldier_deaths)
-            classDeaths.pyro = classDeaths.pyro + Number(index.pyro_deaths) || Number(index.pyro_deaths)
-            classDeaths.demoman = classDeaths.demoman + Number(index.demoman_deaths) || Number(index.demoman_deaths)
-            classDeaths.heavy = classDeaths.heavy + Number(index.heavy_deaths) || Number(index.heavy_deaths)
-            classDeaths.engineer = classDeaths.engineer + Number(index.engineer_deaths) || Number(index.engineer_deaths)
-            classDeaths.medic = classDeaths.medic + Number(index.medic_deaths) || Number(index.medic_deaths)
-            classDeaths.sniper = classDeaths.sniper + Number(index.sniper_deaths) || Number(index.sniper_deaths)
-            classDeaths.spy = classDeaths.spy + Number(index.spy_deaths) || Number(index.spy_deaths)
-
-            teamClassKills.scout = teamClassKills.scout + Number(index.team_scout_kills) || Number(index.team_scout_kills)
-            teamClassKills.soldier = teamClassKills.soldier + Number(index.team_soldier_kills) || Number(index.team_soldier_kills)
-            teamClassKills.pyro = teamClassKills.pyro + Number(index.team_pyro_kills) || Number(index.team_pyro_kills)
-            teamClassKills.demoman = teamClassKills.demoman + Number(index.team_demoman_kills) || Number(index.team_demoman_kills)
-            teamClassKills.heavy = teamClassKills.heavy + Number(index.team_heavy_kills) || Number(index.team_heavy_kills)
-            teamClassKills.engineer = teamClassKills.engineer + Number(index.team_engineer_kills) || Number(index.team_engineer_kills)
-            teamClassKills.medic = teamClassKills.medic + Number(index.team_medic_kills) || Number(index.team_medic_kills)
-            teamClassKills.sniper = teamClassKills.sniper + Number(index.team_sniper_kills) || Number(index.team_sniper_kills)
-            teamClassKills.spy = teamClassKills.spy + Number(index.team_spy_kills) || Number(index.team_spy_kills)
-
-            teamClassDeaths.scout = teamClassDeaths.scout_deaths + Number(index.team_scout_deaths) || Number(index.team_scout_deaths)
-            teamClassDeaths.soldier = teamClassDeaths.soldier + Number(index.team_soldier_deaths) || Number(index.team_soldier_deaths)
-            teamClassDeaths.pyro = teamClassDeaths.pyro + Number(index.team_pyro_deaths) || Number(index.team_pyro_deaths)
-            teamClassDeaths.demoman = teamClassDeaths.demoman + Number(index.team_demoman_deaths) || Number(index.team_demoman_deaths)
-            teamClassDeaths.heavy = teamClassDeaths.heavy + Number(index.team_heavy_deaths) || Number(index.team_heavy_deaths)
-            teamClassDeaths.engineer = teamClassDeaths.engineer + Number(index.team_engineer_deaths) || Number(index.team_engineer_deaths)
-            teamClassDeaths.medic = teamClassDeaths.medic + Number(index.team_medic_deaths) || Number(index.team_medic_deaths)
-            teamClassDeaths.sniper = teamClassDeaths.sniper + Number(index.team_sniper_deaths) || Number(index.team_sniper_deaths)
-            teamClassDeaths.spy = teamClassDeaths.spy + Number(index.team_spy_deaths) || Number(index.team_spy_deaths)
+            classKills = this.parseClasses(classKills, index, '', '');
+            classDeaths = this.parseClasses(classDeaths, index, '', '_deaths');
+            teamClassKills = this.parseClasses(teamClassKills, index, 'team_', '_kills');
+            teamClassDeaths = this.parseClasses(teamClassDeaths, index, 'team_', '_deaths');
         }
 
         med_kills = classKills.medic;
@@ -103,8 +82,8 @@ class TeamStats extends Component {
         let teamClassKillsArray = [];
         for (const class_name in classKills) {
             if (classKills.hasOwnProperty(class_name)) {
-                classKillsArray.push({ 
-                    class_name: class_name.charAt(0).toUpperCase() + class_name.slice(1), 
+                classKillsArray.push({
+                    class_name: class_name.charAt(0).toUpperCase() + class_name.slice(1),
                     killed: classKills[class_name],
                     killed_by: classDeaths[class_name],
                 })
@@ -114,7 +93,7 @@ class TeamStats extends Component {
                     kills: teamClassKills[class_name],
                     deaths: teamClassDeaths[class_name],
                 })
-                
+
             }
         }
 
@@ -124,6 +103,10 @@ class TeamStats extends Component {
             classKills: classKillsArray,
             teamClassKills: teamClassKillsArray
         })
+    }
+
+    componentDidMount() {
+        this.parseResponse()
     }
     
     render() { 
@@ -158,94 +141,40 @@ class TeamStats extends Component {
                 <Row>
                     <Col span={24}>
                         <Divider orientation="center">Details</Divider>
-                        <h2 className="graph-title">Kills/Deaths</h2>
-                        <ResponsiveContainer height={300} width='100%'>
-                            <LineChart
-                                data={this.props.log}
-                                margin={{
-                                    top: 5, right: 30, left: 20, bottom: 60,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="date" hide={true} label="Time"/>
-                                <YAxis scale='linear' domain={[0, dataMax => (Math.floor(dataMax + 2))]}/>
-                                <Tooltip content={({ active, payload, label }) => 
-                                    <div className="tooltip">
-                                        <p className="label">{new Date(label * 1000).toDateString()}</p>
-                                        <p className="intro blue">Kills: {active && payload[0].payload.kills} ({active && Math.round((payload[0].payload.kills / (payload[0].payload.length / 60)) * 100) / 100}/min)</p>
-                                        <p className="intro red">Deaths: {active && payload[0].payload.deaths} ({active && Math.round((payload[0].payload.deaths / (payload[0].payload.length / 60)) * 100) / 100}/min)</p>
-                                    </div>}/>
-                                <Legend />
-                                <Line type="monotone" dataKey="kpm" stroke="#1890ff" name="Kills/Min"/>
-                                <Line type="monotone" dataKey="depm" stroke="#fa541c" name="Deaths/Min"/>
-                            </LineChart>  
-                        </ResponsiveContainer>
-                        <h2 className="graph-title">Damage/Damage Taken</h2>
-                        <ResponsiveContainer height={300} width='100%'>
-                            <LineChart
-                                data={this.props.log}
-                                margin={{
-                                    top: 5, right: 30, left: 20, bottom: 60,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="date" hide={true} label="Time" />
-                                <YAxis type="number" scale='linear' domain={[dataMin => (Math.floor(dataMin * 0.9)), dataMax => (Math.floor(dataMax * 1.1))]} />
-                                <Tooltip content={({ active, payload, label }) =>
-                                    <div className="tooltip">
-                                        <p className="label">{new Date(label * 1000).toDateString()}</p>
-                                        <p className="intro blue">Damage: {active && payload[0].payload.damage} ({active && Math.round((payload[0].payload.damage / (payload[0].payload.length/60))*100)/100}/min)</p>
-                                        <p className="intro red">Damage Taken: {active && payload[0].payload.damage_taken} ({active && Math.round((payload[0].payload.damage_taken / (payload[0].payload.length / 60)) * 100) / 100}/min)</p>
-                                    </div>} />
-                                <Legend />
-                                <Line type="monotone" dataKey="dpm" stroke="#1890ff" name="Damage/Min"/>
-                                <Line type="monotone" dataKey="dtpm" stroke="#fa541c" name="Damage Taken/Min"/>
-                            </LineChart>
-                        </ResponsiveContainer>
-                        <h2 className="graph-title">Kills/Deaths Spread</h2>
-                        <ResponsiveContainer height={350} width='100%'>
-                            <BarChart
-                                data={this.state.teamClassKills}
-                                margin={{
-                                    top: 5, right: 30, left: 20, bottom: 50,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="class_name" />
-                                <YAxis />
-                                <Tooltip content={({ active, payload, label }) =>
-                                    <div className="tooltip">
-                                        <p className="label">{label}</p>
-                                        <p className="intro blue">Kills: {active && payload[0].payload.kills}</p>
-                                        <p className="intro red">Deaths: {active && payload[0].payload.deaths}</p>
-                                    </div>} />
-                                <Legend />
-                                <Bar dataKey="kills" fill="#1890ff" name="Kills" />
-                                <Bar dataKey="deaths" fill="#fa541c" name="Deaths" />
-                            </BarChart>
-                        </ResponsiveContainer>
-                        <h2 className="graph-title">Killed/Killed by Spread</h2>
-                        <ResponsiveContainer height={350} width='100%'>
-                            <BarChart
-                                data={this.state.classKills}
-                                margin={{
-                                    top: 5, right: 30, left: 20, bottom: 50,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="class_name" />
-                                <YAxis />
-                                <Tooltip content={({ active, payload, label }) =>
-                                    <div className="tooltip">
-                                        <p className="label">{label}</p>
-                                        <p className="intro blue">Killed: {active && payload[0].payload.killed}</p>
-                                        <p className="intro red">Killed by: {active && payload[0].payload.killed_by}</p>
-                                    </div>} />
-                                <Legend />
-                                <Bar dataKey="killed" fill="#1890ff" name="Killed"/>
-                                <Bar dataKey="killed_by" fill="#fa541c" name="Killed By"/>
-                            </BarChart>
-                        </ResponsiveContainer>
+                        <PlayerLineGraph
+                            title1="Kills"
+                            title2="Deaths"
+                            lineName1="Kills/Min"
+                            lineName2="Deaths/Min"
+                            datakey1="kpm"
+                            datakey2="depm"
+                            displaykey1="kills"
+                            displaykey2="deaths"
+                            data={this.props.log}
+                        />
+                        <PlayerLineGraph
+                            title1="Damage/Min"
+                            title2="Damage Taken/Min"
+                            datakey1="dpm"
+                            datakey2="dtpm"
+                            displaykey1="damage"
+                            displaykey2="damage_taken"
+                            data={this.props.log}
+                        />
+                        <PlayerBarGraph
+                            title1="Kills"
+                            title2="Deaths"
+                            datakey1="kills"
+                            datakey2="deaths"
+                            data={this.state.teamClassKills}
+                        />
+                        <PlayerBarGraph
+                            title1="Killed"
+                            title2="Killed By"
+                            datakey1="killed"
+                            datakey2="killed_by"
+                            data={this.state.classKills}
+                        />
                     </Col>
                 </Row>
             </>

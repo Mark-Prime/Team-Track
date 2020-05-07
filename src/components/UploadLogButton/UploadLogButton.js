@@ -31,10 +31,11 @@ class UploadLogButton extends Component {
                 confirmLoading: true
             })
             this.props.dispatch({ type: 'UPLOAD_LOG', payload: { 
-                    teamID: this.props.team[0].id,
+                    teamID: this.props.team[0].trueid,
                     teamColor: this.state.teamColor, 
                     match: this.state.match,
                     URL: this.state.URL.replace('.tf/', '.tf/json/'),
+                    gamemode: this.props.team[0].id,
                     closeModal: this.handleCancel
                 } 
             })

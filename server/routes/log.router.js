@@ -56,11 +56,15 @@ router.get('/player/:id', (req, res) => {
     let queryText = `SELECT "class_stats"."log_stat_id", "team",
         SUM("class_stats"."kills") AS "total_kills", 
         "log_stats"."damage", 
+        ("log_stats"."damage"/("length"/60)) as dpm,
+        (SUM("damage_taken"/("length"/60))) as dtpm,
         "date",
-        SUM("damage_taken") as damage_taken,
+        "log_base"."length",
+        "log_base"."gamemode",
+        "gamemodes"."title",
+        SUM("damage_taken") AS damage_taken,
         SUM("class_stats"."deaths") AS "total_deaths",
         mode() WITHIN GROUP (ORDER BY "class_stats"."class") AS "main_class",
-        SUM("class_stats"."damage") AS "total_damage",
 
         SUM("kills"."Scout") as Scout, 
         SUM("kills"."Soldier") as Soldier, 
@@ -109,8 +113,9 @@ router.get('/player/:id', (req, res) => {
         JOIN "class_stats" ON "class_stats"."log_stat_id" = "log_stats"."id"
         JOIN "user" ON "log_stats"."steamid3" = "user"."steamid3"
         JOIN "log_base" ON "log_stats"."log_id" = "log_base"."id"
+        JOIN "gamemodes" ON "log_base"."gamemode" = "gamemodes"."id"
         WHERE "user"."id" = $1
-        GROUP BY "class_stats"."log_stat_id", "team", "date", "log_stats"."damage", "total_time"`;
+        GROUP BY "class_stats"."log_stat_id", "gamemodes"."title", "log_base"."gamemode", "team", "date", "log_stats"."damage", "total_time", "log_base"."length";`;
     pool.query(queryText, [req.params.id]).then(result => {
         res.send(result.rows);
     })
@@ -148,9 +153,9 @@ router.post('/', (req, res) => {
                     console.log('error updating "log_base"', error);
                 });
             } else {
-                let queryText = `INSERT INTO "log_base" ("id", ${color_id}, "Match", "date", "length")
-                                    VALUES($1, $2, $3, $4, $5);`;
-                pool.query(queryText, [log_id, req.body.teamID, req.body.match, log.info.date, log.length]).then(result => {
+                let queryText = `INSERT INTO "log_base" ("id", ${color_id}, "Match", "date", "length", "gamemode")
+                                    VALUES($1, $2, $3, $4, $5, $6);`;
+                pool.query(queryText, [log_id, req.body.teamID, req.body.match, log.info.date, log.length, req.body.gamemode]).then(result => {
                     let queryText = `INSERT INTO "log_team" ("log_id", "kills", "damage", "charges", "drops", "color") 
                                         VALUES($1, $2, $3, $4, $5, $6), ($1, $7, $8, $9, $10, $11);`;
                     pool.query(queryText, [log_id, log.teams[req.body.teamColor].kills, log.teams[req.body.teamColor].dmg, 
