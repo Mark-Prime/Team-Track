@@ -14,7 +14,17 @@ router.get('/team/:id', (req, res) => {
             SUM("deaths"."Engineer") as Engineer_deaths, SUM("deaths"."Medic") as Medic_deaths, SUM("deaths"."Sniper") as Sniper_deaths, SUM("deaths"."Spy") as Spy_deaths,
             (SUM("deaths"."Scout") + SUM("deaths"."Soldier") + SUM("deaths"."Pyro") + SUM("deaths"."Demo") + SUM("deaths"."Heavy") + SUM("deaths"."Engineer") + SUM("deaths"."Medic") + SUM("deaths"."Sniper") + SUM("deaths"."Spy")) AS deaths,
             (SUM("damage_taken")/("length"/60)) as dtpm, ("log_team"."damage"/("length"/60)) as dpm, ("log_team"."kills"/("length"/60)) as kpm, 
-            (((SUM("deaths"."Scout") + SUM("deaths"."Soldier") + SUM("deaths"."Pyro") + SUM("deaths"."Demo") + SUM("deaths"."Heavy") + SUM("deaths"."Engineer") + SUM("deaths"."Medic") + SUM("deaths"."Sniper") + SUM("deaths"."Spy")) / ("log_base"."length"/60))) as depm,
+            (((SUM("deaths"."Scout") + SUM("deaths"."Soldier") + SUM("deaths"."Pyro") + SUM("deaths"."Demo") + SUM("deaths"."Heavy") + SUM("deaths"."Engineer") + SUM("deaths"."Medic") + SUM("deaths"."Sniper") + SUM("deaths"."Spy")) / ("log_base"."length"/60))) as depm FROM "log_base"
+            JOIN "log_team" ON "log_team"."log_id" = "log_base"."id"
+            JOIN "log_stats" ON "log_stats"."log_id" = "log_base"."id"
+            JOIN "deaths" ON "deaths"."log_stat_id" = "log_stats"."id"
+            JOIN "kills" ON "kills"."log_stat_id" = "log_stats"."id"
+            WHERE ("blu_id" = $1 AND "color" = 'Blue' AND "team" = 'Blue') OR ("red_id" = $1 AND "color" = 'Red' AND "team" = 'Red') 
+        GROUP BY "log_base"."id", "Match", "date", "log_team"."kills", "log_team"."damage", "charges", "log_team"."drops", "color"
+        ORDER BY "date";`;
+    pool.query(queryText, [req.params.id]).then(result => {
+        let resultRows = result.rows;
+        let queryText = `SELECT "log_base"."id", 
             SUM(CASE WHEN "class" = 'scout' THEN "class_stats"."kills" ELSE 0 END) as team_scout_kills,
             SUM(CASE WHEN "class" = 'soldier' THEN "class_stats"."kills" ELSE 0 END) as team_soldier_kills,
             SUM(CASE WHEN "class" = 'pyro' THEN "class_stats"."kills" ELSE 0 END) as team_pyro_kills,
@@ -24,7 +34,7 @@ router.get('/team/:id', (req, res) => {
             SUM(CASE WHEN "class" = 'medic' THEN "class_stats"."kills" ELSE 0 END) as team_medic_kills,
             SUM(CASE WHEN "class" = 'sniper' THEN "class_stats"."kills" ELSE 0 END) as team_sniper_kills,
             SUM(CASE WHEN "class" = 'spy' THEN "class_stats"."kills" ELSE 0 END) as team_spy_kills,
-            
+
             SUM(CASE WHEN "class" = 'scout' THEN "class_stats"."deaths" ELSE 0 END) as team_scout_deaths,
             SUM(CASE WHEN "class" = 'soldier' THEN "class_stats"."deaths" ELSE 0 END) as team_soldier_deaths,
             SUM(CASE WHEN "class" = 'pyro' THEN "class_stats"."deaths" ELSE 0 END) as team_pyro_deaths,
@@ -33,24 +43,37 @@ router.get('/team/:id', (req, res) => {
             SUM(CASE WHEN "class" = 'engineer' THEN "class_stats"."deaths" ELSE 0 END) as team_engineer_deaths,
             SUM(CASE WHEN "class" = 'medic' THEN "class_stats"."deaths" ELSE 0 END) as team_medic_deaths,
             SUM(CASE WHEN "class" = 'sniper' THEN "class_stats"."deaths" ELSE 0 END) as team_sniper_deaths,
-            SUM(CASE WHEN "class" = 'spy' THEN "class_stats"."deaths" ELSE 0 END) as team_spy_deaths FROM "log_base" 
-            
+            SUM(CASE WHEN "class" = 'spy' THEN "class_stats"."deaths" ELSE 0 END) as team_spy_deaths FROM "log_base"
             JOIN "log_team" ON "log_team"."log_id" = "log_base"."id"
             JOIN "log_stats" ON "log_stats"."log_id" = "log_base"."id"
             JOIN "deaths" ON "deaths"."log_stat_id" = "log_stats"."id"
             JOIN "kills" ON "kills"."log_stat_id" = "log_stats"."id"
             JOIN "class_stats" ON "class_stats"."log_stat_id" = "log_stats"."id"
             WHERE ("blu_id" = $1 AND "color" = 'Blue' AND "team" = 'Blue') OR ("red_id" = $1 AND "color" = 'Red' AND "team" = 'Red') 
-        GROUP BY "log_base"."id", "Match", "date", "log_team"."kills", "log_team"."damage", "charges", "log_team"."drops", "color"
-        ORDER BY "date";`;
-    pool.query(queryText, [req.params.id]).then(result => {
-        res.send(result.rows);
+            GROUP BY "log_base"."id", "date"
+        ORDER BY "date";`
+        pool.query(queryText, [req.params.id]).then(result => {
+            for (let i = 0; i < result.rows.length; i++) {
+                for (const key in result.rows[i]) {
+                    if (result.rows[i].hasOwnProperty(key)) {
+                        resultRows[i][key] = result.rows[i][key]
+                    }
+                }
+            }
+            
+            res.send(resultRows);
+        })
+            .catch(error => {
+                console.log('error selecting from log_base', error);
+                res.sendStatus(500);
+            });
     })
     .catch(error => {
         console.log('error selecting from log_base', error);
         res.sendStatus(500);
     });
 })
+
 
 router.get('/player/:id', (req, res) => {
     let queryText = `SELECT "class_stats"."log_stat_id", "team",

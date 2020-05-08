@@ -110,6 +110,7 @@ class NewTeamButton extends Component {
                                 <Option value={5}>Fours</Option>
                                 <Option value={6}>Ultitrio</Option>
                                 <Option value={7}>Ultiduo</Option>
+                                <Option value={8}>Ready Steady Pan</Option>
                             </Select>
                         </Col>
                     </Row>

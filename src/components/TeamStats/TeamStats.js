@@ -60,7 +60,7 @@ class TeamStats extends Component {
             teamClassDeaths = {}
 
         for (const index of this.props.log) {
-            
+
             kills = kills + Number(index.kills)
 
             deaths = deaths + Number(index.deaths)
@@ -182,6 +182,6 @@ class TeamStats extends Component {
     }
 }
 
-const mapStateToProps = ({ team, user, member, log }) => ({ team, user, member, log});
+const mapStateToProps = ({ team, user, member, log, class_log }) => ({ team, user, member, log, class_log });
 
 export default connect(mapStateToProps)(TeamStats);
