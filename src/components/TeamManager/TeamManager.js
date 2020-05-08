@@ -54,26 +54,26 @@ class TeamManager extends Component {
             }
         })
         if (target === 'class') {
-            this.props.dispatch({ type: 'SET_MEMBER_CLASS', payload: { value, id, target: this.props.team[0].id } });
+            this.props.dispatch({ type: 'SET_MEMBER_CLASS', payload: { value, id, target: this.props.team[0].trueid } });
         } else if (target === 'main') {
-            this.props.dispatch({ type: 'SET_MEMBER_MAIN', payload: { value, id, target: this.props.team[0].id } });
+            this.props.dispatch({ type: 'SET_MEMBER_MAIN', payload: { value, id, target: this.props.team[0].trueid } });
         }
     }
 
     promoteMember = (id, is_user) => {
-        this.props.dispatch({ type: 'PROMOTE_TO_LEADER', payload: { id, team: this.props.team[0].id } });
+        this.props.dispatch({ type: 'PROMOTE_TO_LEADER', payload: { id, team: this.props.team[0].trueid } });
         if (is_user) {
             this.props.resetLeadership()
         }
     }
 
     removeMember = (id) => {
-        this.props.dispatch({ type: 'REMOVE_MEMBER', payload: { id, team: this.props.team[0].id } });
+        this.props.dispatch({ type: 'REMOVE_MEMBER', payload: { id, team: this.props.team[0].trueid } });
     }
 
 
     deactivateTeam = () => {
-        this.props.dispatch({ type: 'DEACTIVATE_TEAM', payload: this.props.team[0].id });
+        this.props.dispatch({ type: 'DEACTIVATE_TEAM', payload: this.props.team[0].trueid });
     }
 
     render() { 
@@ -149,7 +149,6 @@ class TeamManager extends Component {
                                     <Popconfirm
                                         title={`Promote ${record.displayname} to leader?`}
                                         onConfirm={() => this.promoteMember(record.user_id)}
-                                        onCancel={console.log('nope')}
                                         okText="Yes, Promote"
                                         cancelText="No"
                                     >
@@ -166,7 +165,6 @@ class TeamManager extends Component {
                                         return (<Popconfirm
                                                 title={`Leave ${this.props.team[0].name}?`}
                                                     onConfirm={() => this.removeMember(record.user_id, true)}
-                                                    onCancel={console.log('nope')}
                                                     okText="Yes, Leave"
                                                     cancelText="No"
                                                 >
@@ -176,7 +174,6 @@ class TeamManager extends Component {
                                     return (<> {text || <Popconfirm
                                                             title={`Remove ${record.displayname} from ${this.props.team[0].name}?`}
                                                             onConfirm={() => this.removeMember(record.user_id)}
-                                                            onCancel={console.log('nope')}
                                                             okText="Yes, Remove"
                                                             cancelText="No"
                                                         >
@@ -196,7 +193,6 @@ class TeamManager extends Component {
                                 <Popconfirm
                                     title={`Deactivate ${this.props.team[0].name}? \n This can not be undone`}
                                     onConfirm={() => this.deactivateTeam()}
-                                    onCancel={console.log('nope')}
                                     okText="Yes, Deactivate"
                                     cancelText="No"
                                     placement="topLeft"

@@ -53,21 +53,18 @@ class NewTeamButton extends Component {
     };
 
     handleGamemodeChange = (value) => {
-        console.log(value);
         this.setState({
             gamemode: value
         })
     }
 
     handleNameChange = (event) => {
-        console.log(event.target.value);
         this.setState({
             teamName: event.target.value
         })
     }
 
     handleTagChange = (event) => {
-        console.log(event.target.value);
         this.setState({
             teamTag: event.target.value
         })

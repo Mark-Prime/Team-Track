@@ -57,6 +57,7 @@ router.post('/', (req, res) => {
  * PUT route
  */
 router.put('/name', (req, res) => {
+    console.log(req.body)
     let queryText = 'UPDATE "teams" SET "name" = $1 WHERE "id" = $2';
     pool.query(queryText,[req.body.newName, req.body.id]).then(result => {
         res.sendStatus(200);

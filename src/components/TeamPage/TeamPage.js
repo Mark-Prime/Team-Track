@@ -24,7 +24,6 @@ class PlayerPage extends Component {
     }
 
     componentDidMount() {
-        console.log('ID:', this.props.match.params.id);
         this.refreshInformation()
     }
 
@@ -42,7 +41,6 @@ class PlayerPage extends Component {
     }
 
     componentDidUpdate() {
-        console.log('UPDATE');
         if (this.state.ID !== this.props.match.params.id) {
             if (this.state.isLeader) {
                 this.setState({ isLeader: false })
@@ -61,10 +59,8 @@ class PlayerPage extends Component {
         if (this.props.user[0]){
             if (this.state.member !== this.props.member) {
                 for (const index of this.props.member) {
-                    console.log('index:', index.is_leader);
                     if (index.user_id === this.props.user[0].id) {
                         if (index.is_leader) {
-                            console.log('LEADER');
                             this.setState({ isLeader: true })
                         }
                         this.setState({ isMember: true })
@@ -91,13 +87,13 @@ class PlayerPage extends Component {
     }
 
     saveName = (value) => {
-        this.props.dispatch({ type: 'SAVE_TEAM_NAME', payload: { newName: value, id: this.props.team[0].id } });
+        this.props.dispatch({ type: 'SAVE_TEAM_NAME', payload: { newName: value, id: this.props.team[0].trueid } });
         this.setState({ teamName: value })
         this.refreshInformation()
     }
 
     saveTag = (value) => {
-        this.props.dispatch({ type: 'SAVE_TEAM_TAG', payload: { newTag: value, id: this.props.team[0].id } });
+        this.props.dispatch({ type: 'SAVE_TEAM_TAG', payload: { newTag: value, id: this.props.team[0].trueid } });
         this.setState({ teamTag: value })
         this.refreshInformation()
     }
@@ -173,7 +169,6 @@ class PlayerPage extends Component {
                                                     <Popconfirm
                                                         title={`Leave ${this.props.team[0].name}?`}
                                                         onConfirm={this.leaveTeam}
-                                                        onCancel={console.log('nope')}
                                                         okText="Yes, Leave"
                                                         cancelText="No"
                                                     >
@@ -184,7 +179,6 @@ class PlayerPage extends Component {
                                                             <Popconfirm
                                                                 title={`Leave ${this.props.team[0].name}?`}
                                                                 onConfirm={this.joinTeam}
-                                                                onCancel={console.log('nope')}
                                                                 okText="Yes, Join"
                                                                 cancelText="No"
                                                             >
