@@ -10,7 +10,7 @@ const SteamID = require('steamid');
 //   the user to steamcommunity.com.  After authenticating, Steam will redirect the
 //   user back to this application at /auth/steam/return
 router.get('/steam',
-    passport.authenticate('steam', { failureRedirect: 'http://localhost:3000/#/' }),
+    passport.authenticate('steam', { failureRedirect: 'https://teamtrack.azurewebsites.net/#/home' }),
     function (req, res) {
         res.redirect('/');
     });
@@ -26,7 +26,7 @@ router.get('/steam/return',
         req.url = req.originalUrl;
         next();
     },
-    passport.authenticate('steam', { failureRedirect: 'http://localhost:3000/#/' }),
+    passport.authenticate('steam', { failureRedirect: 'https://teamtrack.azurewebsites.net/#/home' }),
     function (req, res) {
 
         let queryText = 'SELECT * FROM "user" WHERE id = $1;';
@@ -37,20 +37,20 @@ router.get('/steam/return',
                 let queryText = `INSERT INTO "user" (id, displayname, steamid3, avatar) 
                 VALUES($1, $2, $3, $4);`;
                 pool.query(queryText, [req.user.id, req.user.displayName, steamid3, req.user._json.avatarfull]).then(result => {
-                    res.redirect('http://localhost:3000/#/user');
+                    res.redirect('https://teamtrack.azurewebsites.net/#/user');
                 })
                 .catch(error => {
                     console.log('error posting into "user"', error);
-                    res.redirect('http://localhost:3000/#/home');
+                    res.redirect('https://teamtrack.azurewebsites.net/#/home');
                 });
             } else {
-                res.redirect('http://localhost:3000/#/home');
+                res.redirect('https://teamtrack.azurewebsites.net/#/home');
 
             }
         })
         .catch(error => {
             console.log('error selecting * from user', error);
-            res.redirect('http://localhost:3000/#/home');
+            res.redirect('https://teamtrack.azurewebsites.net/#/home');
         });
 
     });
