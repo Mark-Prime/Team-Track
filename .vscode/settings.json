@@ -3,6 +3,6 @@
         "node_modules{,/**}",
         ".vscode{,/**}"
     ],
-    "appService.defaultWebAppToDeploy": "/subscriptions/adc18d7a-f807-49b2-8d32-b92fc4ff09b1/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/TeamTrack",
-    "appService.deploySubpath": ""
+    "appService.deploySubpath": "",
+    "appService.defaultWebAppToDeploy": "/subscriptions/adc18d7a-f807-49b2-8d32-b92fc4ff09b1/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/TeamTrack"
 }

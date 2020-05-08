@@ -11,7 +11,6 @@ import {connect} from 'react-redux';
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
 
-import AboutPage from '../AboutPage/AboutPage';
 import PlayerPage from '../PlayerPage/PlayerPage';
 import HomePage from '../HomePage/HomePage';
 import TeamPage from '../TeamPage/TeamPage'
@@ -37,11 +36,6 @@ class App extends Component {
               exact
               path="/home"
               component={HomePage}
-            />
-            <Route
-              exact
-              path="/about"
-              component={AboutPage}
             />
             <Route
               path="/player/:id"
