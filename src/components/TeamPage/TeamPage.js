@@ -177,7 +177,7 @@ class PlayerPage extends Component {
                                                     <>
                                                         { this.props.team[0].active &&
                                                             <Popconfirm
-                                                                title={`Leave ${this.props.team[0].name}?`}
+                                                                title={`Join ${this.props.team[0].name}?`}
                                                                 onConfirm={this.joinTeam}
                                                                 okText="Yes, Join"
                                                                 cancelText="No"

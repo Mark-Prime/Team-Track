@@ -54,4 +54,6 @@ class App extends Component {
   )}
 }
 
+const mapStateToProps = ({ user }) => ({ user });
+
 export default connect()(App);

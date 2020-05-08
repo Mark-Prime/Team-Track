@@ -37,7 +37,7 @@ router.get('/steam/return',
                 let queryText = `INSERT INTO "user" (id, displayname, steamid3, avatar) 
                 VALUES($1, $2, $3, $4);`;
                 pool.query(queryText, [req.user.id, req.user.displayName, steamid3, req.user._json.avatarfull]).then(result => {
-                    res.redirect('https://teamtrack.azurewebsites.net/#/user');
+                    res.redirect(`https://teamtrack.azurewebsites.net/#/player/${req.user.id}`);
                 })
                 .catch(error => {
                     console.log('error posting into "user"', error);
