@@ -1,8 +1,3 @@
-
--- USER is a reserved keyword with Postgres
--- You must use double quotes in every query that user is in:
--- ex. SELECT * FROM "user";
--- Otherwise you will have errors!
 CREATE TABLE "user"
 (
     "id" BIGINT PRIMARY KEY,
@@ -25,14 +20,14 @@ CREATE TABLE "classes"
 (
     "id" SERIAL PRIMARY KEY,
     "class_name" TEXT NOT NULL,
-    "type" TEXT NOT NULL,
+    "type" TEXT NOT NULL
 );
 
 CREATE TABLE "gamemodes"
 (
     "id" SERIAL PRIMARY KEY,
     "title" VARCHAR(255) NOT NULL,
-    "players" INTEGER NOT NULL,
+    "players" INTEGER NOT NULL
 );
 
 CREATE TABLE "team_members"
@@ -232,131 +227,3 @@ VALUES
     (76561198085943550, 7, TRUE, TRUE, 2),
     (76561198213561811, 7, FALSE, FALSE, 7),
     (6561198017684173, 8, TRUE, TRUE, 8);
-
-
-
-
-CREATE TABLE "user"
-(
-    "id" BIGINT PRIMARY KEY,
-    "displayname" VARCHAR (80) NOT NULL,
-    "steamid3" VARCHAR(64) UNIQUE NOT NULL,
-    "avatar" TEXT NOT NULL DEFAULT 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/b5/b5bd56c1aa4644a474a2e4972be27ef9e82e517e_full.jpg'
-);
-
-CREATE TABLE "teams"
-(
-    "id" INT IDENTITY(1,1) PRIMARY KEY,
-    "name" VARCHAR(255) NOT NULL,
-    "gamemode" INTEGER NOT NULL,
-    "active" BIT NOT NULL DEFAULT 'true',
-    "password" VARCHAR(255) NOT NULL,
-    "tag" VARCHAR(6) NOT NULL
-);
-
-CREATE TABLE "classes"
-(
-    "id" INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-    "class_name" TEXT NOT NULL,
-    "type" TEXT NOT NULL,
-);
-
-CREATE TABLE "gamemodes"
-(
-    "id" INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-    "title" VARCHAR(255) NOT NULL,
-    "players" INTEGER NOT NULL,
-);
-
-CREATE TABLE "team_members"
-(
-    "id" INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-    "user_id" BIGINT NOT NULL,
-    "team_id" INTEGER NOT NULL,
-    "is_leader" BIT NOT NULL DEFAULT 'false',
-    "main" BIT NOT NULL DEFAULT 'true',
-    "class" INTEGER NOT NULL DEFAULT 1
-);
-
-CREATE TABLE "log_base"
-(
-    "id" INT IDENTITY(1,1) NOT NULL,
-    "blu_id" INTEGER,
-    "red_id" INTEGER,
-    "Match" BIT NOT NULL DEFAULT 'false',
-    "date" DATE NOT NULL,
-    "gamemode" INTEGER NOT NULL
-);
-
-
-CREATE TABLE "log_stats"
-(
-    "id" INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-    "log_id" INTEGER NOT NULL,
-    "steamid3" VARCHAR(255) NOT NULL,
-    "team" VARCHAR(255) NOT NULL,
-    "assists" INTEGER NOT NULL,
-    "suicides" INTEGER NOT NULL,
-    "kapd" VARCHAR(255) NOT NULL,
-    "kpd" VARCHAR(255) NOT NULL,
-    "damage" INTEGER NOT NULL,
-    "damage_taken" INTEGER NOT NULL,
-    "dapm" INTEGER NOT NULL,
-    "ubers" INTEGER NOT NULL,
-    "drops" INTEGER NOT NULL,
-    "backstabs" INTEGER NOT NULL,
-    "headshots" INTEGER NOT NULL
-);
-
-CREATE TABLE "kills"
-(
-    "id" INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-    "log_stat_id" INTEGER NOT NULL,
-    "Scout" INTEGER NOT NULL DEFAULT '0',
-    "Soldier" INTEGER NOT NULL DEFAULT '0',
-    "Pyro" INTEGER NOT NULL DEFAULT '0',
-    "Demo" INTEGER NOT NULL DEFAULT '0',
-    "Heavy" INTEGER NOT NULL DEFAULT '0',
-    "Engineer" INTEGER NOT NULL DEFAULT '0',
-    "Medic" INTEGER NOT NULL DEFAULT '0',
-    "Sniper" INTEGER NOT NULL DEFAULT '0',
-    "Spy" INTEGER NOT NULL DEFAULT '0'
-);
-
-CREATE TABLE "deaths"
-(
-    "id" INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-    "log_stat_id" INTEGER NOT NULL,
-    "Scout" INTEGER NOT NULL DEFAULT '0',
-    "Soldier" INTEGER NOT NULL DEFAULT '0',
-    "Pyro" INTEGER NOT NULL DEFAULT '0',
-    "Demo" INTEGER NOT NULL DEFAULT '0',
-    "Heavy" INTEGER NOT NULL DEFAULT '0',
-    "Engineer" INTEGER NOT NULL DEFAULT '0',
-    "Medic" INTEGER NOT NULL DEFAULT '0',
-    "Sniper" INTEGER NOT NULL DEFAULT '0',
-    "Spy" INTEGER NOT NULL DEFAULT '0'
-);
-
-CREATE TABLE "class_stats"
-(
-    "id" INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-    "log_stat_id" INTEGER NOT NULL,
-    "class" VARCHAR(255) NOT NULL,
-    "kills" INTEGER NOT NULL,
-    "assists" INTEGER NOT NULL,
-    "deaths" INTEGER NOT NULL,
-    "damage" INTEGER NOT NULL,
-    "total_time" INTEGER NOT NULL
-);
-
-CREATE TABLE "log_team"
-(
-    "id" INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-    "log_id" INTEGER NOT NULL,
-    "kills" INTEGER NOT NULL,
-    "damage" INTEGER NOT NULL,
-    "charges" INTEGER NOT NULL,
-    "drops" INTEGER NOT NULL,
-    "color" TEXT NOT NULL
-);
