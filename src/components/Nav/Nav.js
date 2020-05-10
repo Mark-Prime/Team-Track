@@ -47,7 +47,9 @@ class Nav extends Component {
               </Dropdown>
               <Avatar className="" shape="square" size={64} src={this.props.user[0].avatar} />
             </> :
-            <a className="nav-link" href="https://teamtrack.azurewebsites.net/auth/steam">Log In</a>
+            <a className="nav-link" href="https://teamtrack.azurewebsites.net/auth/steam">
+              <img alt="steamlogin" src={require('../../images/login.png')}></img>
+            </a>
           }
         </div>
       </div>
