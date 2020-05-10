@@ -6,7 +6,7 @@ const router = express.Router();
  * GET route
  */
 router.get('/all', (req, res) => {
-    let queryText = 'SELECT * FROM "user" ORDER BY id;';
+    let queryText = 'SELECT * FROM "user" ORDER BY displayname, id;';
     pool.query(queryText).then(result => {
         res.send(result.rows);
     })

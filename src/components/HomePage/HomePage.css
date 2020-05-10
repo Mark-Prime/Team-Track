@@ -5,3 +5,14 @@
 .inactive {
     color: #f5222d
 }
+
+.avatar {
+    margin-right: 10px;
+    float: left;
+}
+
+.spin {
+    margin: auto;
+    text-align: center;
+    float: center;
+}

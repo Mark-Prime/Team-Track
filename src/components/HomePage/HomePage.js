@@ -9,13 +9,16 @@ import NewTeamButton from '../NewTeamButton/NewTeamButton'
 
 
 // Ant Design
-import { Row, Col, Table, Avatar } from 'antd';
+import { Row, Col, Table, Avatar, Spin } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 
 class HomePage extends Component {
     
     componentDidMount() {
+        this.props.dispatch({ type: 'UNSET_TEAMS' })
+        this.props.dispatch({ type: 'UNSET_PLAYERS' })
+
         this.props.dispatch({ type: 'FETCH_TEAMS' })
         this.props.dispatch({ type: 'FETCH_PLAYERS' })
     }
@@ -25,35 +28,40 @@ class HomePage extends Component {
             <Row>
                 <Col span={1}></Col>
                 <Col span={10}>
-                    <Table columns={[
-                        {
-                            title: 'Name',
-                            dataIndex: 'name',
-                            key: 'name',
-                            render: (text, record) => <a href={`/#/team/${record.trueid}`}>{text}</a>
-                        },
-                        {
-                            title: 'Gamemode',
-                            dataIndex: 'title',
-                            key: 'title'
-                        },
-                        {
-                            title: 'Active',
-                            dataIndex: 'active',
-                            key: 'active',
-                            render: text => <>
-                                {text ? 
-                                    <CheckCircleOutlined className="active" style={{ fontSize: '30px' }} /> : 
-                                    <CloseCircleOutlined className="inactive" style={{ fontSize: '30px' }} />
-                                } 
-                            </>
-                        }
-                    ]} dataSource={this.props.team} />
-                    {this.props.user[0] &&
-                        <NewTeamButton />}
+                    {this.props.team[0] ? 
+                    <>
+                        <Table columns={[
+                            {
+                                title: 'Name',
+                                dataIndex: 'name',
+                                key: 'name',
+                                render: (text, record) => <a href={`/#/team/${record.trueid}`}>{text}</a>
+                            },
+                            {
+                                title: 'Gamemode',
+                                dataIndex: 'title',
+                                key: 'title'
+                            },
+                            {
+                                title: 'Active',
+                                dataIndex: 'active',
+                                key: 'active',
+                                render: text => <>
+                                    {text ? 
+                                        <CheckCircleOutlined className="active" style={{ fontSize: '30px' }} /> : 
+                                        <CloseCircleOutlined className="inactive" style={{ fontSize: '30px' }} />
+                                    } 
+                                </>
+                            }
+                        ]} dataSource={this.props.team} />
+                        {this.props.user[0] &&
+                            <NewTeamButton />}
+                        </> :
+                        <div className="spin" ><Spin size="large" /></div> }
                 </Col>
                 <Col span={2}></Col>
                 <Col span={10}>
+                    {this.props.player[0] ?
                     <Table columns={[
                         {
                             title: 'Name',
@@ -71,7 +79,8 @@ class HomePage extends Component {
                             dataIndex: 'steamid3',
                             key: 'steamid3'
                         }
-                    ]} dataSource={this.props.player} />
+                    ]} dataSource={this.props.player} /> :
+                        <div className="spin" ><Spin size="large" /></div> }
                 </Col>
                 <Col span={1}></Col>
             </Row>

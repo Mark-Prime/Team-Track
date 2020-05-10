@@ -21,21 +21,23 @@ class PlayerPage extends Component {
     componentDidUpdate() {
         if (this.props.match.params.id !== this.state.id){
             this.setState({ id: this.props.match.params.id })
-            this.props.dispatch({ type: 'FETCH_PLAYER', payload: this.props.match.params.id })
-            this.props.dispatch({ type: 'FETCH_USER_TEAMS', payload: this.props.match.params.id })
-            this.props.dispatch({ type: 'FETCH_PLAYER_STATS', payload: this.props.match.params.id })
-            this.props.dispatch({ type: 'UNSET_LOGS' })
-            this.props.dispatch({ type: 'FETCH_PLAYER_LOGS', payload: this.props.match.params.id })
+
+            this.refreshInformation()
         }
     }
 
     componentDidMount() {
+        this.refreshInformation()
+    }
+
+    refreshInformation = () => {
+        this.props.dispatch({ type: 'UNSET_TEAMS' })
+        this.props.dispatch({ type: 'UNSET_PLAYERS' })
         this.props.dispatch({ type: 'FETCH_PLAYER', payload: this.props.match.params.id })
         this.props.dispatch({ type: 'FETCH_USER_TEAMS', payload: this.props.match.params.id })
         this.props.dispatch({ type: 'FETCH_PLAYER_STATS', payload: this.props.match.params.id })
         this.props.dispatch({ type: 'UNSET_LOGS' })
         this.props.dispatch({ type: 'FETCH_PLAYER_LOGS', payload: this.props.match.params.id })
-        
     }
 
     render() {
