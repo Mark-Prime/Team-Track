@@ -45,10 +45,6 @@ app.use(cookieSession({
   saveUninitialized: true
 }));
 
-app.get('/account', ensureAuthenticated, function (req, res) {
-  res.sendStatus(200)
-});
-
 app.get('/logout', function (req, res) {
   req.session = null
   res.redirect('https://teamtrack.azurewebsites.net/#/home');

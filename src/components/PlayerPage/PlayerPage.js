@@ -40,6 +40,32 @@ class PlayerPage extends Component {
         this.props.dispatch({ type: 'FETCH_PLAYER_LOGS', payload: this.props.match.params.id })
     }
 
+    logTags = (gamecount) => {
+        console.log(gamecount)
+        if (5 <= gamecount && gamecount < 10) { 
+            return <Tag color={"orange"} key={gamecount}>5+ Logs</Tag> 
+        } else if (10 <= gamecount && gamecount < 25){
+            return <Tag color={"orange"} key={gamecount}>10+ Logs</Tag>
+        } else if (25 <= gamecount && gamecount < 50){
+            return <Tag color={"volcano"} key={gamecount}>25+ Logs</Tag>
+        } else if (50 <= gamecount && gamecount < 100){
+            return <Tag color={"volcano"} key={gamecount}>50+ Logs</Tag>
+        } else if (100 <= gamecount && gamecount < 250){
+            return <Tag color={"magenta"} key={gamecount}>100+ Logs</Tag>
+        } else if (250 <= gamecount && gamecount < 500){
+            return <Tag color={"magenta"} key={gamecount}>250+ Logs</Tag>
+        } else if (500 <= gamecount && gamecount < 1000){
+            return <Tag color={"purple"} key={gamecount}>500+ Logs</Tag>
+        } else if (1000 <= gamecount && gamecount < 2500){
+            return <Tag color={"purple"} key={gamecount}>1000+ Logs</Tag>
+        } else if (2500 <= gamecount && gamecount < 5000){
+            return <Tag color={"gold"} key={gamecount}>2500+ Logs</Tag>
+        } else {
+            return <></>
+        }
+        
+    }
+
     render() {
         return (
             <div>
@@ -62,6 +88,8 @@ class PlayerPage extends Component {
                                         OFTEN MAINS
                                     </Tag>
                                 }
+                                {this.props.log[0] && this.logTags(this.props.log.length)}
+
                                 <p>Player ID: {this.props.player[0].id}</p>
 
                                 <Dropdown overlay={<Menu>
