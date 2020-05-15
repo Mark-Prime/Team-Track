@@ -9,8 +9,8 @@ import PlayerStats from '../PlayerStats/PlayerStats'
 
 
 // Ant Design
-import { Row, Col, Avatar, Menu, Dropdown, Table, Tabs, Tag } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { Row, Col, Avatar, Menu, Dropdown, Table, Tabs, Tag, Space, Tooltip } from 'antd';
+import { DownOutlined, CheckCircleTwoTone } from '@ant-design/icons';
 const { TabPane } = Tabs;
 
 class PlayerPage extends Component {
@@ -76,7 +76,14 @@ class PlayerPage extends Component {
                             <>
                                 <Avatar shape="square" size={128} src={this.props.player[0].avatar} />
                                 <h1 id="welcome">
-                                    {this.props.player[0].displayname}
+                                    
+                                    <Space>
+                                        {this.props.player[0].displayname}
+                                        {this.props.player[0].verified && 
+                                            <Tooltip title="Verified!">
+                                                <CheckCircleTwoTone />
+                                            </Tooltip>}
+                                    </Space>
                                 </h1>
                                 {this.props.stats.leader_mode &&
                                     <Tag color={"orange"} key={`LEADER`}>

@@ -9,8 +9,8 @@ import NewTeamButton from '../NewTeamButton/NewTeamButton'
 
 
 // Ant Design
-import { Row, Col, Table, Avatar, Spin } from 'antd';
-import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { Row, Col, Table, Avatar, Spin, Space, Tooltip } from 'antd';
+import { CheckCircleOutlined, CloseCircleOutlined, CheckCircleTwoTone } from '@ant-design/icons';
 
 
 class HomePage extends Component {
@@ -35,29 +35,26 @@ class HomePage extends Component {
                                 title: 'Name',
                                 dataIndex: 'name',
                                 key: 'name',
-                                render: (text, record) => <a href={`/#/team/${record.trueid}`}>{text}</a>
+                                render: (text, record) => <a href={`/#/team/${record.trueid}`}>
+                                    <Space size="small">
+                                        {text}
+                                    {record.active ?
+                                        <Tooltip title="Active"><CheckCircleOutlined className="active check" /></Tooltip> :
+                                        <Tooltip title="Inactive"><CloseCircleOutlined className="inactive check" /></Tooltip>
+                                    } </Space></a>
                             },
                             {
                                 title: 'Gamemode',
                                 dataIndex: 'title',
                                 key: 'title'
-                            },
-                            {
-                                title: 'Active',
-                                dataIndex: 'active',
-                                key: 'active',
-                                render: text => <>
-                                    {text ? 
-                                        <CheckCircleOutlined className="active" style={{ fontSize: '30px' }} /> : 
-                                        <CloseCircleOutlined className="inactive" style={{ fontSize: '30px' }} />
-                                    } 
-                                </>
                             }
                         ]} dataSource={this.props.team} />
                         {this.props.user[0] &&
                             <NewTeamButton />}
                         </> :
-                        <div className="spin" ><Spin size="large" /></div> }
+                        <div class="loader">
+                            <img src={require('../../images/TeamTracker_Logo.svg')} />
+                        </div>  }
                 </Col>
                 <Col span={2}></Col>
                 <Col span={10}>
@@ -67,7 +64,15 @@ class HomePage extends Component {
                             title: 'Name',
                             dataIndex: 'displayname',
                             key: 'displayname',
-                            render: (text, record) => <a href={`/#/player/${record.id}`}><Avatar className="avatar" shape="square" src={record.avatar} />   {text}</a>
+                            render: (text, record) => <a href={`/#/player/${record.id}`}>
+                                <Space size="small">
+                                    <Avatar className="avatar" shape="square" src={record.avatar} />
+                                    {text}
+                                    {record.verified &&
+                                        <Tooltip title="Verified!">
+                                            <CheckCircleTwoTone />
+                                        </Tooltip>}
+                                </Space></a>
                         },
                         {
                             title: 'SteamID64',
@@ -79,8 +84,10 @@ class HomePage extends Component {
                             dataIndex: 'steamid3',
                             key: 'steamid3'
                         }
-                    ]} dataSource={this.props.player} /> :
-                        <div className="spin" ><Spin size="large" /></div> }
+                        ]} dataSource={this.props.player} /> :
+                        <div class="loader">
+                            <img src={require('../../images/TeamTracker_Logo.svg')} />
+                        </div>  }
                 </Col>
                 <Col span={1}></Col>
             </Row>
