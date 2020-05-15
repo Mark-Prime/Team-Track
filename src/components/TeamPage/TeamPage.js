@@ -136,7 +136,7 @@ class PlayerPage extends Component {
                                                 title: 'Name',
                                                 dataIndex: 'displayname',
                                                 key: 'displayname',
-                                                render: (text, record) => <a href={`/#/player/${record.id}`}>
+                                                render: (text, record) => <a href={`/#/player/${record.user_id}`}>
                                                     <Space size="small">
                                                         <Avatar className="avatar" shape="square" src={record.avatar} />
                                                         {text}
