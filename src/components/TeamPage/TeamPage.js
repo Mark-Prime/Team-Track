@@ -10,7 +10,8 @@ import TeamStats from '../TeamStats/TeamStats'
 
 
 // Ant Design
-import { Row, Col, Tabs, Table, Avatar, Tag, Button, Popconfirm } from 'antd';
+import { Row, Col, Tabs, Table, Avatar, Tag, Button, Popconfirm, Space, Tooltip } from 'antd';
+import { CheckCircleTwoTone } from '@ant-design/icons';
 const { TabPane } = Tabs;
 
 class PlayerPage extends Component {
@@ -135,7 +136,15 @@ class PlayerPage extends Component {
                                                 title: 'Name',
                                                 dataIndex: 'displayname',
                                                 key: 'displayname',
-                                                render: (text, record) => <a href={`/#/player/${record.user_id}`}><Avatar className="avatar" shape="square" src={record.avatar} />   {text}</a>
+                                                render: (text, record) => <a href={`/#/player/${record.id}`}>
+                                                    <Space size="small">
+                                                        <Avatar className="avatar" shape="square" src={record.avatar} />
+                                                        {text}
+                                                        {record.verified &&
+                                                            <Tooltip title="Verified!">
+                                                                <CheckCircleTwoTone />
+                                                            </Tooltip>}
+                                                    </Space></a>
                                             },
                                             {
                                                 title: 'Class',
