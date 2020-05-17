@@ -56,7 +56,7 @@ class PlayerStats extends Component {
             deaths = 0,
             damage = 0,
             damage_taken = 0,
-            med_kills: 0,
+            med_kills = 0,
             classes = [],
             classKills = {},
             classDeaths = {},
@@ -87,10 +87,10 @@ class PlayerStats extends Component {
             gamemode_stats[index.title].playerClassKills = this.parseClasses(gamemode_stats[index.title].playerClassKills || {}, index, 'kills_as_', '');
             gamemode_stats[index.title].playerClassDeaths = this.parseClasses(gamemode_stats[index.title].playerClassDeaths || {}, index, 'deaths_as_', '');
 
-            if (!rows[rows.length-1] || rows[rows.length-1].date !== index.date){
-                kills = kills + Number(index.total_kills)
-                deaths = deaths + Number(index.total_deaths)
+            kills = kills + Number(index.total_kills)
+            deaths = deaths + Number(index.total_deaths)
 
+            if (!rows[rows.length - 1] || rows[rows.length - 1].date !== index.date) {
                 dpmArray.push(index.dpm)
                 dtpmArray.push(index.dtpm)
 

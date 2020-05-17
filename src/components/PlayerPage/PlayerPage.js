@@ -43,23 +43,23 @@ class PlayerPage extends Component {
     logTags = (gamecount) => {
         console.log(gamecount)
         if (2500 <= gamecount) {
-            return <Tag color={"gold"} key={gamecount}>2500+ Logs</Tag>
+            return <Tag color={"gold"} key={gamecount} style={{ margin: "5px" }}>2500+ Logs</Tag>
         } else if (1000 <= gamecount) {
-            return <Tag color={"purple"} key={gamecount}>1000+ Logs</Tag>
+            return <Tag color={"purple"} key={gamecount} style={{ margin: "5px" }}>1000+ Logs</Tag>
         } else if (500 <= gamecount) {
-            return <Tag color={"purple"} key={gamecount}>500+ Logs</Tag>
+            return <Tag color={"purple"} key={gamecount} style={{ margin: "5px" }}>500+ Logs</Tag>
         } else if (250 <= gamecount) {
-            return <Tag color={"magenta"} key={gamecount}>250+ Logs</Tag>
+            return <Tag color={"magenta"} key={gamecount} style={{ margin: "5px" }}>250+ Logs</Tag>
         } else if (100 <= gamecount) {
-            return <Tag color={"magenta"} key={gamecount}>100+ Logs</Tag>
+            return <Tag color={"magenta"} key={gamecount} style={{ margin: "5px" }}>100+ Logs</Tag>
         } else if (50 <= gamecount) {
-            return <Tag color={"volcano"} key={gamecount}>50+ Logs</Tag>
+            return <Tag color={"volcano"} key={gamecount} style={{ margin: "5px" }}>50+ Logs</Tag>
         } else if (25 <= gamecount) {
-            return <Tag color={"volcano"} key={gamecount}>25+ Logs</Tag>
+            return <Tag color={"volcano"} key={gamecount} style={{ margin: "5px" }}>25+ Logs</Tag>
         } else if (10 <= gamecount) {
-            return <Tag color={"orange"} key={gamecount}>10+ Logs</Tag>
+            return <Tag color={"orange"} key={gamecount} style={{ margin: "5px" }}>10+ Logs</Tag>
         } else if (5 <= gamecount) {
-            return <Tag color={"orange"} key={gamecount}>5+ Logs</Tag> 
+            return <Tag color={"orange"} key={gamecount} style={{ margin: "5px" }}>5+ Logs</Tag> 
         } else {
             return <></>
         }
@@ -85,12 +85,12 @@ class PlayerPage extends Component {
                                     </Space>
                                 </h1>
                                 {this.props.stats.leader_mode &&
-                                    <Tag color={"orange"} key={`LEADER`}>
+                                    <Tag color={"orange"} key={`LEADER`} style={{ margin: "5px" }}>
                                         TEAM LEADER
                                     </Tag>
                                 }
                                 {this.props.stats.main_mode &&
-                                    <Tag color={"blue"} key={`MAIN`}>
+                                    <Tag color={"blue"} key={`MAIN`} style={{ margin: "5px" }}>
                                         OFTEN MAINS
                                     </Tag>
                                 }

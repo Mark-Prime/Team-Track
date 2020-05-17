@@ -9,7 +9,7 @@ import NewTeamButton from '../NewTeamButton/NewTeamButton'
 
 
 // Ant Design
-import { Row, Col, Table, Avatar, Spin, Space, Tooltip } from 'antd';
+import { Row, Col, Table, Avatar, Space, Tooltip } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined, CheckCircleTwoTone } from '@ant-design/icons';
 
 
@@ -53,7 +53,7 @@ class HomePage extends Component {
                             <NewTeamButton />}
                         </> :
                         <div class="loader">
-                            <img src={require('../../images/TeamTracker_Logo.svg')} />
+                            <img src={require('../../images/TeamTracker_Logo.svg')} alt="Loading"/>
                         </div>  }
                 </Col>
                 <Col span={2}></Col>
@@ -86,7 +86,7 @@ class HomePage extends Component {
                         }
                         ]} dataSource={this.props.player} /> :
                         <div class="loader">
-                            <img src={require('../../images/TeamTracker_Logo.svg')} />
+                            <img src={require('../../images/TeamTracker_Logo.svg')} alt="Loading"/>
                         </div>  }
                 </Col>
                 <Col span={1}></Col>
