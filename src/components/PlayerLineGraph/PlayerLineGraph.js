@@ -19,7 +19,7 @@ class PlayerLineGraph extends Component {
                     >
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="date" tickFormatter={(tickItem) => new Date(tickItem * 1000).toDateString()} />
-                        <YAxis scale='linear' domain={[0, dataMax => (Math.ceil(dataMax * 1.2))]} />
+                        <YAxis scale='linear' domain={[0, dataMax => this.props.dataMax || (Math.ceil(dataMax * 1.2))]} />
                         <Tooltip content={({ active, payload, label }) =>
                             <div className="tooltip">
                                 <p className="label">{new Date(label * 1000).toDateString()}</p>

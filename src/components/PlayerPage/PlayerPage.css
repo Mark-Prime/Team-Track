@@ -10,3 +10,23 @@
     color: #f5222d;
     text-decoration: line-through;
 }
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.player-tables {
+    width: 70%;
+}
+
+.profile-info {
+    text-align: center;
+}
+
+@media screen and (max-width: 1200px){
+    .player-tables {
+        width: 100%;
+    }
+}

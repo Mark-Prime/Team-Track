@@ -52,7 +52,7 @@ class TeamStats extends Component {
             damage_taken = 0,
             charges = 0,
             drops = 0,
-            med_kills: 0,
+            med_kills = 0,
             teams = [],
             classKills = {},
             classDeaths = {},
@@ -112,32 +112,16 @@ class TeamStats extends Component {
     render() { 
         return ( 
             <>
-                <Row className="stats">
-                    <Col span={3}>
-                        <Statistic title="Kills" value={this.state.kills} />
-                    </Col>
-                    <Col span={3}>
-                        <Statistic title="Deaths" value={this.state.deaths} />
-                    </Col>
-                    <Col span={3}>
-                        <Statistic title="Favorite Team" value={this.state.favorite_team} />
-                    </Col>
-                    <Col span={3}>
-                        <Statistic title="Medic Kills" value={this.state.med_kills} />
-                    </Col>
-                    <Col span={3}>
-                        <Statistic title="Charges" value={this.state.charges} />
-                    </Col>
-                    <Col span={3}>
-                        <Statistic title="Drops" value={this.state.drops} />
-                    </Col>
-                    <Col span={3}>
-                        <Statistic title="Damage" value={this.state.damage} />
-                    </Col>
-                    <Col span={3}>
-                        <Statistic title="Damage Taken" value={this.state.damage_taken} />
-                    </Col>
-                </Row>
+                <div className="statistics-container">
+                    <div className="stat"><Statistic title="Kills" value={this.state.kills} /></div>
+                    <div className="stat"><Statistic title="Deaths" value={this.state.deaths} /></div>
+                    <div className="stat"><Statistic title="Favorite Team" value={this.state.favorite_team} /></div>
+                    <div className="stat"><Statistic title="Medic Kills" value={this.state.med_kills} /></div>
+                    <div className="stat"><Statistic title="Charges" value={this.state.charges} /></div>
+                    <div className="stat"><Statistic title="Drops" value={this.state.drops} /></div>
+                    <div className="stat"><Statistic title="Damage" value={this.state.damage} /></div>
+                    <div className="stat"><Statistic title="Damage Taken" value={this.state.damage_taken} /></div>
+                </div>
                 <Row>
                     <Col span={24}>
                         <Divider orientation="center">Details</Divider>

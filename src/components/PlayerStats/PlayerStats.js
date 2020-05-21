@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+// Styling
+import './PlayerStats.css'
+
 // Components
 import PlayerBarGraph from '../PlayerBarGraph/PlayerBarGraph';
 import PlayerLineGraph from '../PlayerLineGraph/PlayerLineGraph';
@@ -38,6 +41,22 @@ class PlayerStats extends Component {
         return total/arr.length
     }
 
+    parseDataMax = (rows) => {
+        let dpmArray = [];
+        let dtpmArray = [];
+        
+        for (let index of rows) {
+            dpmArray.push(index.dpm)
+            dtpmArray.push(index.dtpm)
+        }
+
+        if (Math.max(...dpmArray) > Math.max(...dtpmArray)) {
+            return Math.max(...dpmArray) * 1.1
+        } else {
+            return Math.max(...dtpmArray) * 1.1
+        }
+    }
+
     parseClasses = (obj, index, stat_start, stat_end) => {
         obj.scout = obj.scout + Number(index[stat_start + 'scout' + stat_end]) || Number(index[stat_start + 'scout' + stat_end])
         obj.soldier = obj.soldier + Number(index[stat_start + 'soldier' + stat_end]) || Number(index[stat_start + 'soldier' + stat_end])
@@ -67,7 +86,8 @@ class PlayerStats extends Component {
             dpmArray = [],
             dtpmArray = [],
             dpmArrays = {},
-            dtpmArrays = {}
+            dtpmArrays = {},
+            dpmChartMax = 0
 
         for (let index of this.props.log) {
             gamemode_stats[index.title] = gamemode_stats[index.title] || {};
@@ -113,6 +133,12 @@ class PlayerStats extends Component {
                 gamemode_stats[index.title].rows.push(index)
                 allRows.push(index)
             }
+        }
+
+        if (Math.max(...dpmArray) > Math.max(...dtpmArray)) {
+            dpmChartMax = Math.max(...dpmArray) * 1.1
+        } else {
+            dpmChartMax = Math.max(...dtpmArray) * 1.1
         }
 
         med_kills = classKills.medic;
@@ -167,6 +193,7 @@ class PlayerStats extends Component {
             favorite_class: mode(classes),
             classKills: classKillsArray,
             playerClassKills: playerClassKillsArray,
+            dpmChartMax
         })
     }
 
@@ -177,16 +204,16 @@ class PlayerStats extends Component {
     render() { 
         return ( 
             <>
-                <Row style={{textAlign: 'center'}}>
-                    <Col span={3}><Statistic title="Kills" value={this.state.kills} /></Col>
-                    <Col span={3}><Statistic title="Deaths" value={this.state.deaths} /></Col>
-                    <Col span={3}><Statistic title="Damage" value={this.state.damage} /></Col>
-                    <Col span={3}><Statistic title="Damage Taken" value={this.state.damage_taken} /></Col>
-                    <Col span={3}><Statistic title="Teams" value={this.props.stats.team_count} /></Col>
-                    <Col span={3}><Statistic title="Total Logs" value={this.state.gamecount} /></Col>
-                    <Col span={3}><Statistic title="Most Played" value={this.state.favorite_class === 'heavyweapons' ? 'Heavy' : this.state.favorite_class.charAt(0).toUpperCase() + this.state.favorite_class.slice(1)} /></Col>
-                    <Col span={3}><Statistic title="Medic Kills" value={this.state.med_kills} /></Col>
-                </Row>
+                <div className="statistics-container">
+                    <div className="stat"><Statistic title="Kills" value={this.state.kills} /></div>
+                    <div className="stat"><Statistic title="Deaths" value={this.state.deaths} /></div>
+                    <div className="stat"><Statistic title="Damage" value={this.state.damage} /></div>
+                    <div className="stat"><Statistic title="Damage Taken" value={this.state.damage_taken} /></div>
+                    <div className="stat"><Statistic title="Teams" value={this.props.stats.team_count} /></div>
+                    <div className="stat"><Statistic title="Total Logs" value={this.state.gamecount} /></div>
+                    <div className="stat"><Statistic title="Most Played" value={this.state.favorite_class === 'heavyweapons' ? 'Heavy' : this.state.favorite_class.charAt(0).toUpperCase() + this.state.favorite_class.slice(1)} className="stat" /></div>
+                    <div className="stat"><Statistic title="Medic Kills" value={this.state.med_kills} /></div>
+                </div>
                 <Divider orientation="center">Details</Divider>
                 <Row>
                     <Col span={24}>
@@ -202,6 +229,7 @@ class PlayerStats extends Component {
                                     lineName1="Damage/Min"
                                     lineName2="Damage Taken/Min"
                                     data={this.state.allRows}
+                                    dataMax={this.state.dpmChartMax}
                                 />
 
                                 <PlayerLineGraph
@@ -243,6 +271,7 @@ class PlayerStats extends Component {
                                             lineName1="Damage/Min"
                                             lineName2="Damage Taken/Min"
                                             data={this.state.gamemode_stats[gamemode].rows}
+                                            dataMax={this.parseDataMax(this.state.gamemode_stats[gamemode].rows)}
                                         />
 
                                         <PlayerLineGraph

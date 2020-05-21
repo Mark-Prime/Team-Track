@@ -11,3 +11,15 @@
     color:#f5222d;
     text-decoration: line-through;
 }
+
+.tab-container {
+    width: 90%;
+    margin: auto;
+}
+
+@media screen and (max-width: 1200px){
+    .tab-container {
+    width: 100%;
+    margin: auto;
+}
+}
