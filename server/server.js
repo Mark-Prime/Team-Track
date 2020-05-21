@@ -19,8 +19,8 @@ passport.deserializeUser(function (obj, done) {
 });
 
 passport.use(new SteamStrategy({
-  returnURL: 'https://www.teamtrack.xyz/auth/steam/return',
-  realm: 'https://www.teamtrack.xyz/',
+  returnURL: `${process.env.DOMAIN_NAME}/auth/steam/return`,
+  realm: `${process.env.DOMAIN_NAME}/`,
   apiKey: `${process.env.STEAM_API_KEY}`
 },
   function (identifier, profile, done) {
@@ -47,7 +47,7 @@ app.use(cookieSession({
 
 app.get('/logout', function (req, res) {
   req.session = null
-  res.redirect('https://www.teamtrack.xyz/#/home');
+  res.redirect(`${process.env.DOMAIN_NAME}/#/home`);
 });
 
 // Route includes
