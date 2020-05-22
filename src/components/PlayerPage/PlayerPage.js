@@ -96,7 +96,7 @@ class PlayerPage extends Component {
 
                             <p>Player ID: {this.props.player[0].id}</p>
 
-                            <Dropdown overlay={<Menu>
+                            <Dropdown className="dropdown-component" overlay={<Menu>
                                 <Menu.Item>
                                     <a target="_blank" rel="noopener noreferrer" href={`https://steamcommunity.com/profiles/${this.props.player[0].id}`}>
                                         Steam

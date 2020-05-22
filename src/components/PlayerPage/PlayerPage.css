@@ -2,6 +2,11 @@
     color: #1890ff;
 }
 
+.dropdown-component {
+    width: 50%;
+    margin: 0px auto 20px auto;
+}
+
 .player-info {
     text-align: center;
 }
@@ -23,10 +28,16 @@
 
 .profile-info {
     text-align: center;
+    width: 25%;
 }
 
 @media screen and (max-width: 1200px){
     .player-tables {
         width: 100%;
     }
+
+    .profile-info {
+    text-align: center;
+    width: 100%;
+}
 }

@@ -25,6 +25,7 @@ class HomePage extends Component {
 
     render() { 
         return ( 
+            <>
             <div className="homepage-container">
                 <div className="homepage-table">
                     {this.props.team[0] ? 
@@ -48,8 +49,10 @@ class HomePage extends Component {
                                 key: 'title'
                             }
                         ]} dataSource={this.props.team} />
-                        {this.props.user[0] &&
-                            <NewTeamButton />}
+                                {this.props.user[0] &&
+                                    <div className="desktop-team-button" >
+                                        <NewTeamButton />
+                                    </div>}
                         </> :
                         <div class="loader">
                             <img src={require('../../images/TeamTracker_Logo.svg')} alt="Loading"/>
@@ -76,18 +79,19 @@ class HomePage extends Component {
                             title: 'SteamID64',
                             dataIndex: 'id',
                             key: 'id'
-                        },
-                        {
-                            title: 'SteamID3',
-                            dataIndex: 'steamid3',
-                            key: 'steamid3'
                         }
                         ]} dataSource={this.props.player} /> :
                         <div class="loader">
                             <img src={require('../../images/TeamTracker_Logo.svg')} alt="Loading"/>
                         </div>  }
                 </div>
+                
             </div>
+                {this.props.user[0] &&
+                <div className="mobile-team-button" >
+                    <NewTeamButton />
+                </div>}
+            </>
          );
     }
 }
