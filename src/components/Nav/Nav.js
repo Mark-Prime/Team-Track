@@ -46,9 +46,7 @@ class Nav extends Component {
                       </div>
                     </Menu.Item>
                     <Menu.Item>
-                      <a href="https://teamtrack.azurewebsites.net/logout">
-                        Log out
-                      </a>
+                      <a href={`http://192.168.0.21:5000/logout`}>Log out</a>
                     </Menu.Item>
                   </Menu>
                 }
@@ -71,7 +69,7 @@ class Nav extends Component {
           ) : (
             <a
               className="nav-steam"
-              href="https://teamtrack.azurewebsites.net/auth/steam"
+              href={`http://192.168.0.21:5000/auth/steam`}
             >
               <img
                 alt="steamlogin"

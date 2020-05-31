@@ -175,61 +175,117 @@ router.post('/', async (req, res) => {
             await connection.query('BEGIN;');
 
             let queryText = `SELECT "id" FROM "log_base" WHERE id = $1;`;
-            const check = await connection.query(insertSQL, [name]);
+            const check = await connection.query(queryText, [log_id]);
             
-            if (result.rows[0]) {
-                queryText = `UPDATE "log_base" SET ${color_id} = $1 WHERE id = $2`;
-                await connection.query(queryText, [name]);
+            if (check.rows[0]) {
+              queryText = `UPDATE "log_base" SET ${color_id} = $1 WHERE id = $2`;
+              await connection.query(queryText, [req.body.teamID, log_id]);
             } else {
-                queryText = `INSERT INTO "log_base" 
+              queryText = `INSERT INTO "log_base" 
                                 ("id", ${color_id}, "Match", "date", "length", "gamemode")
                             VALUES
                                 ($1, $2, $3, $4, $5, $6);`;
-                await connection.query(queryText, [log_id, req.body.teamID, req.body.match, log.info.date, log.length, req.body.gamemode]);
+              await connection.query(queryText, [
+                log_id,
+                req.body.teamID,
+                req.body.match,
+                log.info.date,
+                log.length,
+                req.body.gamemode,
+              ]);
 
-                queryText = `INSERT INTO "log_team" ("log_id", "kills", "damage", "charges", "drops", "color") 
+              queryText = `INSERT INTO "log_team" ("log_id", "kills", "damage", "charges", "drops", "color") 
                                         VALUES($1, $2, $3, $4, $5, $6), ($1, $7, $8, $9, $10, $11);`;
-                await connection.query(queryText, [log_id, log.teams[req.body.teamColor].kills, log.teams[req.body.teamColor].dmg, 
-                            log.teams[req.body.teamColor].charges, log.teams[req.body.teamColor].drops, req.body.teamColor, 
-                            log.teams[otherColor].kills, log.teams[otherColor].dmg, log.teams[otherColor].charges, 
-                            log.teams[otherColor].drops, otherColor]);
-                
-                for (const key in log.players) {
-                    if (log.players.hasOwnProperty(key)) {
-                        let player = log.players[key];
-                        let playerKills = log.classkills[key] || {}
-                        let playerDeaths = log.classdeaths[key] || {}
+              await connection.query(queryText, [
+                log_id,
+                log.teams[req.body.teamColor].kills,
+                log.teams[req.body.teamColor].dmg,
+                log.teams[req.body.teamColor].charges,
+                log.teams[req.body.teamColor].drops,
+                req.body.teamColor,
+                log.teams[otherColor].kills,
+                log.teams[otherColor].dmg,
+                log.teams[otherColor].charges,
+                log.teams[otherColor].drops,
+                otherColor,
+              ]);
 
-                        queryText = `INSERT INTO "log_stats" 
+              for (const key in log.players) {
+                if (log.players.hasOwnProperty(key)) {
+                  let player = log.players[key];
+                  let playerKills = log.classkills[key] || {};
+                  let playerDeaths = log.classdeaths[key] || {};
+
+                  queryText = `INSERT INTO "log_stats" 
                                         ("log_id", "steamid3", "team", "assists", "suicides", "kapd", "kpd", 
                                          "damage", "damage_taken", "dapm", "ubers", "drops", "backstabs", "headshots")
                                     VALUES
                                         ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) 
                                     RETURNING "id";`;
-                        const result = await connection.query(queryText,[log_id, key, player.team, player.assists, player.suicides, player.kapd, player.kpd,
-                                                player.dmg, player.dt, player.dapm, player.ubers, player.drops, player.backstabs, player.headshots_hit]);
+                  const result = await connection.query(queryText, [
+                    log_id,
+                    key,
+                    player.team,
+                    player.assists,
+                    player.suicides,
+                    player.kapd,
+                    player.kpd,
+                    player.dmg,
+                    player.dt,
+                    player.dapm,
+                    player.ubers,
+                    player.drops,
+                    player.backstabs,
+                    player.headshots_hit,
+                  ]);
 
-                        let log_stat_id = result.rows[0].id
+                  let log_stat_id = result.rows[0].id;
 
-                        queryText = `INSERT INTO "kills" ("log_stat_id", "Scout", "Soldier", "Pyro", "Demo", "Heavy", "Engineer", "Medic", "Sniper", "Spy") 
+                  queryText = `INSERT INTO "kills" ("log_stat_id", "Scout", "Soldier", "Pyro", "Demo", "Heavy", "Engineer", "Medic", "Sniper", "Spy") 
                                                         VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`;
-                        await connection.query(queryText, [log_stat_id, playerKills.scout || 0, playerKills.soldier || 0,
-                            playerKills.pyro || 0, playerKills.demoman || 0, playerKills.heavyweapons || 0,
-                            playerKills.engineer || 0, playerKills.medic || 0, playerKills.sniper || 0, playerKills.spy || 0,]);
+                  await connection.query(queryText, [
+                    log_stat_id,
+                    playerKills.scout || 0,
+                    playerKills.soldier || 0,
+                    playerKills.pyro || 0,
+                    playerKills.demoman || 0,
+                    playerKills.heavyweapons || 0,
+                    playerKills.engineer || 0,
+                    playerKills.medic || 0,
+                    playerKills.sniper || 0,
+                    playerKills.spy || 0,
+                  ]);
 
-                        queryText = `INSERT INTO "deaths" ("log_stat_id", "Scout", "Soldier", "Pyro", "Demo", "Heavy", "Engineer", "Medic", "Sniper", "Spy") 
+                  queryText = `INSERT INTO "deaths" ("log_stat_id", "Scout", "Soldier", "Pyro", "Demo", "Heavy", "Engineer", "Medic", "Sniper", "Spy") 
                                     VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`;
-                        await connection.query(queryText, [log_stat_id, playerDeaths.scout || 0, playerDeaths.soldier || 0,
-                            playerDeaths.pyro || 0, playerDeaths.demoman || 0, playerDeaths.heavyweapons || 0,
-                            playerDeaths.engineer || 0, playerDeaths.medic || 0, playerDeaths.sniper || 0, playerDeaths.spy || 0,]);
+                  await connection.query(queryText, [
+                    log_stat_id,
+                    playerDeaths.scout || 0,
+                    playerDeaths.soldier || 0,
+                    playerDeaths.pyro || 0,
+                    playerDeaths.demoman || 0,
+                    playerDeaths.heavyweapons || 0,
+                    playerDeaths.engineer || 0,
+                    playerDeaths.medic || 0,
+                    playerDeaths.sniper || 0,
+                    playerDeaths.spy || 0,
+                  ]);
 
-                        for (let player_class of player.class_stats) {
-                            queryText = `INSERT INTO "class_stats" ("log_stat_id", "class", "kills", "assists", "deaths", "damage", "total_time") 
+                  for (let player_class of player.class_stats) {
+                    queryText = `INSERT INTO "class_stats" ("log_stat_id", "class", "kills", "assists", "deaths", "damage", "total_time") 
                             VALUES($1, $2, $3, $4, $5, $6, $7);`;
-                            await connection.query(queryText, [log_stat_id, player_class.type, player_class.kills, player_class.assists, player_class.deaths, player_class.dmg, player_class.total_time])
-                        }
-                    }
+                    await connection.query(queryText, [
+                      log_stat_id,
+                      player_class.type,
+                      player_class.kills,
+                      player_class.assists,
+                      player_class.deaths,
+                      player_class.dmg,
+                      player_class.total_time,
+                    ]);
+                  }
                 }
+              }
             }
     
 
