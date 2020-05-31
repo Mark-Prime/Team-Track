@@ -19,9 +19,13 @@ class PlayerLineGraph extends Component {
     }
 
     onGraphClick = () => {
+      if(this.props.player_id){
         window.open(
-          `https://www.logs.tf/${this.state.currentHover}`
+          `https://www.logs.tf/${this.state.currentHover}#${this.props.player_id}`
         );
+      } else {
+        window.open(`https://www.logs.tf/${this.state.currentHover}`);
+      }
     }
 
     render() {
