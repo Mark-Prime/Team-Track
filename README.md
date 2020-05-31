@@ -1,115 +1,157 @@
-# Prime Project
-This version uses React, Redux, Express, Passport, and PostgreSQL (a full list of dependencies can be found in `package.json`).
+![MIT LICENSE](https://img.shields.io/github/license/scottbromander/the_marketplace.svg?style=flat-square)
+![REPO SIZE](https://img.shields.io/github/repo-size/scottbromander/the_marketplace.svg?style=flat-square)
+![TOP_LANGUAGE](https://img.shields.io/github/languages/top/scottbromander/the_marketplace.svg?style=flat-square)
+![FORKS](https://img.shields.io/github/forks/scottbromander/the_marketplace.svg?style=social)
 
-We **STRONGLY** recommend following these instructions carefully. It's a lot, and will take some time to set up, but your life will be much easier this way in the long run.
+# TeamTrack
 
-## Download (Don't Clone) This Repository
+## Description
 
-* Don't Fork or Clone. Instead, click the `Clone or Download` button and select `Download Zip`.
-* Unzip the project and start with the code in that folder.
-* Create a new GitHub project and push this code to the new repository.
+_Duration: 2 Week Sprint (with random updates driven from user feedback)_
 
-## Prerequisites
+&emsp; Team Track is an eSports team data management system that combines and visualizes statistics. The Web App is focused on the game Team Fortress 2 due to its active community and widely available statistics (from the website [logs.tf](https://logs.tf)) . These factors combined allowed me to get plenty of real world data and users on the site in a short period of time (70+ in a week).
 
-Before you get started, make sure you have the following software installed on your computer:
+&emsp; Team Track is built to support any input of preexisting statistical data within the Team Fortress 2 competative scene, and will evolve as the userbase and competitive community does.
+
+&emsp; The combined statistics allow for an unbiased and insightful analysis into team strengths and weaknesses over a span of time, providing a much needed asset to leaders and players alike.
+
+To see the fully functional site, please visit: [teamtrack.xyz](https://teamtrack.xyz)
+
+### Prerequisites
 
 - [Node.js](https://nodejs.org/en/)
 - [PostrgeSQL](https://www.postgresql.org/)
 - [Nodemon](https://nodemon.io/)
 
-## Create database and table
+## Installation
 
-Create a new database called `prime_app` and create a `user` table:
+1. Create a database with a name of your choice (I recommend `TeamTrack`),
+2. The queries in the `tables.sql` file are set up to create all the necessary tables and populate the needed data to allow the application to run correctly. The project is built on [Postgres](https://www.postgresql.org/download/), so you will need to make sure to have that installed. We recommend using Postico to run those queries as that was used to create the queries
+3. Create a `.env` file and fill out the following information:
+        SERVER_SESSION_SECRET=
+        STEAM_API_KEY=
+        DATABASE_USERNAME=
+        DATABASE_PASSWORD=
+        DATABASE_URL=
+        DATABASE_PORT=
+        DATABASE_NAME=
+        DOMAIN_NAME=
+4. Open up your editor of choice and run an `npm install`
+5. Run `npm run server` in your terminal
+6. Run `npm run client` in your terminal
+7. The `npm run client` command will open up a new browser tab for you!
 
-```SQL
-CREATE TABLE "user" (
-    "id" SERIAL PRIMARY KEY,
-    "username" VARCHAR (80) UNIQUE NOT NULL,
-    "password" VARCHAR (1000) NOT NULL
-);
-```
+## Usage
 
-If you would like to name your database something else, you will need to change `prime_app` to the name of your new database name in `server/modules/pool.js`
+### Creating a team
 
-## Development Setup Instructions
+1. Login with steam by clicking on `sign in through STEAM` in the top right of the page.
+2. Once done you will be taken to the home page.
+3. Click the `New Team` Button located in the bottom left corner below the `Teams` table. (or the bottom middle of the page on mobile)
+4. Fill out the team information that appears in the popup.
+5. Click `Create Team`
+6. Congratulations you have made your new team.
 
-* Run `npm install`
-* Create a `.env` file at the root of the project and paste this line into the file:
-    ```
-    SERVER_SESSION_SECRET=superDuperSecret
-    ```
-    While you're in your new `.env` file, take the time to replace `superDuperSecret` with some long random string like `25POUbVtx6RKVNWszd9ERB9Bb6` to keep your application secure. Here's a site that can help you: [https://passwordsgenerator.net/](https://passwordsgenerator.net/). If you don't do this step, create a secret with less than eight characters, or leave it as `superDuperSecret`, you will get a warning.
-* Start postgres if not running already by using `brew services start postgresql`
-* Run `npm run server`
-* Run `npm run client`
-* Navigate to `localhost:3000`
+### Joining a team
 
-## Debugging
+1. Login with steam by clicking on `sign in through STEAM` in the top right of the page.
+2. Select the team you would like to join through the Teams list or by using a link to the teams page.
+3. Click `Join Team` at the bottom left of the players list.
+4. Click `Yes, Join` on the popup to confirm.
 
-To debug, you will need to run the client-side separately from the server. Start the client by running the command `npm run client`. Start the debugging server by selecting the Debug button.
+### Changing a players Class
+1. Go to the page of a team you are the leader of.
+2. Click to the `Manage` tab. (this tab only shows if you are the teams leader)
+3. Find the player you want to edit in the list.
+4. Click on the dropdown under the `Class` section of the manage table.
+5. Select the class you wish to change it to.
 
-![VSCode Toolbar](documentation/images/vscode-toolbar.png)
+### Changing a players role
+1. Go to the page of a team you are the leader of.
+2. Click to the `Manage` tab. (this tab only shows if you are the teams leader)
+3. Find the player you want to edit in the list.
+4. Click on the dropdown under the `Role` section of the manage table.
+5. Select the role you wish to change it to.
 
-Then make sure `Launch Program` is selected from the dropdown, then click the green play arrow.
+### Promote a player to Leader
+1. Go to the page of a team you are the leader of.
+2. Click to the `Manage` tab. (this tab only shows if you are the teams leader)
+3. Find the player you want to edit in the list.
+4. Click on the button labeled `Promote`
 
-![VSCode Debug Bar](documentation/images/vscode-debug-bar.png)
+### Remove player from team
+1. Go to the page of a team you are the leader of.
+2. Click to the `Manage` tab. (this tab only shows if you are the teams leader)
+3. Find the player you want to remove in the list.
+4. Click on the button labeled `Remove`
 
+### Deactivate team
+1. Go to the page of a team you are the leader of.
+2. Click to the `Manage` tab. (this tab only shows if you are the teams leader)
+3. Click on the button labeled `Deactivate` at the bottom left of the page
 
-## Testing Routes with Postman
+### Upload Stats
+1. Go to the page of a team you are the leader of.
+2. Click to the `Manage` tab. (this tab only shows if you are the teams leader)
+3. Click on the button labeled `Upload Log` at the bottom right of the page.
+4. Paste the logs.tf link in the input field named `Logs.tf URL`.
+5. Fill out the rest of the information.
+6. Click `Upload`.
+7. When its done uploading it will close the window.
 
-To use Postman with this repo, you will need to set up requests in Postman to register a user and login a user at a minimum. 
+### Viewing a teams stats (no login required)
 
-Keep in mind that once you using the login route, Postman will manage your session cookie for you just like a browser, ensuring it is sent with each subsequent request. If you delete the `localhost` cookie in Postman, it will effectively log you out.
+1. Select the team you would like to view through the Teams list or by using a link to the teams page.
+2. Click to the `Stats` Tab.
 
-1. Start the server - `npm run server`
-2. [Import the sample routes JSON file](./PostmanPrimeSoloRoutes.json) by clicking `Import` in Postman. Select the file.
-3. Click `Collections` and `Send` the following three calls in order:
-    1. `POST /api/user/register` registers a new user, see body to change username/password
-    2. `POST /api/user/login` will login a user, see body to change username/password
-    3. `GET /api/user` will get user information, by default it's not very much
+### Viewing a players stats (no login required)
 
-After running the login route above, you can try any other route you've created that requires a logged in user!
+#### From home page 
 
+1. Find the player listed in the players table on the right side of the screen (or at the bottom on mobile)
+2. Click to the `Stats` Tab.
 
-## Production Build
+#### From team page
 
-Before pushing to Heroku, run `npm run build` in terminal. This will create a build folder that contains the code Heroku will be pointed at. You can test this build by typing `npm start`. Keep in mind that `npm start` will let you preview the production build but will **not** auto update.
+1. Click the players name on the `Members` table.
+2. Click to the `Stats` Tab.
 
-* Start postgres if not running already by using `brew services start postgresql`
-* Run `npm start`
-* Navigate to `localhost:5000`
+### Viewing your own stats
 
-## Lay of the Land
+1. Login with steam by clicking on `sign in through STEAM` in the top right of the page.
+2. Click on your username in the top right of the screen.
+3. Click `View Profile` from the drop down.
+4. Click to the `Stats` Tab.
 
-* `src/` contains the React application
-* `public/` contains static assets for the client-side
-* `build/` after you build the project, contains the transpiled code from `src/` and `public/` that will be viewed on the production site
-* `server/` contains the Express App
+### Changing profile name or picture
 
-This code is also heavily commented. We recommend reading through the comments, getting a lay of the land, and becoming comfortable with how the code works before you start making too many changes. If you're wondering where to start, consider reading through component file comments in the following order:
+1. Login with steam by clicking on `sign in through STEAM` in the top right of the page.
+2. Change username/profile picture to desired username/profile picture
+3. Click on your username in the top right of the screen.
+4. Click `View Profile` from the drop down.
+5. Username/profile picture will update to match your steam name/picture
 
-* src/components
-  * App/App
-  * Footer/Footer
-  * Nav/Nav
-  * AboutPage/AboutPage
-  * InfoPage/InfoPage
-  * UserPage/UserPage
-  * LoginPage/LoginPage
-  * RegisterPage/RegisterPage
-  * LogOutButton/LogOutButton
-  * ProtectedRoute/ProtectedRoute
+## Built With
 
-## Deployment
+- REACTjs
+- Redux
+- HTML
+- CSS
+- JavaScript
+- Ant Design
+- Nodejs
+- Express
+- PostgreSQL
+- Logs.tf
+- Recharts
+- Azure
 
-1. Create a new Heroku project
-1. Link the Heroku project to the project GitHub Repo
-1. Create an Heroku Postgres database
-1. Connect to the Heroku Postgres database from Postico
-1. Create the necessary tables
-1. Add an environment variable for `SERVER_SESSION_SECRET` with a nice random string for security
-1. In the deploy section, select manual deploy
+## Acknowledgement
+Massive thank you to the Team Fortress 2 community for working with me to help make this a reality.
 
-## Update Documentation
+Thanks to my friends and mentors that helped me improve and grow throughout the process of developing this app.
 
-Customize this ReadMe and the code comments in this project to read less like a starter repo and more like a project. Here is an example: https://gist.github.com/PurpleBooth/109311bb0361f32d87a2
+Finally thanks to [Prime Digital Academy](www.primeacademy.io) who equipped and helped me to make this application a reality. 
+
+## Support
+If you have suggestions or issues, please email me at markspannbauer@gmail.com
