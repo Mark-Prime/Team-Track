@@ -51,6 +51,8 @@ class TeamStats extends Component {
             obj[class_name] +
               Number(index[stat_start + class_name + stat_end]) ||
             Number(index[stat_start + class_name + stat_end]);
+        } else {
+          obj[class_name] = obj[class_name] || 0;
         }
     }
 
