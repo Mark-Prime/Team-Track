@@ -25,7 +25,7 @@ class Nav extends Component {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            className="nav-link"
+            className="nav-link discord-desktop"
             href="https://discord.gg/fRdMNsd"
           >
             Join the Discord
@@ -40,6 +40,17 @@ class Nav extends Component {
                         View Profile
                       </a>
                     </Menu.Item>
+                    <div className="discord-mobile">
+                      <Menu.Item>
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href="https://discord.gg/fRdMNsd"
+                        >
+                          Join Discord
+                        </a>
+                      </Menu.Item>
+                    </div>
                     <Menu.Item>
                       <div onClick={this.refreshUserProfile}>
                         Refresh Profile

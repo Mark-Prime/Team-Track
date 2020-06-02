@@ -65,3 +65,21 @@
   float: right;
   padding-top: 20px;
 }
+
+.discord-mobile{
+  display: none;
+}
+
+.discord-desktop{
+    display: default;
+  }
+
+@media screen and (max-width: 1200px){
+  .discord-desktop{
+    display: none;
+  }
+
+  .discord-mobile{
+    display: default;
+  }
+}

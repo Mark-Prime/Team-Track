@@ -33,11 +33,11 @@
 
 @media screen and (max-width: 1200px){
     .player-tables {
-        width: 100%;
+        width: 95%;
     }
 
     .profile-info {
-    text-align: center;
-    width: 100%;
-}
+        text-align: center;
+        width: 95%;
+    }
 }
