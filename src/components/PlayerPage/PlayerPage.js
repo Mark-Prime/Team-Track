@@ -9,8 +9,8 @@ import PlayerStats from '../PlayerStats/PlayerStats'
 
 
 // Ant Design
-import { Avatar, Menu, Dropdown, Table, Tabs, Tag, Space, Tooltip } from 'antd';
-import { DownOutlined, CheckCircleTwoTone } from '@ant-design/icons';
+import { Avatar, Menu, Dropdown, Table, Tabs, Tag, Space, Tooltip, BackTop } from 'antd';
+import { DownOutlined, CheckCircleTwoTone, VerticalAlignTopOutlined } from '@ant-design/icons';
 const { TabPane } = Tabs;
 
 class PlayerPage extends Component {
@@ -40,34 +40,47 @@ class PlayerPage extends Component {
         this.props.dispatch({ type: 'FETCH_PLAYER_LOGS', payload: this.props.match.params.id })
     }
 
-    logTags = (gamecount) => {
-        console.log(gamecount)
-        if (2500 <= gamecount) {
-            return <Tag color={"gold"} key={gamecount} style={{ margin: "5px" }}>2500+ Logs</Tag>
-        } else if (1000 <= gamecount) {
-            return <Tag color={"purple"} key={gamecount} style={{ margin: "5px" }}>1000+ Logs</Tag>
-        } else if (500 <= gamecount) {
-            return <Tag color={"purple"} key={gamecount} style={{ margin: "5px" }}>500+ Logs</Tag>
-        } else if (250 <= gamecount) {
-            return <Tag color={"magenta"} key={gamecount} style={{ margin: "5px" }}>250+ Logs</Tag>
-        } else if (100 <= gamecount) {
-            return <Tag color={"magenta"} key={gamecount} style={{ margin: "5px" }}>100+ Logs</Tag>
-        } else if (50 <= gamecount) {
-            return <Tag color={"volcano"} key={gamecount} style={{ margin: "5px" }}>50+ Logs</Tag>
-        } else if (25 <= gamecount) {
-            return <Tag color={"volcano"} key={gamecount} style={{ margin: "5px" }}>25+ Logs</Tag>
-        } else if (10 <= gamecount) {
-            return <Tag color={"orange"} key={gamecount} style={{ margin: "5px" }}>10+ Logs</Tag>
-        } else if (5 <= gamecount) {
-            return <Tag color={"orange"} key={gamecount} style={{ margin: "5px" }}>5+ Logs</Tag> 
-        } else {
-            return <></>
-        }
-    }
-
     render() {
+        let logTags = null
+        const gamecount = this.props.log.length;
+        if (2500 <= gamecount) {
+            logTags = <Tag color={"gold"} key={gamecount} style={{ margin: "5px" }}>2500+ Logs</Tag>
+        } else if (1000 <= gamecount) {
+            logTags = <Tag color={"purple"} key={gamecount} style={{ margin: "5px" }}>1000+ Logs</Tag>
+        } else if (500 <= gamecount) {
+            logTags = <Tag color={"purple"} key={gamecount} style={{ margin: "5px" }}>500+ Logs</Tag>
+        } else if (250 <= gamecount) {
+            logTags = <Tag color={"magenta"} key={gamecount} style={{ margin: "5px" }}>250+ Logs</Tag>
+        } else if (100 <= gamecount) {
+            logTags = <Tag color={"magenta"} key={gamecount} style={{ margin: "5px" }}>100+ Logs</Tag>
+        } else if (50 <= gamecount) {
+            logTags = <Tag color={"volcano"} key={gamecount} style={{ margin: "5px" }}>50+ Logs</Tag>
+        } else if (25 <= gamecount) {
+            logTags = <Tag color={"volcano"} key={gamecount} style={{ margin: "5px" }}>25+ Logs</Tag>
+        } else if (10 <= gamecount) {
+            logTags = <Tag color={"orange"} key={gamecount} style={{ margin: "5px" }}>10+ Logs</Tag>
+        } else if (5 <= gamecount) {
+            logTags = <Tag color={"orange"} key={gamecount} style={{ margin: "5px" }}>5+ Logs</Tag> 
+        }
+
+        const style = {
+          height: 40,
+          width: 40,
+          lineHeight: "40px",
+          borderRadius: 4,
+          backgroundColor: "#1087e990",
+          color: "#fff",
+          textAlign: "center",
+          fontSize: 35,
+        };
+        
         return (
           <div>
+            <BackTop>
+              <div style={style}>
+                <VerticalAlignTopOutlined />
+              </div>
+            </BackTop>
             {this.props.player[0] ? (
               <div className="flex-container">
                 <div className="profile-info">
@@ -109,7 +122,7 @@ class PlayerPage extends Component {
                       DONATOR
                     </Tag>
                   )}
-                  {this.props.log[0] && this.logTags(this.props.log.length)}
+                  {logTags}
 
                   <p>Player ID: {this.props.player[0].id}</p>
 
@@ -258,6 +271,7 @@ class PlayerPage extends Component {
                             },
                           ]}
                           dataSource={this.props.team}
+                          rowKey={(record) => record.team_id}
                         />
                       )}
                     </TabPane>

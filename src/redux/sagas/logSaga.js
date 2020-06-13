@@ -2,7 +2,6 @@ import axios from 'axios';
 import { put, takeLatest } from 'redux-saga/effects';
 
 function* uploadLog(action){
-    console.log('in uploadLog');
     try {
         let response = yield axios.post(`/log/`, action.payload)
 
@@ -15,7 +14,6 @@ function* uploadLog(action){
 }
 
 function* fetchAllTeamLogs(action){
-    console.log('in fetchTeamLogs');
     try {
         let response = yield axios.get(`/log/team/${action.payload}`)
         
@@ -26,7 +24,6 @@ function* fetchAllTeamLogs(action){
 }
 
 function* fetchPlayerLogs(action){
-    console.log('in fetchPlayerLogs');
     try {
         let response = yield axios.get(`/log/player/${action.payload}`)
         

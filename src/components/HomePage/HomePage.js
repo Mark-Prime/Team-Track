@@ -24,75 +24,111 @@ class HomePage extends Component {
     }
 
     render() { 
-        return ( 
-            <>
+        return (
+          <>
             <div className="homepage-container">
-                <div className="homepage-table">
-                    {this.props.team[0] ? 
-                    <>
-                        <Table columns={[
-                            {
-                                title: 'Name',
-                                dataIndex: 'name',
-                                key: 'name',
-                                render: (text, record) => <a href={`/#/team/${record.trueid}`}>
-                                    <Space size="small">
-                                        {text}
-                                    {record.active ?
-                                        <Tooltip title="Active"><CheckCircleOutlined className="active check" /></Tooltip> :
-                                        <Tooltip title="Inactive"><CloseCircleOutlined className="inactive check" /></Tooltip>
-                                    } </Space></a>
-                            },
-                            {
-                                title: 'Gamemode',
-                                dataIndex: 'title',
-                                key: 'title'
-                            }
-                        ]} dataSource={this.props.team} />
-                                {this.props.user[0] &&
-                                    <div className="desktop-team-button" >
-                                        <NewTeamButton />
-                                    </div>}
-                        </> :
-                        <div class="loader">
-                            <img src={require('../../images/TeamTracker_Logo.svg')} alt="Loading"/>
-                        </div>  }
-                </div>
-                <div className="homepage-table">
-                    {this.props.player[0] ?
-                    <Table columns={[
+              <div className="homepage-table">
+                {this.props.team[0] ? (
+                  <>
+                    <Table
+                      columns={[
                         {
-                            title: 'Name',
-                            dataIndex: 'displayname',
-                            key: 'displayname',
-                            render: (text, record) => <a href={`/#/player/${record.id}`}>
-                                <Space size="small">
-                                    <Avatar className="avatar" shape="square" src={record.avatar} />
-                                    {text}
-                                    {record.verified &&
-                                        <Tooltip title="Verified!">
-                                            <CheckCircleTwoTone />
-                                        </Tooltip>}
-                                </Space></a>
+                          title: "Name",
+                          dataIndex: "name",
+                          key: "name",
+                          render: (text, record) => (
+                            <a href={`/#/team/${record.trueid}`}>
+                              <Space size="small">
+                                {text}
+                                {record.active ? (
+                                  <Tooltip title="Active">
+                                    <CheckCircleOutlined className="active check" />
+                                  </Tooltip>
+                                ) : (
+                                  <Tooltip title="Inactive">
+                                    <CloseCircleOutlined className="inactive check" />
+                                  </Tooltip>
+                                )}{" "}
+                              </Space>
+                            </a>
+                          ),
                         },
                         {
-                            title: 'SteamID64',
-                            dataIndex: 'id',
-                            key: 'id'
-                        }
-                        ]} dataSource={this.props.player} /> :
-                        <div class="loader">
-                            <img src={require('../../images/TeamTracker_Logo.svg')} alt="Loading"/>
-                        </div>  }
-                </div>
-                
+                          title: "Gamemode",
+                          dataIndex: "title",
+                          key: "title",
+                        },
+                      ]}
+                      dataSource={this.props.team}
+                      rowKey={(record) => record.trueid}
+                    />
+                    {this.props.user[0] && (
+                      <div className="desktop-team-button">
+                        <NewTeamButton />
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="loader">
+                    <img
+                      src={require("../../images/TeamTracker_Logo.svg")}
+                      alt="Loading"
+                    />
+                  </div>
+                )}
+              </div>
+              <div className="homepage-table">
+                {this.props.player[0] ? (
+                  <Table
+                    columns={[
+                      {
+                        title: "Name",
+                        dataIndex: "displayname",
+                        key: "displayname",
+                        render: (text, record) => (
+                          <a href={`/#/player/${record.id}`}>
+                            <Space size="small">
+                              <Avatar
+                                className="avatar"
+                                shape="square"
+                                src={record.avatar}
+                              />
+                              {text}
+                              {record.verified && (
+                                <Tooltip title="Verified!">
+                                  <CheckCircleTwoTone />
+                                </Tooltip>
+                              )}
+                            </Space>
+                          </a>
+                        ),
+                      },
+                      {
+                        title: "SteamID64",
+                        dataIndex: "id",
+                        key: "id",
+                      },
+                    ]}
+                    dataSource={this.props.player}
+                    rowKey={(record) => record.id}
+                  />
+                ) : (
+                  <div className="loader">
+                    <img
+                      src={require("../../images/TeamTracker_Logo.svg")}
+                      alt="Loading"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
-                {this.props.user[0] &&
-                <div className="mobile-team-button" >
-                    <NewTeamButton />
-                </div>}
-            </>
-         );
+            {this.props.user[0] && (
+              <div className="mobile-team-button">
+                <NewTeamButton />
+              </div>
+            )}
+          </>
+        );
     }
 }
  

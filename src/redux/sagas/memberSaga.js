@@ -23,7 +23,6 @@ function* fetchUserTeams(action) {
 }
 
 function* setMemberClass(action){
-  console.log('in setMemberClass');
   try {
     yield axios.put(`/member/class`, action.payload)
     

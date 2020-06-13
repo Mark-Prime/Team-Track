@@ -47,7 +47,6 @@ function* fetchPlayers(action) {
 }
 
 function* refreshUser(){
-  console.log('in refreshUser');
   try {
     yield axios.get(`/user/refresh`)
     

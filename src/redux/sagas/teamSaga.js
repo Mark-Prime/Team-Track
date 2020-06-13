@@ -24,7 +24,6 @@ function* fetchTeams() {
 }
 
 function* saveTeamName(action){
-  console.log('in saveTeamName');
   try {
     yield axios.put(`/team/name`, action.payload)
   } catch (error) {
@@ -33,7 +32,6 @@ function* saveTeamName(action){
 }
 
 function* saveTeamTag(action) {
-  console.log('in saveTeamTag');
   try {
     yield axios.put(`/team/tag`, action.payload)
   } catch (error) {
@@ -42,7 +40,6 @@ function* saveTeamTag(action) {
 }
 
 function* newTeam(action){
-  console.log('in newTeam');
   try {
     let response = yield axios.post(`/team/`, action.payload)
 
@@ -53,7 +50,6 @@ function* newTeam(action){
 }
 
 function* deactivateTeam(action){
-  console.log('in deactivateTeam');
   try {
     yield axios.put(`/team/deactivate/${action.payload}`)
     

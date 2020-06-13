@@ -10,8 +10,23 @@ import TeamStats from '../TeamStats/TeamStats'
 
 
 // Ant Design
-import { Row, Col, Tabs, Table, Avatar, Tag, Button, Popconfirm, Space, Tooltip } from 'antd';
-import { CheckCircleTwoTone } from '@ant-design/icons';
+import {
+  Row,
+  Col,
+  Tabs,
+  Table,
+  Avatar,
+  Tag,
+  Button,
+  Popconfirm,
+  Space,
+  Tooltip,
+  BackTop,
+} from "antd";
+import {
+  CheckCircleTwoTone,
+  VerticalAlignTopOutlined,
+} from "@ant-design/icons";
 const { TabPane } = Tabs;
 
 class PlayerPage extends Component {
@@ -102,124 +117,169 @@ class PlayerPage extends Component {
     }
 
     render() {
-        return (
-            <div>
-                {this.props.team[0] ?
-                    <>
-                        <Row>
-                            <Col span={24}>
-                                {this.props.team[0].active ? 
-                                    <h1 id="welcome" className="team-name">
-                                        {this.state.teamName}
-                                    </h1> :
-                                <span className="strike">
-                                    <h1 id="welcome" className="team-name">
-                                        {this.state.teamName}
-                                    </h1>
-                                </span>
-                                }
-                                <h3 id="welcome" className="team-name">
-                                    {this.props.team[0].title}
-                                </h3>
-                                <h3 id="welcome" className="team-name">
-                                    {this.state.teamTag}
-                                </h3>
-                            </Col>
-                        </Row>
-                        <div className="tab-container">
-                            <Tabs defaultActiveKey="1" type="card" size="large">
-                                <TabPane tab="Players" key="1">
-                                    <Table columns={[
-                                        {
-                                            title: 'Name',
-                                            dataIndex: 'displayname',
-                                            key: 'displayname',
-                                            render: (text, record) => <a href={`/#/player/${record.user_id}`}>
-                                                <Space size="small">
-                                                    <Avatar className="avatar" shape="square" src={record.avatar} />
-                                                    {text}
-                                                    {record.verified &&
-                                                        <Tooltip title="Verified!">
-                                                            <CheckCircleTwoTone />
-                                                        </Tooltip>}
-                                                </Space></a>
-                                        },
-                                        {
-                                            title: 'Class',
-                                            dataIndex: 'class_name',
-                                            key: 'class_name'
-                                        },
-                                        {
-                                            title: '',
-                                            key: 'is_leader',
-                                            dataIndex: 'is_leader',
-                                            render: (leader, record) => (
-                                                <span>
-                                                    {leader &&
-                                                        <Tag color={"orange"} key={`${record.user_id}_LEADER`}>
-                                                            LEADER
-                                                            </Tag>
-                                                    }
-                                                    {record.main ?
-                                                        <Tag color={"blue"} key={`${record.user_id}_MAIN`}>
-                                                            MAIN
-                                                            </Tag> :
-                                                        <Tag color={"cyan"} key={`${record.user_id}_SUB`}>
-                                                            SUB
-                                                            </Tag>
-                                                    }
-                                                </span>
-                                            ),
-                                        }
-                                    ]} dataSource={this.props.member} />
-                                    {this.props.user[0] &&
-                                        <>
-                                            {this.state.isMember ?
-                                                <Popconfirm
-                                                    title={`Leave ${this.props.team[0].name}?`}
-                                                    onConfirm={this.leaveTeam}
-                                                    okText="Yes, Leave"
-                                                    cancelText="No"
-                                                >
-                                                    <Button type="primary" danger>Leave Team</Button>
-                                                </Popconfirm> :
-                                                <>
-                                                    {this.props.team[0].active &&
-                                                        <Popconfirm
-                                                            title={`Join ${this.props.team[0].name}?`}
-                                                            onConfirm={this.joinTeam}
-                                                            okText="Yes, Join"
-                                                            cancelText="No"
-                                                        >
-                                                            <Button type="primary">Join Team</Button>
-                                                        </Popconfirm>
-                                                    }
-                                                </>
-                                            }
-                                        </>
-                                    }
-                                </TabPane>
-                                <TabPane tab="Stats" key="2">
-                                    {this.props.log[0] ? <TeamStats /> : <h1>This team has no play history</h1>}
-                                </TabPane>
-                                {this.state.isLeader &&
-                                    <TabPane tab="Manage" key="3">
-                                        <TeamManager
-                                            saveName={this.saveName}
-                                            saveTag={this.saveTag}
-                                            resetLeadership={this.resetLeadership}
-                                            refreshInformation={this.refreshInformation}
-                                        />
-                                    </TabPane>
-                                }
+        const style = {
+          height: 40,
+          width: 40,
+          lineHeight: "40px",
+          borderRadius: 4,
+          backgroundColor: "#1087e990",
+          color: "#fff",
+          textAlign: "center",
+          fontSize: 35,
+        };
 
-                            </Tabs>
-                        </div>
-                                
-                    </> :
-                    <p>Team not found</p>
-                }
-            </div>
+        return (
+          <div>
+            <BackTop>
+              <div style={style}>
+                <VerticalAlignTopOutlined />
+              </div>
+            </BackTop>
+            {this.props.team[0] ? (
+              <>
+                <Row>
+                  <Col span={24}>
+                    {this.props.team[0].active ? (
+                      <h1 id="welcome" className="team-name">
+                        {this.state.teamName}
+                      </h1>
+                    ) : (
+                      <span className="strike">
+                        <h1 id="welcome" className="team-name">
+                          {this.state.teamName}
+                        </h1>
+                      </span>
+                    )}
+                    <h3 id="welcome" className="team-name">
+                      {this.props.team[0].title}
+                    </h3>
+                    <h3 id="welcome" className="team-name">
+                      {this.state.teamTag}
+                    </h3>
+                  </Col>
+                </Row>
+                <div className="tab-container">
+                  <Tabs defaultActiveKey="1" type="card" size="large">
+                    <TabPane tab="Players" key="1">
+                      <Table
+                        columns={[
+                          {
+                            title: "Name",
+                            dataIndex: "displayname",
+                            key: "displayname",
+                            render: (text, record) => (
+                              <a href={`/#/player/${record.user_id}`}>
+                                <Space size="small">
+                                  <Avatar
+                                    className="avatar"
+                                    shape="square"
+                                    src={record.avatar}
+                                  />
+                                  {text}
+                                  {record.verified && (
+                                    <Tooltip title="Verified!">
+                                      <CheckCircleTwoTone />
+                                    </Tooltip>
+                                  )}
+                                </Space>
+                              </a>
+                            ),
+                          },
+                          {
+                            title: "Class",
+                            dataIndex: "class_name",
+                            key: "class_name",
+                          },
+                          {
+                            title: "",
+                            key: "is_leader",
+                            dataIndex: "is_leader",
+                            render: (leader, record) => (
+                              <span>
+                                {leader && (
+                                  <Tag
+                                    color={"orange"}
+                                    key={`${record.user_id}_LEADER`}
+                                  >
+                                    LEADER
+                                  </Tag>
+                                )}
+                                {record.main ? (
+                                  <Tag
+                                    color={"blue"}
+                                    key={`${record.user_id}_MAIN`}
+                                  >
+                                    MAIN
+                                  </Tag>
+                                ) : (
+                                  <Tag
+                                    color={"cyan"}
+                                    key={`${record.user_id}_SUB`}
+                                  >
+                                    SUB
+                                  </Tag>
+                                )}
+                              </span>
+                            ),
+                          },
+                        ]}
+                        dataSource={this.props.member}
+                        rowKey={(record) => record.user_id}
+                      />
+                      {this.props.user[0] && (
+                        <>
+                          {this.state.isMember ? (
+                            <Popconfirm
+                              title={`Leave ${this.props.team[0].name}?`}
+                              onConfirm={this.leaveTeam}
+                              okText="Yes, Leave"
+                              cancelText="No"
+                            >
+                              <Button type="primary" danger>
+                                Leave Team
+                              </Button>
+                            </Popconfirm>
+                          ) : (
+                            <>
+                              {this.props.team[0].active && (
+                                <Popconfirm
+                                  title={`Join ${this.props.team[0].name}?`}
+                                  onConfirm={this.joinTeam}
+                                  okText="Yes, Join"
+                                  cancelText="No"
+                                >
+                                  <Button type="primary">Join Team</Button>
+                                </Popconfirm>
+                              )}
+                            </>
+                          )}
+                        </>
+                      )}
+                    </TabPane>
+                    <TabPane tab="Stats" key="2">
+                      {this.props.log[0] ? (
+                        <TeamStats />
+                      ) : (
+                        <h1>This team has no play history</h1>
+                      )}
+                    </TabPane>
+                    {this.state.isLeader && (
+                      <TabPane tab="Manage" key="3">
+                        <TeamManager
+                          saveName={this.saveName}
+                          saveTag={this.saveTag}
+                          resetLeadership={this.resetLeadership}
+                          refreshInformation={this.refreshInformation}
+                        />
+                      </TabPane>
+                    )}
+                  </Tabs>
+                </div>
+              </>
+            ) : (
+              <p>Team not found</p>
+            )}
+          </div>
         );
     }
 }

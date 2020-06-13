@@ -43,7 +43,6 @@ class TeamStats extends Component {
         "sniper",
         "spy"
     ];
-    console.log(obj, index, stat_start, stat_end);
     
     for (const class_name of classes) {
         if (Number(index[stat_start + class_name + stat_end])) {
