@@ -57,7 +57,7 @@ class Nav extends Component {
                       </div>
                     </Menu.Item>
                     <Menu.Item>
-                      <a href={`http://teamtrack.xyz/logout`}>Log out</a>
+                      <a href={`https://www.teamtrack.xyz/logout`}>Log out</a>
                     </Menu.Item>
                   </Menu>
                 }
@@ -78,7 +78,7 @@ class Nav extends Component {
               />
             </>
           ) : (
-            <a className="nav-steam" href={`http://teamtrack.xyz/auth/steam`}>
+            <a className="nav-steam" href={`https://www.teamtrack.xyz/auth/steam`}>
               <img
                 alt="steamlogin"
                 src={require("../../images/login.png")}
