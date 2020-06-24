@@ -3,7 +3,7 @@ const teamReducer = (state = [], action) => {
     case 'SET_TEAMS':
       return action.payload;
     case 'UNSET_TEAMS':
-      return [];
+      return ['None'];
     default:
       return state;
   }

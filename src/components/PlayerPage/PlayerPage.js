@@ -27,12 +27,13 @@ class PlayerPage extends Component {
     }
 
     componentDidMount() {
+
         this.refreshInformation()
     }
 
     refreshInformation = () => {
-        this.props.dispatch({ type: 'UNSET_TEAMS' })
-        this.props.dispatch({ type: 'UNSET_PLAYERS' })
+        this.props.dispatch({ type: 'SET_TEAMS', payload: []})
+        this.props.dispatch({ type: 'SET_PLAYERS', payload: []})
         this.props.dispatch({ type: 'FETCH_PLAYER', payload: this.props.match.params.id })
         this.props.dispatch({ type: 'FETCH_USER_TEAMS', payload: this.props.match.params.id })
         this.props.dispatch({ type: 'FETCH_PLAYER_STATS', payload: this.props.match.params.id })

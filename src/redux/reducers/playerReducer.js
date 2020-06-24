@@ -3,7 +3,7 @@ const playerReducer = (state = [], action) => {
     case 'SET_PLAYERS':
       return action.payload;
     case 'UNSET_PLAYERS':
-      return [];
+      return ['None'];
     default:
       return state;
   }

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { put, takeLatest } from 'redux-saga/effects';
 
-// worker Saga: will be fired on "FETCH_PLAYER" actions
+// worker Saga: will be fired on "FETCH_TEAM" actions
 function* fetchTeam(action) {
   try {
     const response = yield axios.get(`/team/${action.payload}`);
@@ -12,7 +12,6 @@ function* fetchTeam(action) {
   }
 }
 
-// worker Saga: will be fired on "FETCH_PLAYERS" actions
 function* fetchTeams() {
   try {
     const response = yield axios.get(`/team/all`);
@@ -20,6 +19,16 @@ function* fetchTeams() {
     yield put({ type: 'SET_TEAMS', payload: response.data });
   } catch (error) {
     console.log('Players get request failed', error);
+  }
+}
+
+function* searchTeams(action) {
+  try {
+    const response = yield axios.get(`/search/team/${action.payload}`);
+
+    yield put({ type: "SET_TEAMS", payload: response.data });
+  } catch (error) {
+    console.log("Players get request failed", error);
   }
 }
 
@@ -62,6 +71,7 @@ function* deactivateTeam(action){
 function* teamSaga() {
   yield takeLatest('FETCH_TEAM', fetchTeam);
   yield takeLatest('FETCH_TEAMS', fetchTeams);
+  yield takeLatest('SEARCH_TEAMS', searchTeams);
   yield takeLatest('SAVE_TEAM_NAME', saveTeamName);
   yield takeLatest('SAVE_TEAM_TAG', saveTeamTag);
   yield takeLatest('NEW_TEAM', newTeam);

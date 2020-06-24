@@ -9,9 +9,10 @@ import NewTeamButton from '../NewTeamButton/NewTeamButton'
 
 
 // Ant Design
-import { Table, Avatar, Space, Tooltip } from 'antd';
+import { Table, Avatar, Space, Tooltip, Input } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined, CheckCircleTwoTone } from '@ant-design/icons';
 
+const { Search } = Input;
 
 class HomePage extends Component {
     
@@ -23,12 +24,31 @@ class HomePage extends Component {
         this.props.dispatch({ type: 'FETCH_PLAYERS' })
     }
 
+    onSearch = (value) => {
+      this.props.dispatch({ type: "UNSET_TEAMS" });
+      this.props.dispatch({ type: "UNSET_PLAYERS" });
+      if (value === ''){
+        this.props.dispatch({ type: "FETCH_TEAMS" });
+        this.props.dispatch({ type: "FETCH_PLAYERS" });
+      } else {
+        this.props.dispatch({ type: "SEARCH_TEAMS", payload: value });
+        this.props.dispatch({ type: "SEARCH_PLAYERS", payload: value });
+      }
+    }
+
     render() { 
         return (
           <>
+            <div className="search-container">
+              <Search
+                placeholder="Search Teams and Players"
+                onSearch={(value) => this.onSearch(value)}
+                enterButton
+              />
+            </div>
             <div className="homepage-container">
               <div className="homepage-table">
-                {this.props.team[0] ? (
+                {this.props.team[0] !== "None" ? (
                   <>
                     <Table
                       columns={[
@@ -78,7 +98,7 @@ class HomePage extends Component {
                 )}
               </div>
               <div className="homepage-table">
-                {this.props.player[0] ? (
+                {this.props.player[0] !== "None" ? (
                   <Table
                     columns={[
                       {

@@ -46,6 +46,16 @@ function* fetchPlayers(action) {
   }
 }
 
+function* searchPlayers(action) {
+  try {
+    const response = yield axios.get(`/search/player/${action.payload}`);
+
+    yield put({ type: "SET_PLAYERS", payload: response.data });
+  } catch (error) {
+    console.log("Players get request failed", error);
+  }
+}
+
 function* refreshUser(){
   try {
     yield axios.get(`/user/refresh`)
@@ -61,6 +71,7 @@ function* userSaga() {
   yield takeLatest('REFRESH_USER', refreshUser);
   yield takeLatest('FETCH_PLAYER', fetchPlayer);
   yield takeLatest('FETCH_PLAYERS', fetchPlayers);
+  yield takeLatest('SEARCH_PLAYERS', searchPlayers);
 }
 
 export default userSaga;
