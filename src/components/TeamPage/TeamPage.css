@@ -19,7 +19,7 @@
 
 @media screen and (max-width: 1200px){
     .tab-container {
-    width: 95%;
-    margin: auto;
-}
+        width: 95%;
+        margin: auto;
+    }
 }
