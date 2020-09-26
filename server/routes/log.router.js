@@ -94,6 +94,7 @@ router.get('/player/:id', (req, res) => {
         ("log_stats"."damage"/("length"/60)) as dpm,
         (SUM("damage_taken"/("length"/60))) as dtpm,
         "date",
+        "Match",
         "log_base"."length",
         "log_base"."gamemode",
         "gamemodes"."title",
