@@ -392,6 +392,6 @@ class PlayerStats extends Component {
   }
 }
 
-const mapStateToProps = ({ player, team, stats, log }) => ({ player, team, stats, log });
+const mapStateToProps = ({ player, team, stats }) => ({ player, team, stats });
  
 export default connect(mapStateToProps)(PlayerStats);

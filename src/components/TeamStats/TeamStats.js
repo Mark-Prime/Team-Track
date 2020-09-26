@@ -5,6 +5,7 @@ import './TeamStats.css'
 
 import PlayerBarGraph from '../PlayerBarGraph/PlayerBarGraph';
 import PlayerLineGraph from '../PlayerLineGraph/PlayerLineGraph';
+import PlayerBarSplit from "../PlayerBarSplit/PlayerBarSplit";
 
 // Ant Design
 import { Divider, Row, Col, Statistic } from 'antd';
@@ -70,9 +71,10 @@ class TeamStats extends Component {
       classKills = {},
       classDeaths = {},
       teamClassKills = {},
-      teamClassDeaths = {};
+      teamClassDeaths = {},
+      teamClassDamage = {};
 
-    for (const index of this.props.log) {
+    for (const index of this.props.logs) {
       kills = kills + Number(index.kills);
 
       deaths = deaths + Number(index.deaths);
@@ -96,12 +98,19 @@ class TeamStats extends Component {
         "team_",
         "_deaths"
       );
+      teamClassDamage = this.parseClasses(
+        teamClassDamage,
+        index,
+        "team_",
+        "_damage"
+      );
     }
 
     med_kills = classKills.medic;
 
     let classKillsArray = [];
     let teamClassKillsArray = [];
+    let teamClassDamageArray = [];
     for (const class_name in classKills) {
       classKillsArray.push({
         class_name: class_name.charAt(0).toUpperCase() + class_name.slice(1),
@@ -113,6 +122,11 @@ class TeamStats extends Component {
         class_name: class_name.charAt(0).toUpperCase() + class_name.slice(1),
         kills: teamClassKills[class_name] || 0,
         deaths: teamClassDeaths[class_name] || 0,
+      });
+
+      teamClassDamageArray.push({
+        class_name: class_name.charAt(0).toUpperCase() + class_name.slice(1),
+        damage: teamClassDamage[class_name] || 0,
       });
     }
 
@@ -127,6 +141,7 @@ class TeamStats extends Component {
       favorite_team: mode(teams),
       classKills: classKillsArray,
       teamClassKills: teamClassKillsArray,
+      teamClassDamageArray,
     });
   };
 
@@ -175,7 +190,7 @@ class TeamStats extends Component {
               datakey2="depm"
               displaykey1="kills"
               displaykey2="deaths"
-              data={this.props.log}
+              data={this.props.logs}
             />
             <PlayerLineGraph
               title1="Damage/Min"
@@ -184,7 +199,7 @@ class TeamStats extends Component {
               datakey2="dtpm"
               displaykey1="damage"
               displaykey2="damage_taken"
-              data={this.props.log}
+              data={this.props.logs}
             />
             <PlayerBarGraph
               title1="Kills"
@@ -199,6 +214,22 @@ class TeamStats extends Component {
               datakey1="killed"
               datakey2="killed_by"
               data={this.state.classKills}
+            />
+            <PlayerBarSplit
+              title="Kills"
+              datakey="kills"
+              data={this.state.teamClassKills}
+            />
+            <PlayerBarSplit
+              title="Deaths"
+              datakey="deaths"
+              red={true}
+              data={this.state.teamClassKills}
+            />
+            <PlayerBarSplit
+              title="Damage"
+              datakey="damage"
+              data={this.state.teamClassDamageArray}
             />
           </Col>
         </Row>

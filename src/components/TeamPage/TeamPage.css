@@ -15,11 +15,13 @@
 .tab-container {
     width: 90%;
     margin: auto;
+    overflow: visible;
 }
 
 @media screen and (max-width: 1200px){
     .tab-container {
         width: 95%;
         margin: auto;
+        overflow: visible;
     }
 }

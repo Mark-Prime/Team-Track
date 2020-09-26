@@ -74,6 +74,14 @@ class PlayerPage extends Component {
           textAlign: "center",
           fontSize: 35,
         };
+
+        let matchLogs = this.props.log.filter((log) => {
+          return log.Match;
+        });
+
+        let scrimLogs = this.props.log.filter((log) => {
+          return !log.Match;
+        });
         
         return (
           <div>
@@ -276,11 +284,25 @@ class PlayerPage extends Component {
                         />
                       )}
                     </TabPane>
-                    <TabPane tab="Stats" key="2">
-                      {this.props.log[0] ? (
-                        <PlayerStats />
+                    <TabPane tab="Match Stats" key="2">
+                      {matchLogs[0] ? (
+                        <PlayerStats log={matchLogs} />
                       ) : (
-                        <h2>This Player has no Game Data</h2>
+                        <h2>This Player has no match data</h2>
+                      )}
+                    </TabPane>
+                    <TabPane tab="Scrim Stats" key="3">
+                      {scrimLogs[0] ? (
+                        <PlayerStats log={scrimLogs} />
+                      ) : (
+                        <h2>This Player has no scrim data</h2>
+                      )}
+                    </TabPane>
+                    <TabPane tab="All Stats" key="4">
+                      {this.props.log[0] ? (
+                        <PlayerStats log={this.props.log} />
+                      ) : (
+                        <h2>This Player has no game data</h2>
                       )}
                     </TabPane>
                   </Tabs>

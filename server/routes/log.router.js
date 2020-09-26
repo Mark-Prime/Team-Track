@@ -43,7 +43,19 @@ router.get('/team/:id', (req, res) => {
             SUM(CASE WHEN "class" = 'engineer' THEN "class_stats"."deaths" ELSE 0 END) as team_engineer_deaths,
             SUM(CASE WHEN "class" = 'medic' THEN "class_stats"."deaths" ELSE 0 END) as team_medic_deaths,
             SUM(CASE WHEN "class" = 'sniper' THEN "class_stats"."deaths" ELSE 0 END) as team_sniper_deaths,
-            SUM(CASE WHEN "class" = 'spy' THEN "class_stats"."deaths" ELSE 0 END) as team_spy_deaths FROM "log_base"
+            SUM(CASE WHEN "class" = 'spy' THEN "class_stats"."deaths" ELSE 0 END) as team_spy_deaths,
+
+            SUM(CASE WHEN "class" = 'scout' THEN "class_stats"."damage" ELSE 0 END) as team_scout_damage,
+            SUM(CASE WHEN "class" = 'soldier' THEN "class_stats"."damage" ELSE 0 END) as team_soldier_damage,
+            SUM(CASE WHEN "class" = 'pyro' THEN "class_stats"."damage" ELSE 0 END) as team_pyro_damage,
+            SUM(CASE WHEN "class" = 'demoman' THEN "class_stats"."damage" ELSE 0 END) as team_demoman_damage,
+            SUM(CASE WHEN "class" = 'heavyweapons' THEN "class_stats"."damage" ELSE 0 END) as team_heavy_damage,
+            SUM(CASE WHEN "class" = 'engineer' THEN "class_stats"."damage" ELSE 0 END) as team_engineer_damage,
+            SUM(CASE WHEN "class" = 'medic' THEN "class_stats"."damage" ELSE 0 END) as team_medic_damage,
+            SUM(CASE WHEN "class" = 'sniper' THEN "class_stats"."damage" ELSE 0 END) as team_sniper_damage,
+            SUM(CASE WHEN "class" = 'spy' THEN "class_stats"."damage" ELSE 0 END) as team_spy_damage
+            
+            FROM "log_base"
             JOIN "log_team" ON "log_team"."log_id" = "log_base"."id"
             JOIN "log_stats" ON "log_stats"."log_id" = "log_base"."id"
             JOIN "deaths" ON "deaths"."log_stat_id" = "log_stats"."id"
@@ -51,7 +63,7 @@ router.get('/team/:id', (req, res) => {
             JOIN "class_stats" ON "class_stats"."log_stat_id" = "log_stats"."id"
             WHERE ("blu_id" = $1 AND "color" = 'Blue' AND "team" = 'Blue') OR ("red_id" = $1 AND "color" = 'Red' AND "team" = 'Red') 
             GROUP BY "log_base"."id", "date"
-        ORDER BY "date";`
+        ORDER BY "date";`;
         pool.query(queryText, [req.params.id]).then(result => {
             for (let i = 0; i < result.rows.length; i++) {
                 for (const key in result.rows[i]) {

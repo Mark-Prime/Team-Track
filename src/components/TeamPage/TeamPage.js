@@ -128,6 +128,14 @@ class PlayerPage extends Component {
           fontSize: 35,
         };
 
+        let matchLogs = this.props.log.filter((log) => {
+          return log.Match;
+        });
+
+        let scrimLogs = this.props.log.filter((log) => {
+          return !log.Match;
+        });
+
         return (
           <div>
             <BackTop>
@@ -256,15 +264,41 @@ class PlayerPage extends Component {
                         </>
                       )}
                     </TabPane>
-                    <TabPane tab="Stats" key="2">
+                    <TabPane
+                      tab="Match Stats"
+                      key="2"
+                      style={{ overflow: "visible" }}
+                    >
+                      {matchLogs[0] ? (
+                        <TeamStats logs={matchLogs} />
+                      ) : (
+                        <h1>This team has no match history</h1>
+                      )}
+                    </TabPane>
+                    <TabPane
+                      tab="Scrim Stats"
+                      key="3"
+                      style={{ overflow: "visible" }}
+                    >
+                      {scrimLogs[0] ? (
+                        <TeamStats logs={scrimLogs} />
+                      ) : (
+                        <h1>This team has no scrim history</h1>
+                      )}
+                    </TabPane>
+                    <TabPane
+                      tab="All Stats"
+                      key="4"
+                      style={{ overflow: "visible" }}
+                    >
                       {this.props.log[0] ? (
-                        <TeamStats />
+                        <TeamStats logs={this.props.log} />
                       ) : (
                         <h1>This team has no play history</h1>
                       )}
                     </TabPane>
                     {this.state.isLeader && (
-                      <TabPane tab="Manage" key="3">
+                      <TabPane tab="Manage" key="5">
                         <TeamManager
                           saveName={this.saveName}
                           saveTag={this.saveTag}
