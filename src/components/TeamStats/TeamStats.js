@@ -193,8 +193,10 @@ class TeamStats extends Component {
               data={this.props.logs}
             />
             <PlayerLineGraph
-              title1="Damage/Min"
-              title2="Damage Taken/Min"
+              title1="Damage"
+              title2="Damage Taken"
+              lineName1="Damage/Min"
+              lineName2="Damage Taken/Min"
               datakey1="dpm"
               datakey2="dtpm"
               displaykey1="damage"
@@ -214,17 +216,6 @@ class TeamStats extends Component {
               datakey1="killed"
               datakey2="killed_by"
               data={this.state.classKills}
-            />
-            <PlayerBarSplit
-              title="Kills"
-              datakey="kills"
-              data={this.state.teamClassKills}
-            />
-            <PlayerBarSplit
-              title="Deaths"
-              datakey="deaths"
-              red={true}
-              data={this.state.teamClassKills}
             />
             <PlayerBarSplit
               title="Damage"

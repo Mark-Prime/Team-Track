@@ -61,9 +61,7 @@ class PlayerLineGraph extends Component {
                 />
                 <Tooltip
                   content={({ active, payload, label }) => (
-                    <div
-                      className="tooltip"
-                    >
+                    <div className="tooltip">
                       {active && this.setHover(payload[0].payload.id)}
                       <p className="label">
                         {new Date(label * 1000).toDateString()}
@@ -131,7 +129,7 @@ class PlayerLineGraph extends Component {
                     </div>
                   )}
                 />
-                <Legend />
+                <Legend verticalAlign={"top"} />
                 <Line
                   type="monotone"
                   dataKey={this.props.datakey1}
