@@ -24,7 +24,11 @@ router.get('/team/:id', (req, res) => {
         ORDER BY "date";`;
     pool.query(queryText, [req.params.id]).then(result => {
         let resultRows = result.rows;
-        let queryText = `SELECT "log_base"."id", 
+        const resultIndex = {};
+        for (let i = 0; i < resultRows.length; i++) {
+          resultIndex[resultRows[i].id] = i;
+        }
+        let queryText = `SELECT "log_base"."id",
             SUM(CASE WHEN "class" = 'scout' THEN "class_stats"."kills" ELSE 0 END) as team_scout_kills,
             SUM(CASE WHEN "class" = 'soldier' THEN "class_stats"."kills" ELSE 0 END) as team_soldier_kills,
             SUM(CASE WHEN "class" = 'pyro' THEN "class_stats"."kills" ELSE 0 END) as team_pyro_kills,
@@ -65,13 +69,14 @@ router.get('/team/:id', (req, res) => {
             GROUP BY "log_base"."id", "date"
         ORDER BY "date";`;
         pool.query(queryText, [req.params.id]).then(result => {
-            for (let i = 0; i < result.rows.length; i++) {
-                for (const key in result.rows[i]) {
-                    if (result.rows[i].hasOwnProperty(key)) {
-                        resultRows[i][key] = result.rows[i][key]
-                    }
-                }
+
+            for (let item of result.rows) {
+              resultRows[resultIndex[item.id]] = {
+                ...resultRows[resultIndex[item.id]],
+                ...item
+              };
             }
+            
             
             res.send(resultRows);
         })
