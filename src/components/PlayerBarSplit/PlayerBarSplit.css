@@ -1,38 +1,47 @@
 .bar {
-    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     height: 5vh;
-    margin: auto;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
     margin-top: 1.5rem;
     padding: 0;
 }
 
 .bar__item {
-    display: inline-block;
+    /* flex-grow: 1; */
+    flex-shrink: 1;
     height: 100%;
     transition: all .2s;
     background-color: #1890ff;
     position: relative;
+    text-align: center;
+}
+
+.bar__item:last-child {
+    text-align: right;
+}
+
+.bar__item:last-child .bar__percentage {
+    width: 200%;
+    right: 0%;
+}
+
+.bar__item:first-child .bar__percentage {
+    width: 200%;
+    left: 0%;
+}
+
+.bar__item:first-child {
+    text-align: left;
+}
+
+.bar__item:not(:last-child) {
+    margin-right: 2px;
 }
 
 .bar__item--red {
     background-color: #fa541c;
-}
-
-.bar__item:not(:last-child) {
-    border-right: 0.5px solid #1890ff;
-}
-
-.bar__item:not(:first-child) {
-    border-left: 0.5px solid #1890ff;
-}
-
-.bar__item--red:not(:last-child) {
-    border-right: 0.5px solid #fa541c;
-}
-
-.bar__item--red:not(:first-child) {
-    border-left: 0.5px solid #fa541c;
 }
 
 .bar__fill {
@@ -51,26 +60,31 @@
 }
 
 .bar__label {
+    text-align: inherit;
     opacity: 0;
     visibility: hidden;
     transition: all .2s;
-    text-align: center;
     white-space: nowrap;
+    z-index: 0;
+    height: 2rem;
+    width: 100%;
     position: absolute;
     top: 0;
-    width: 100%;
-    z-index: 0;
+    /* left: 50%;
+    transform: translateX(-50%); */
 }
 
 .bar__percentage {
+    text-align: inherit;
+    width: 100%;
     opacity: 0;
     visibility: hidden;
     transition: all .2s;
-    text-align: center;
     white-space: nowrap;
     position: absolute;
     bottom: 0;
-    width: 100%;
+    /* left: 50%; */
+    /* transform: translateX(-50%); */
     z-index: 0;
 }
 
