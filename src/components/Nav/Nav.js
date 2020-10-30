@@ -19,6 +19,11 @@ class Nav extends Component {
     return (
       <div className="nav">
         <Link to="/home">
+          <img
+            alt="Logo"
+            src={require("../../images/TeamTracker_Logo.svg")}
+            className="nav-logo"
+          />
           <h2 className="nav-title">Team Track</h2>
         </Link>
         <div className="nav-right">
@@ -38,6 +43,13 @@ class Nav extends Component {
                     <Menu.Item>
                       <a href={`/#/player/${this.props.user[0].id}`}>
                         View Profile
+                      </a>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <a
+                        href="/#/perks"
+                      >
+                        My Perks
                       </a>
                     </Menu.Item>
                     <div className="discord-mobile">
@@ -78,7 +90,10 @@ class Nav extends Component {
               />
             </>
           ) : (
-            <a className="nav-steam" href={`https://www.teamtrack.xyz/auth/steam`}>
+            <a
+              className="nav-steam"
+              href={`https://www.teamtrack.xyz/auth/steam`}
+            >
               <img
                 alt="steamlogin"
                 src={require("../../images/login.png")}

@@ -74,6 +74,12 @@
     display: default;
   }
 
+.nav-logo {
+  height: 40px;
+  margin-top: -10px;
+  margin-left: 7px;
+}
+
 @media screen and (max-width: 1200px){
   .discord-desktop{
     display: none;
@@ -81,5 +87,16 @@
 
   .discord-mobile{
     display: default;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .nav-logo {
+    height: 40px;
+    margin-top: 10px;
+  }
+
+  .nav-title {
+    display: none;
   }
 }
