@@ -48,6 +48,14 @@ function* saveTeamTag(action) {
   }
 }
 
+function* saveTeamLink(action) {
+  try {
+    yield axios.put(`/team/link`, action.payload);
+  } catch (error) {
+    console.log("Error in put from /team/link", error);
+  }
+}
+
 function* newTeam(action){
   try {
     let response = yield axios.post(`/team/`, action.payload)
@@ -74,6 +82,7 @@ function* teamSaga() {
   yield takeLatest('SEARCH_TEAMS', searchTeams);
   yield takeLatest('SAVE_TEAM_NAME', saveTeamName);
   yield takeLatest('SAVE_TEAM_TAG', saveTeamTag);
+  yield takeLatest('SAVE_TEAM_LINK', saveTeamLink);
   yield takeLatest('NEW_TEAM', newTeam);
   yield takeLatest('DEACTIVATE_TEAM', deactivateTeam);
 }
