@@ -140,11 +140,22 @@ class PlayerPage extends Component {
   };
 
   saveLink = (value) => {
-    this.props.dispatch({
-      type: "SAVE_TEAM_LINK",
-      payload: { newTag: value, id: this.props.team[0].trueid },
-    });
-    this.setState({ teamLink: value });
+
+    if (
+      value.includes("rgl.gg/Public/Team.aspx?t=") ||
+      value.includes("ugcleague.com/team_page.cfm?clan_id=") ||
+      value.includes("etf2l.org/teams/") ||
+      value.includes("ozfortress.com/teams/") ||
+      value.includes("match.tf/teams/") ||
+      value.includes("rsl.tf/teams/") ||
+      value.includes("asiafortress.com")
+    ) {
+      this.props.dispatch({
+        type: "SAVE_TEAM_LINK",
+        payload: { newTag: value, id: this.props.team[0].trueid },
+      });
+      this.setState({ teamLink: value });
+    } 
     this.refreshInformation();
   };
 
