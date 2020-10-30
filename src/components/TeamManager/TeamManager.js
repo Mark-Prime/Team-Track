@@ -227,22 +227,22 @@ class TeamManager extends Component {
                   dataIndex: "is_leader",
                   key: "is_leader",
                   render: (text, record) => {
-                    // if (record.user_id === this.props.user[0].id) {
-                    //   return (
-                    //     <Popconfirm
-                    //       title={`Leave ${this.props.team[0].name}?`}
-                    //       onConfirm={() =>
-                    //         this.removeMember(record.user_id, true)
-                    //       }
-                    //       okText="Yes, Leave"
-                    //       cancelText="No"
-                    //     >
-                    //       <Button type="primary" danger>
-                    //         LEAVE
-                    //       </Button>
-                    //     </Popconfirm>
-                    //   );
-                    // }
+                    if (record.user_id === this.props.user[0].id) {
+                      return (
+                        <Popconfirm
+                          title={`Leave ${this.props.team[0].name}?`}
+                          onConfirm={() =>
+                            this.removeMember(record.user_id, true)
+                          }
+                          okText="Yes, Leave"
+                          cancelText="No"
+                        >
+                          <Button type="primary" danger>
+                            LEAVE
+                          </Button>
+                        </Popconfirm>
+                      );
+                    }
                     return (
                       <>
                         {" "}

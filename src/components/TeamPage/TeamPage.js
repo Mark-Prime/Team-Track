@@ -338,7 +338,7 @@ class PlayerPage extends Component {
                     <h1>This team has no play history</h1>
                   )}
                 </TabPane>
-                {!this.state.isLeader && (
+                {this.state.isLeader && (
                   <TabPane tab="Manage" key="5">
                     <TeamManager
                       saveName={this.saveName}
