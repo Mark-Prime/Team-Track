@@ -80,7 +80,7 @@
   margin-left: 7px;
 }
 
-@media screen and (max-width: 1200px){
+@media screen and (max-width: 900px){
   .discord-desktop{
     display: none;
   }
@@ -90,7 +90,7 @@
   }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 600px) {
   .nav-logo {
     height: 40px;
     margin-top: 10px;

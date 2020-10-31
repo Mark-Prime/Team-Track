@@ -238,7 +238,13 @@ class PlayerPage extends Component {
                                 shape="square"
                                 src={record.avatar}
                               />
-                              {text}
+                              {record.donator ? (
+                                <div className="donatorName">
+                                  {text}
+                                </div>
+                              ) : (
+                                <>{text}</>
+                              )}
                               {record.verified && (
                                 <Tooltip title="Verified!">
                                   <CheckCircleTwoTone />
@@ -316,39 +322,33 @@ class PlayerPage extends Component {
                     </>
                   )}
                 </TabPane>
-                <TabPane
-                  tab="Match Stats"
-                  key="2"
-                  style={{ overflow: "visible" }}
-                >
-                  {matchLogs[0] ? (
+                {matchLogs[0] && (
+                  <TabPane
+                    tab="Match Stats"
+                    key="2"
+                    style={{ overflow: "visible" }}
+                  >
                     <TeamStats logs={matchLogs} />
-                  ) : (
-                    <h1>This team has no match history</h1>
-                  )}
-                </TabPane>
-                <TabPane
-                  tab="Scrim Stats"
-                  key="3"
-                  style={{ overflow: "visible" }}
-                >
-                  {scrimLogs[0] ? (
+                  </TabPane>
+                )}
+                {scrimLogs[0] && (
+                  <TabPane
+                    tab="Scrim Stats"
+                    key="3"
+                    style={{ overflow: "visible" }}
+                  >
                     <TeamStats logs={scrimLogs} />
-                  ) : (
-                    <h1>This team has no scrim history</h1>
-                  )}
-                </TabPane>
-                <TabPane
-                  tab="All Stats"
-                  key="4"
-                  style={{ overflow: "visible" }}
-                >
-                  {this.props.log[0] ? (
+                  </TabPane>
+                )}
+                {this.props.log[0] && (
+                  <TabPane
+                    tab="All Stats"
+                    key="4"
+                    style={{ overflow: "visible" }}
+                  >
                     <TeamStats logs={this.props.log} />
-                  ) : (
-                    <h1>This team has no play history</h1>
-                  )}
-                </TabPane>
+                  </TabPane>
+                )}
                 {this.state.isLeader && (
                   <TabPane tab="Manage" key="5">
                     <TeamManager

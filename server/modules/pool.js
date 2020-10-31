@@ -17,7 +17,6 @@ if (process.env.DATABASE_URL) {
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
     port: process.env.DATABASE_PORT,
-    ssl: true,
     rejectUnauthorized: false,
     idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
   };

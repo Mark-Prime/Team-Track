@@ -46,11 +46,7 @@ class Nav extends Component {
                       </a>
                     </Menu.Item>
                     <Menu.Item>
-                      <a
-                        href="/#/perks"
-                      >
-                        My Perks
-                      </a>
+                      <a href="/#/perks">My Perks</a>
                     </Menu.Item>
                     <div className="discord-mobile">
                       <Menu.Item>
@@ -92,7 +88,7 @@ class Nav extends Component {
           ) : (
             <a
               className="nav-steam"
-              href={`https://www.teamtrack.xyz/auth/steam`}
+              href={`http://192.168.0.21:5000/auth/steam`}
             >
               <img
                 alt="steamlogin"

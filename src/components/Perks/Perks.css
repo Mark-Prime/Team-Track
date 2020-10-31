@@ -1,3 +1,17 @@
 .center {
     text-align: center;
 }
+
+.cardBox {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: space-between;
+}
+
+.cardBox--item {
+    min-width: 300px;
+    width: 24%;
+    margin: 10px 5px;
+    flex-grow: 1;
+}

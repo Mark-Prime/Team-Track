@@ -113,7 +113,11 @@ class HomePage extends Component {
                                 shape="square"
                                 src={record.avatar}
                               />
-                              {text}
+                              {record.donator ? (
+                                <div className="donatorName">{text}</div>
+                              ) : (
+                                <>{text}</>
+                              )}
                               {record.verified && (
                                 <Tooltip title="Verified!">
                                   <CheckCircleTwoTone />

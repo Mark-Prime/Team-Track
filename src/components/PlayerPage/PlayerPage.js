@@ -27,7 +27,6 @@ class PlayerPage extends Component {
     }
 
     componentDidMount() {
-
         this.refreshInformation()
     }
 
@@ -100,7 +99,13 @@ class PlayerPage extends Component {
                   />
                   <h1 id="welcome">
                     <Space>
-                      {this.props.player[0].displayname}
+                      {this.props.player[0].donator ? (
+                        <div className="donatorName">
+                          {this.props.player[0].displayname}
+                        </div>
+                      ) : (
+                        <>{this.props.player[0].displayname}</>
+                      )}
                       {this.props.player[0].verified && (
                         <Tooltip title="Verified!">
                           <CheckCircleTwoTone />
@@ -284,27 +289,21 @@ class PlayerPage extends Component {
                         />
                       )}
                     </TabPane>
-                    <TabPane tab="Match Stats" key="2">
-                      {matchLogs[0] ? (
+                    {matchLogs[0] && (
+                      <TabPane tab="Match Stats" key="2">
                         <PlayerStats log={matchLogs} />
-                      ) : (
-                        <h2>This Player has no match data</h2>
-                      )}
-                    </TabPane>
-                    <TabPane tab="Scrim Stats" key="3">
-                      {scrimLogs[0] ? (
+                      </TabPane>
+                    )}
+                    {scrimLogs[0] && (
+                      <TabPane tab="Scrim Stats" key="3">
                         <PlayerStats log={scrimLogs} />
-                      ) : (
-                        <h2>This Player has no scrim data</h2>
-                      )}
-                    </TabPane>
-                    <TabPane tab="All Stats" key="4">
-                      {this.props.log[0] ? (
+                      </TabPane>
+                    )}
+                    {this.props.log[0] && (
+                      <TabPane tab="All Stats" key="4">
                         <PlayerStats log={this.props.log} />
-                      ) : (
-                        <h2>This Player has no game data</h2>
-                      )}
-                    </TabPane>
+                      </TabPane>
+                    )}
                   </Tabs>
                 </div>
               </div>
